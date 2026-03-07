@@ -3,7 +3,7 @@
     <input
       ref="inputRef"
       type="text"
-      :class="['ale-time-picker__input', { 'is-disabled': disabled, 'is-readonly': readonly }]"
+      :class="inputClass"
       :value="displayValue"
       :placeholder="placeholder"
       :disabled="disabled"
@@ -38,23 +38,44 @@
           <div class="ale-time-picker__panel">
             <!-- 头部时间预览 -->
             <div class="ale-time-picker__header">
+              <!-- AM/PM 切换器 - 右上角 -->
+              <div v-if="use12Hours" class="ale-time-picker__period-switcher">
+                <button
+                  :class="['ale-time-picker__period-btn', { 'is-active': isAm }]"
+                  @click.stop="selectPeriod('am')"
+                >
+                  AM
+                </button>
+                <button
+                  :class="['ale-time-picker__period-btn', { 'is-active': !isAm }]"
+                  @click.stop="selectPeriod('pm')"
+                >
+                  PM
+                </button>
+              </div>
               <div class="ale-time-picker__preview">
-                <span class="ale-time-picker__preview-item" :class="{ 'is-active': activeColumn === 'hour' }">
+                <span
+                  class="ale-time-picker__preview-item"
+                  :class="{ 'is-active': activeColumn === 'hour' }"
+                >
                   {{ formatNumber(displayHour) }}
                 </span>
                 <span class="ale-time-picker__preview-separator">:</span>
-                <span class="ale-time-picker__preview-item" :class="{ 'is-active': activeColumn === 'minute' }">
+                <span
+                  class="ale-time-picker__preview-item"
+                  :class="{ 'is-active': activeColumn === 'minute' }"
+                >
                   {{ formatNumber(selectedMinute) }}
                 </span>
                 <template v-if="showSeconds">
                   <span class="ale-time-picker__preview-separator">:</span>
-                  <span class="ale-time-picker__preview-item" :class="{ 'is-active': activeColumn === 'second' }">
+                  <span
+                    class="ale-time-picker__preview-item"
+                    :class="{ 'is-active': activeColumn === 'second' }"
+                  >
                     {{ formatNumber(selectedSecond) }}
                   </span>
                 </template>
-                <span v-if="use12Hours" class="ale-time-picker__preview-period">
-                  {{ isAm ? 'AM' : 'PM' }}
-                </span>
               </div>
             </div>
             
@@ -62,16 +83,19 @@
             <div class="ale-time-picker__body">
               <div class="ale-time-picker__columns">
                 <!-- 小时列 -->
-                <div 
-                  class="ale-time-picker__column" 
+                <div
+                  ref="hourColumnRef"
+                  class="ale-time-picker__column"
                   @scroll.passive="handleScroll('hour')"
                   @mouseenter="activeColumn = 'hour'"
+                  @touchstart.passive="handleTouchStart('hour')"
+                  @touchend.passive="handleTouchEnd('hour')"
                 >
                   <div class="ale-time-picker__column-padding"></div>
                   <div
                     v-for="hour in hours"
                     :key="hour"
-                    :class="['ale-time-picker__item', { 'is-selected': selectedHour === hour }]"
+                    :class="getItemClass('hour', hour)"
                     @click.stop="selectHour(hour)"
                   >
                     {{ formatNumber(hour) }}
@@ -80,16 +104,19 @@
                 </div>
                 
                 <!-- 分钟列 -->
-                <div 
+                <div
+                  ref="minuteColumnRef"
                   class="ale-time-picker__column"
                   @scroll.passive="handleScroll('minute')"
                   @mouseenter="activeColumn = 'minute'"
+                  @touchstart.passive="handleTouchStart('minute')"
+                  @touchend.passive="handleTouchEnd('minute')"
                 >
                   <div class="ale-time-picker__column-padding"></div>
                   <div
                     v-for="minute in minutes"
                     :key="minute"
-                    :class="['ale-time-picker__item', { 'is-selected': selectedMinute === minute }]"
+                    :class="getItemClass('minute', minute)"
                     @click.stop="selectMinute(minute)"
                   >
                     {{ formatNumber(minute) }}
@@ -99,41 +126,24 @@
                 
                 <!-- 秒列 -->
                 <template v-if="showSeconds">
-                  <div 
+                  <div
+                    ref="secondColumnRef"
                     class="ale-time-picker__column"
                     @scroll.passive="handleScroll('second')"
                     @mouseenter="activeColumn = 'second'"
+                    @touchstart.passive="handleTouchStart('second')"
+                    @touchend.passive="handleTouchEnd('second')"
                   >
                     <div class="ale-time-picker__column-padding"></div>
                     <div
                       v-for="second in seconds"
                       :key="second"
-                      :class="['ale-time-picker__item', { 'is-selected': selectedSecond === second }]"
+                      :class="getItemClass('second', second)"
                       @click.stop="selectSecond(second)"
                     >
                       {{ formatNumber(second) }}
                     </div>
                     <div class="ale-time-picker__column-padding"></div>
-                  </div>
-                </template>
-                
-                <!-- AM/PM 列 -->
-                <template v-if="use12Hours">
-                  <div class="ale-time-picker__column ale-time-picker__period">
-                    <div class="ale-time-picker__column-padding--small"></div>
-                    <div
-                      :class="['ale-time-picker__item', { 'is-selected': !isAm }]"
-                      @click.stop="selectPeriod('pm')"
-                    >
-                      PM
-                    </div>
-                    <div
-                      :class="['ale-time-picker__item', { 'is-selected': isAm }]"
-                      @click.stop="selectPeriod('am')"
-                    >
-                      AM
-                    </div>
-                    <div class="ale-time-picker__column-padding--small"></div>
                   </div>
                 </template>
                 
@@ -184,19 +194,43 @@ const props = withDefaults(defineProps<TimePickerProps>(), {
 
 const emit = defineEmits<TimePickerEmits>();
 
+// DOM 引用
 const inputRef = ref<HTMLInputElement>();
 const dropdownRef = ref<HTMLDivElement>();
+const hourColumnRef = ref<HTMLDivElement>();
+const minuteColumnRef = ref<HTMLDivElement>();
+const secondColumnRef = ref<HTMLDivElement>();
+
+// 状态
 const visible = ref(false);
 const isFocused = ref(false);
 const activeColumn = ref<'hour' | 'minute' | 'second'>('hour');
-
 const selectedHour = ref(0);
 const selectedMinute = ref(0);
 const selectedSecond = ref(0);
 const isAm = ref(true);
-
 const dropdownPosition = ref({ top: 0, left: 0 });
 
+// 滚动吸附相关
+const ITEM_HEIGHT = 36;
+const PADDING_HEIGHT = 90;
+const scrollTimeouts = ref<Record<string, number>>({
+  hour: 0,
+  minute: 0,
+  second: 0
+});
+const isScrolling = ref<Record<string, boolean>>({
+  hour: false,
+  minute: false,
+  second: false
+});
+const isTouching = ref<Record<string, boolean>>({
+  hour: false,
+  minute: false,
+  second: false
+});
+
+// 计算属性
 const timePickerClass = computed(() => [
   'ale-time-picker',
   `ale-time-picker--${props.size}`,
@@ -206,6 +240,14 @@ const timePickerClass = computed(() => [
     'is-focused': isFocused.value,
     'is-active': visible.value,
     [props.customClass]: props.customClass
+  }
+]);
+
+const inputClass = computed(() => [
+  'ale-time-picker__input',
+  {
+    'is-disabled': props.disabled,
+    'is-readonly': props.readonly
   }
 ]);
 
@@ -234,12 +276,10 @@ const displayValue = computed(() => {
 });
 
 const displayHour = computed(() => {
-  if (props.use12Hours) {
-    return selectedHour.value;
-  }
   return selectedHour.value;
 });
 
+// 工具函数
 const formatNumber = (num: number): string => {
   return num.toString().padStart(2, '0');
 };
@@ -267,69 +307,165 @@ const formatTime = (): string => {
   return parts.join(':');
 };
 
-const updateDropdownPosition = () => {
-  if (!inputRef.value) return;
-  const rect = inputRef.value.getBoundingClientRect();
-  const viewportHeight = window.innerHeight;
-  const dropdownHeight = 320;
-  
-  let top = rect.bottom + 8;
-  if (top + dropdownHeight > viewportHeight) {
-    top = rect.top - dropdownHeight - 8;
-  }
-  
-  dropdownPosition.value = {
-    top,
-    left: rect.left
-  };
+const getItemClass = (type: 'hour' | 'minute' | 'second', value: number) => {
+  const selected = type === 'hour' 
+    ? selectedHour.value 
+    : type === 'minute' 
+      ? selectedMinute.value 
+      : selectedSecond.value;
+  return [
+    'ale-time-picker__item',
+    { 'is-selected': selected === value }
+  ];
 };
 
-const handleClick = () => {
-  if (props.disabled || props.readonly) return;
-  visible.value = !visible.value;
-  if (visible.value) {
-    updateDropdownPosition();
-    nextTick(() => {
-      scrollToSelected();
+// 获取列元素
+const getColumnRef = (type: 'hour' | 'minute' | 'second') => {
+  return type === 'hour' 
+    ? hourColumnRef.value 
+    : type === 'minute' 
+      ? minuteColumnRef.value 
+      : secondColumnRef.value;
+};
+
+// 滚动到指定位置
+const scrollToIndex = (type: 'hour' | 'minute' | 'second', index: number, smooth = true) => {
+  const column = getColumnRef(type);
+  if (!column) return;
+  
+  const targetScrollTop = index * ITEM_HEIGHT;
+  
+  if (smooth) {
+    column.style.scrollBehavior = 'smooth';
+  } else {
+    column.style.scrollBehavior = 'auto';
+  }
+  
+  column.scrollTop = targetScrollTop;
+  
+  // 恢复平滑滚动
+  if (!smooth) {
+    requestAnimationFrame(() => {
+      column.style.scrollBehavior = 'smooth';
     });
   }
 };
 
-const scrollToSelected = () => {
-  nextTick(() => {
-    const columns = dropdownRef.value?.querySelectorAll('.ale-time-picker__column');
-    if (!columns || columns.length < 2) return;
-    
-    const itemHeight = 36;
-    
-    const hourColumn = columns[0];
-    const minuteColumn = columns[1];
-    
-    if (hourColumn) {
-      hourColumn.scrollTop = selectedHour.value * itemHeight;
-    }
-    if (minuteColumn) {
-      minuteColumn.scrollTop = selectedMinute.value * itemHeight;
-    }
-    
-    if (props.showSeconds && columns[2]) {
-      columns[2].scrollTop = selectedSecond.value * itemHeight;
-    }
-  });
+// 吸附到最近的选项
+const snapToNearest = (type: 'hour' | 'minute' | 'second') => {
+  const column = getColumnRef(type);
+  if (!column) return;
+  
+  const scrollTop = column.scrollTop;
+  const maxScrollTop = column.scrollHeight - column.clientHeight;
+  
+  // 计算最近的索引
+  let nearestIndex = Math.round(scrollTop / ITEM_HEIGHT);
+  
+  // 边界处理
+  if (scrollTop <= 0) {
+    nearestIndex = 0;
+  } else if (scrollTop >= maxScrollTop) {
+    const maxIndex = type === 'hour' 
+      ? (props.use12Hours ? 11 : 23) 
+      : 59;
+    nearestIndex = maxIndex;
+  } else {
+    // 确保索引在有效范围内
+    const maxIndex = type === 'hour' 
+      ? (props.use12Hours ? 11 : 23) 
+      : 59;
+    nearestIndex = Math.max(0, Math.min(maxIndex, nearestIndex));
+  }
+  
+  // 更新选中值
+  if (type === 'hour') {
+    const hour = props.use12Hours ? nearestIndex + 1 : nearestIndex;
+    selectedHour.value = hour;
+  } else if (type === 'minute') {
+    selectedMinute.value = nearestIndex;
+  } else {
+    selectedSecond.value = nearestIndex;
+  }
+  
+  // 滚动到最近的选项
+  scrollToIndex(type, nearestIndex, true);
 };
 
+// 滚动事件处理
+const handleScroll = (type: 'hour' | 'minute' | 'second') => {
+  activeColumn.value = type;
+  
+  // 清除之前的定时器
+  if (scrollTimeouts.value[type]) {
+    clearTimeout(scrollTimeouts.value[type]);
+  }
+  
+  isScrolling.value[type] = true;
+  
+  // 设置新的定时器，用于检测滚动停止
+  scrollTimeouts.value[type] = window.setTimeout(() => {
+    isScrolling.value[type] = false;
+    // 只有在没有触摸时才进行吸附
+    if (!isTouching.value[type]) {
+      snapToNearest(type);
+    }
+  }, 150);
+  
+  // 实时更新选中值
+  const column = getColumnRef(type);
+  if (!column) return;
+  
+  const scrollTop = column.scrollTop;
+  const index = Math.round(scrollTop / ITEM_HEIGHT);
+  
+  if (type === 'hour') {
+    const hour = props.use12Hours ? Math.max(1, Math.min(12, index + 1)) : Math.max(0, Math.min(23, index));
+    selectedHour.value = hour;
+  } else if (type === 'minute') {
+    selectedMinute.value = Math.max(0, Math.min(59, index));
+  } else {
+    selectedSecond.value = Math.max(0, Math.min(59, index));
+  }
+};
+
+// 触摸事件处理
+const handleTouchStart = (type: 'hour' | 'minute' | 'second') => {
+  isTouching.value[type] = true;
+  // 清除吸附定时器
+  if (scrollTimeouts.value[type]) {
+    clearTimeout(scrollTimeouts.value[type]);
+  }
+};
+
+const handleTouchEnd = (type: 'hour' | 'minute' | 'second') => {
+  isTouching.value[type] = false;
+  
+  // 延迟执行吸附，等待惯性滚动完成
+  setTimeout(() => {
+    if (!isScrolling.value[type] && !isTouching.value[type]) {
+      snapToNearest(type);
+    }
+  }, 100);
+};
+
+// 选择操作
 const selectHour = (hour: number) => {
   selectedHour.value = hour;
+  const index = props.use12Hours ? hour - 1 : hour;
+  scrollToIndex('hour', index, true);
   emitChange();
 };
 
 const selectMinute = (minute: number) => {
   selectedMinute.value = minute;
+  scrollToIndex('minute', minute, true);
   emitChange();
 };
 
 const selectSecond = (second: number) => {
   selectedSecond.value = second;
+  scrollToIndex('second', second, true);
   emitChange();
 };
 
@@ -342,6 +478,162 @@ const emitChange = () => {
   const time = formatTime();
   emit('update:modelValue', time);
   emit('change', time);
+};
+
+// 滚动到选中位置
+const scrollToSelected = () => {
+  nextTick(() => {
+    const hourIndex = props.use12Hours ? selectedHour.value - 1 : selectedHour.value;
+    scrollToIndex('hour', hourIndex, false);
+    scrollToIndex('minute', selectedMinute.value, false);
+    
+    if (props.showSeconds) {
+      scrollToIndex('second', selectedSecond.value, false);
+    }
+    
+    // 稍后启用平滑滚动
+    requestAnimationFrame(() => {
+      const columns = [hourColumnRef.value, minuteColumnRef.value];
+      if (props.showSeconds) {
+        columns.push(secondColumnRef.value);
+      }
+      columns.forEach(col => {
+        if (col) {
+          col.style.scrollBehavior = 'smooth';
+        }
+      });
+    });
+  });
+};
+
+// 更新下拉位置
+const updateDropdownPosition = () => {
+  if (!inputRef.value) return;
+  const rect = inputRef.value.getBoundingClientRect();
+  const viewportHeight = window.innerHeight;
+  const viewportWidth = window.innerWidth;
+  const dropdownHeight = 320;
+  const dropdownWidth = 280;
+  
+  let top = rect.bottom + 8;
+  let left = rect.left;
+  
+  // 上下位置调整
+  if (top + dropdownHeight > viewportHeight) {
+    top = rect.top - dropdownHeight - 8;
+  }
+  
+  // 左右位置调整
+  if (left + dropdownWidth > viewportWidth) {
+    left = viewportWidth - dropdownWidth - 8;
+  }
+  if (left < 8) {
+    left = 8;
+  }
+  
+  dropdownPosition.value = { top, left };
+};
+
+// 滚动跟随相关
+const scrollableParents = ref<Element[]>([]);
+let updatePositionRaf: number | null = null;
+
+// 节流更新位置
+const throttledUpdatePosition = () => {
+  if (updatePositionRaf) return;
+  updatePositionRaf = requestAnimationFrame(() => {
+    updateDropdownPosition();
+    updatePositionRaf = null;
+  });
+};
+
+// 获取所有可滚动的祖先元素
+const getScrollableParents = (element: HTMLElement): Element[] => {
+  const parents: Element[] = [];
+  let parent = element.parentElement;
+  
+  while (parent) {
+    const style = getComputedStyle(parent);
+    const overflow = style.overflow + style.overflowY + style.overflowX;
+    
+    if (/(auto|scroll)/.test(overflow)) {
+      parents.push(parent);
+    }
+    parent = parent.parentElement;
+  }
+  
+  // 添加 window
+  parents.push(window as any);
+  
+  return parents;
+};
+
+// 添加滚动监听
+const addScrollListeners = () => {
+  if (!inputRef.value) return;
+  
+  scrollableParents.value = getScrollableParents(inputRef.value);
+  
+  scrollableParents.value.forEach(parent => {
+    parent.addEventListener('scroll', throttledUpdatePosition, { passive: true });
+  });
+};
+
+// 移除滚动监听
+const removeScrollListeners = () => {
+  scrollableParents.value.forEach(parent => {
+    parent.removeEventListener('scroll', throttledUpdatePosition);
+  });
+  scrollableParents.value = [];
+  
+  // 清理 RAF
+  if (updatePositionRaf) {
+    cancelAnimationFrame(updatePositionRaf);
+    updatePositionRaf = null;
+  }
+};
+
+// 初始化默认时间（当没有 modelValue 时）
+const initializeDefaultTime = () => {
+  if (props.modelValue) {
+    // 如果有 modelValue，解析并设置
+    const { hour, minute, second } = parseTime(props.modelValue);
+    if (props.use12Hours) {
+      isAm.value = hour < 12;
+      selectedHour.value = hour % 12 || 12;
+    } else {
+      selectedHour.value = hour;
+    }
+    selectedMinute.value = minute;
+    selectedSecond.value = second;
+  } else {
+    // 如果没有 modelValue，使用当前时间作为默认值
+    const now = new Date();
+    let hour = now.getHours();
+    
+    if (props.use12Hours) {
+      isAm.value = hour < 12;
+      hour = hour % 12 || 12;
+    }
+    
+    selectedHour.value = hour;
+    selectedMinute.value = now.getMinutes();
+    selectedSecond.value = now.getSeconds();
+  }
+};
+
+// 事件处理
+const handleClick = () => {
+  if (props.disabled || props.readonly) return;
+  visible.value = !visible.value;
+  if (visible.value) {
+    // 初始化时间（确保有默认值）
+    initializeDefaultTime();
+    updateDropdownPosition();
+    nextTick(() => {
+      scrollToSelected();
+    });
+  }
 };
 
 const handleNow = () => {
@@ -362,6 +654,16 @@ const handleNow = () => {
 };
 
 const handleConfirm = () => {
+  // 确保吸附到最近选项
+  snapToNearest('hour');
+  snapToNearest('minute');
+  if (props.showSeconds) {
+    snapToNearest('second');
+  }
+  
+  // 触发值更新，确保数据同步
+  emitChange();
+  
   visible.value = false;
 };
 
@@ -380,38 +682,25 @@ const handleBlur = (event: FocusEvent) => {
   emit('blur', event);
 };
 
-const handleScroll = (type: 'hour' | 'minute' | 'second') => {
-  activeColumn.value = type;
-  const columns = dropdownRef.value?.querySelectorAll('.ale-time-picker__column');
-  if (!columns) return;
-  
-  const columnIndex = type === 'hour' ? 0 : type === 'minute' ? 1 : 2;
-  const column = columns[columnIndex];
-  if (!column) return;
-  
-  const itemHeight = 36;
-  const scrollTop = column.scrollTop;
-  const index = Math.round(scrollTop / itemHeight);
-  
-  if (type === 'hour') {
-    selectedHour.value = props.use12Hours ? Math.max(1, Math.min(12, index + 1)) : index;
-  } else if (type === 'minute') {
-    selectedMinute.value = Math.max(0, Math.min(59, index));
-  } else {
-    selectedSecond.value = Math.max(0, Math.min(59, index));
-  }
-};
-
 const handleClickOutside = (event: MouseEvent) => {
   const target = event.target as HTMLElement;
   if (
     !inputRef.value?.contains(target) &&
     !dropdownRef.value?.contains(target)
   ) {
+    // 关闭前进行吸附校准
+    if (visible.value) {
+      snapToNearest('hour');
+      snapToNearest('minute');
+      if (props.showSeconds) {
+        snapToNearest('second');
+      }
+    }
     visible.value = false;
   }
 };
 
+// 监听器
 watch(() => props.modelValue, (val) => {
   if (val) {
     const { hour, minute, second } = parseTime(val);
@@ -430,12 +719,17 @@ watch(visible, (val) => {
   if (val) {
     document.addEventListener('click', handleClickOutside);
     window.addEventListener('resize', updateDropdownPosition);
+    // 添加滚动监听
+    addScrollListeners();
   } else {
     document.removeEventListener('click', handleClickOutside);
     window.removeEventListener('resize', updateDropdownPosition);
+    // 移除滚动监听
+    removeScrollListeners();
   }
 });
 
+// 生命周期
 onMounted(() => {
   if (props.modelValue) {
     const { hour, minute, second } = parseTime(props.modelValue);
@@ -453,8 +747,14 @@ onMounted(() => {
 onBeforeUnmount(() => {
   document.removeEventListener('click', handleClickOutside);
   window.removeEventListener('resize', updateDropdownPosition);
+  removeScrollListeners();
+  // 确保清理定时器
+  Object.values(scrollTimeouts.value).forEach(timeout => {
+    if (timeout) clearTimeout(timeout);
+  });
 });
 
+// 暴露方法
 const focus = () => {
   inputRef.value?.focus();
 };

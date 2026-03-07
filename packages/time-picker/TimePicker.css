@@ -153,6 +153,7 @@
     0 3px 6px -4px rgba(0, 0, 0, 0.12),
     0 9px 28px 8px rgba(0, 0, 0, 0.05);
   overflow: hidden;
+  will-change: transform, opacity;
 }
 
 /* ==================== 面板布局 ==================== */
@@ -168,6 +169,52 @@
   padding: var(--spacing-4);
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark, #2563eb) 100%);
   text-align: center;
+  position: relative;
+}
+
+/* ==================== AM/PM 切换器 - 右上角 ==================== */
+.ale-time-picker__period-switcher {
+  position: absolute;
+  top: var(--spacing-3);
+  right: var(--spacing-3);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 1;
+}
+
+.ale-time-picker__period-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 24px;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  outline: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ale-time-picker__period-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.ale-time-picker__period-btn.is-active {
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--color-primary);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.ale-time-picker__period-btn:active {
+  transform: scale(0.95);
 }
 
 .ale-time-picker__preview {
@@ -183,12 +230,14 @@
   color: rgba(255, 255, 255, 0.6);
   min-width: 48px;
   text-align: center;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
+  user-select: none;
 }
 
 .ale-time-picker__preview-item.is-active {
   color: #ffffff;
   text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+  transform: scale(1.05);
 }
 
 .ale-time-picker__preview-separator {
@@ -196,16 +245,6 @@
   font-weight: 500;
   color: rgba(255, 255, 255, 0.4);
   margin: 0 2px;
-}
-
-.ale-time-picker__preview-period {
-  font-size: 14px;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.9);
-  margin-left: 8px;
-  padding: 2px 8px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: var(--radius-sm);
 }
 
 /* ==================== 主题变体 - 头部 ==================== */
@@ -221,10 +260,24 @@
   background: linear-gradient(135deg, var(--color-danger) 0%, #dc2626 100%);
 }
 
+/* AM/PM 切换器主题变体 */
+.ale-time-picker--success .ale-time-picker__period-btn.is-active {
+  color: var(--color-success);
+}
+
+.ale-time-picker--warning .ale-time-picker__period-btn.is-active {
+  color: var(--color-warning);
+}
+
+.ale-time-picker--danger .ale-time-picker__period-btn.is-active {
+  color: var(--color-danger);
+}
+
 /* ==================== 时间选择区域 ==================== */
 .ale-time-picker__body {
   position: relative;
   padding: var(--spacing-3) 0;
+  overflow: hidden;
 }
 
 .ale-time-picker__columns {
@@ -245,6 +298,7 @@
   border-radius: var(--radius-md);
   pointer-events: none;
   z-index: 0;
+  transition: background 0.2s;
 }
 
 /* ==================== 滚动列样式 ==================== */
@@ -257,6 +311,8 @@
   -ms-overflow-style: none;
   position: relative;
   z-index: 1;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
 }
 
 .ale-time-picker__column::-webkit-scrollbar {
@@ -265,10 +321,12 @@
 
 .ale-time-picker__column-padding {
   height: 90px;
+  pointer-events: none;
 }
 
 .ale-time-picker__column-padding--small {
   height: 72px;
+  pointer-events: none;
 }
 
 /* ==================== 时间项样式 ==================== */
@@ -282,9 +340,11 @@
   color: var(--color-text-regular);
   cursor: pointer;
   transition: all 0.15s ease;
-  margin: 0 var(--spacing-1);
+  margin: 0 var(--spacing-2);
   border-radius: var(--radius-md);
   position: relative;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .ale-time-picker__item:hover {
@@ -310,9 +370,10 @@
   border-radius: 50%;
 }
 
-/* ==================== AM/PM 列样式 ==================== */
-.ale-time-picker__period {
-  flex: 0 0 56px;
+/* 点击时的反馈效果 */
+.ale-time-picker__item:active {
+  transform: scale(0.95);
+  background: var(--color-primary-100);
 }
 
 /* ==================== 底部操作区 ==================== */
@@ -336,6 +397,7 @@
   border-radius: var(--radius-md);
   cursor: pointer;
   transition: all 0.2s;
+  white-space: nowrap;
 }
 
 .ale-time-picker__btn-icon {
@@ -363,6 +425,10 @@
   box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
 }
 
+.ale-time-picker__btn--primary:active {
+  transform: scale(0.98);
+}
+
 /* ==================== 动画效果 ==================== */
 .ale-time-picker-fade-enter-active,
 .ale-time-picker-fade-leave-active {
@@ -379,6 +445,93 @@
 .ale-time-picker-fade-leave-from {
   opacity: 1;
   transform: translateY(0) scale(1);
+}
+
+/* ==================== 滚动吸附视觉效果 ==================== */
+@keyframes snap-indicator-pulse {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.ale-time-picker__column.is-snapping .ale-time-picker__indicator {
+  animation: snap-indicator-pulse 0.3s ease;
+}
+
+/* ==================== 响应式适配 ==================== */
+@media (max-width: 480px) {
+  .ale-time-picker {
+    width: 100%;
+  }
+  
+  .ale-time-picker__panel {
+    width: 100%;
+    max-width: 100vw;
+  }
+  
+  .ale-time-picker__dropdown {
+    left: 8px !important;
+    right: 8px !important;
+    width: calc(100vw - 16px) !important;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+  
+  .ale-time-picker__preview-item {
+    font-size: 28px;
+    min-width: 40px;
+  }
+  
+  .ale-time-picker__preview-separator {
+    font-size: 24px;
+  }
+  
+  .ale-time-picker__item {
+    font-size: var(--font-size-sm);
+  }
+  
+  .ale-time-picker__btn {
+    padding: var(--spacing-2) var(--spacing-3);
+    font-size: var(--font-size-xs);
+  }
+}
+
+@media (max-width: 360px) {
+  .ale-time-picker__preview-item {
+    font-size: 24px;
+    min-width: 36px;
+  }
+  
+  .ale-time-picker__preview-separator {
+    font-size: 20px;
+    margin: 0 1px;
+  }
+  
+  .ale-time-picker__preview-period {
+    font-size: 12px;
+    padding: 2px 6px;
+    margin-left: 6px;
+  }
+  
+  .ale-time-picker__columns {
+    height: 180px;
+  }
+  
+  .ale-time-picker__item {
+    height: 32px;
+    font-size: 12px;
+  }
+  
+  .ale-time-picker__indicator {
+    height: 32px;
+  }
+  
+  .ale-time-picker__column-padding {
+    height: 74px;
+  }
 }
 
 /* ==================== 暗黑模式 ==================== */
@@ -412,6 +565,10 @@
   background: var(--color-gray-700);
 }
 
+.dark .ale-time-picker__item:active {
+  background: var(--color-gray-600);
+}
+
 .dark .ale-time-picker__footer {
   background: var(--color-gray-850, #1f2937);
   border-color: var(--color-gray-700);
@@ -423,4 +580,27 @@
 
 .dark .ale-time-picker__clear {
   background: var(--color-gray-800);
+}
+
+/* ==================== 无障碍优化 ==================== */
+@media (prefers-reduced-motion: reduce) {
+  .ale-time-picker__column {
+    scroll-behavior: auto;
+  }
+  
+  .ale-time-picker-fade-enter-active,
+  .ale-time-picker-fade-leave-active {
+    transition: opacity 0.15s ease;
+  }
+  
+  .ale-time-picker-fade-enter-from,
+  .ale-time-picker-fade-leave-to {
+    transform: none;
+  }
+  
+  .ale-time-picker__item,
+  .ale-time-picker__btn,
+  .ale-time-picker__preview-item {
+    transition: none;
+  }
 }
