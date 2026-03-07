@@ -1,0 +1,375 @@
+/* Scroll 组件基础样式 */
+.ale-scroll {
+  position: relative;
+  overflow: hidden;
+}
+
+/* 内容区域 - 默认不设置overflow，由方向类控制 */
+.ale-scroll__content {
+  width: 100%;
+  height: 100%;
+  /* 预留滚动条空间，避免显示/隐藏时内容布局变化 */
+  scrollbar-gutter: stable;
+}
+
+/* 原生滚动条模式 */
+.ale-scroll__content.is-native {
+  overflow: auto;
+}
+
+/* 平滑滚动 */
+.ale-scroll__content.is-smooth {
+  scroll-behavior: smooth;
+}
+
+/* 禁用滚动 */
+.ale-scroll.is-disabled .ale-scroll__content {
+  overflow: hidden !important;
+}
+
+/* ==================== 滚动条轨道 - 始终存在但透明 ==================== */
+.ale-scroll__bar {
+  position: absolute;
+  border-radius: var(--radius-md, 6px);
+  background-color: transparent;
+  opacity: 0;
+  visibility: hidden;
+  /* 快速过渡效果，接近原生滚动体验 */
+  transition: opacity 0.1s ease-out, visibility 0.1s ease-out, background-color 0.1s ease;
+  z-index: 10;
+  /* 确保滚动条不影响内容布局 - 使用负边距或定位 */
+  pointer-events: none;
+}
+
+/* 鼠标悬停或拖动时显示滚动条 */
+.ale-scroll:hover .ale-scroll__bar,
+.ale-scroll.is-hovering .ale-scroll__bar,
+.ale-scroll.is-always .ale-scroll__bar,
+.ale-scroll.is-dragging-vertical .ale-scroll__bar,
+.ale-scroll.is-dragging-horizontal .ale-scroll__bar {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* 滚动条轨道悬停效果 */
+.ale-scroll__bar:hover {
+  background-color: var(--color-bg-hover, rgba(0, 0, 0, 0.05));
+}
+
+/* 垂直滚动条 - 定位在右侧，不占位 */
+.ale-scroll__bar--vertical {
+  top: 4px;
+  right: 2px;
+  bottom: 4px;
+  width: var(--scroll-bar-size, 8px);
+}
+
+/* 水平滚动条 - 定位在底部，不占位 */
+.ale-scroll__bar--horizontal {
+  left: 4px;
+  right: 4px;
+  bottom: 2px;
+  height: var(--scroll-bar-size, 8px);
+}
+
+/* 双向滚动时调整位置 */
+.ale-scroll--both .ale-scroll__bar--vertical {
+  bottom: 16px;
+}
+
+.ale-scroll--both .ale-scroll__bar--horizontal {
+  right: 16px;
+}
+
+/* ==================== 滚动条滑块 ==================== */
+.ale-scroll__thumb {
+  position: absolute;
+  border-radius: var(--radius-md, 6px);
+  background-color: var(--scroll-thumb-color, rgba(0, 0, 0, 0.25));
+  cursor: pointer;
+  /* 滑块过渡效果，与原生滚动条一致 */
+  transition: background-color 0.1s ease;
+  /* 默认隐藏 */
+  opacity: 0;
+}
+
+/* 鼠标悬停时显示滑块 */
+.ale-scroll:hover .ale-scroll__thumb,
+.ale-scroll.is-hovering .ale-scroll__thumb,
+.ale-scroll.is-always .ale-scroll__thumb,
+.ale-scroll.is-dragging-vertical .ale-scroll__thumb,
+.ale-scroll.is-dragging-horizontal .ale-scroll__thumb {
+  opacity: 1;
+}
+
+.ale-scroll__thumb:hover {
+  background-color: var(--scroll-thumb-hover-color, rgba(0, 0, 0, 0.4));
+}
+
+/* 拖动时滑块样式 */
+.ale-scroll.is-dragging-vertical .ale-scroll__thumb--vertical,
+.ale-scroll.is-dragging-horizontal .ale-scroll__thumb--horizontal {
+  background-color: var(--scroll-thumb-active-color, rgba(0, 0, 0, 0.5));
+}
+
+/* 垂直滑块 */
+.ale-scroll__thumb--vertical {
+  left: 0;
+  right: 0;
+  min-height: var(--scroll-min-size, 20px);
+}
+
+/* 水平滑块 */
+.ale-scroll__thumb--horizontal {
+  top: 0;
+  bottom: 0;
+  min-width: var(--scroll-min-size, 20px);
+}
+
+/* ==================== 主题样式 ==================== */
+/* 默认主题 */
+.ale-scroll--default {
+  --scroll-thumb-color: rgba(0, 0, 0, 0.25);
+  --scroll-thumb-hover-color: rgba(127, 127, 127, 1);
+  --scroll-thumb-active-color: rgba(0, 0, 0, 0.5);
+  --scroll-bar-bg: transparent;
+  --scroll-bar-hover-bg: rgba(0, 0, 0, 0.05);
+}
+
+/* 主色主题 */
+.ale-scroll--primary {
+  --scroll-thumb-color: rgba(59, 130, 246, 0.4);
+  --scroll-thumb-hover-color: rgba(59, 130, 246, 0.6);
+  --scroll-thumb-active-color: rgba(59, 130, 246, 0.8);
+  --scroll-bar-bg: transparent;
+  --scroll-bar-hover-bg: rgba(59, 130, 246, 0.1);
+}
+
+/* 深色主题 */
+.ale-scroll--dark {
+  --scroll-thumb-color: rgba(255, 255, 255, 0.3);
+  --scroll-thumb-hover-color: rgba(255, 255, 255, 0.5);
+  --scroll-thumb-active-color: rgba(255, 255, 255, 0.7);
+  --scroll-bar-bg: transparent;
+  --scroll-bar-hover-bg: rgba(255, 255, 255, 0.1);
+}
+
+/* 灰色主题 */
+.ale-scroll--gray {
+  --scroll-thumb-color: rgba(127, 127, 127, 0.5);
+  --scroll-thumb-hover-color: rgb(127, 127, 127);
+  --scroll-thumb-active-color: rgb(100, 100, 100);
+  --scroll-bar-bg: transparent;
+  --scroll-bar-hover-bg: rgba(127, 127, 127, 0.1);
+}
+
+/* ==================== 尺寸样式 ==================== */
+/* 小尺寸 */
+.ale-scroll--small {
+  --scroll-bar-size: 6px;
+  --scroll-min-size: 16px;
+}
+
+.ale-scroll--small .ale-scroll__bar--vertical {
+  width: 6px;
+  right: 2px;
+  top: 2px;
+  bottom: 2px;
+}
+
+.ale-scroll--small .ale-scroll__bar--horizontal {
+  height: 6px;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+}
+
+.ale-scroll--small .ale-scroll__thumb {
+  border-radius: var(--radius-sm, 4px);
+}
+
+/* 中尺寸（默认） */
+.ale-scroll--medium {
+  --scroll-bar-size: 8px;
+  --scroll-min-size: 20px;
+}
+
+.ale-scroll--medium .ale-scroll__bar--vertical {
+  width: 8px;
+  right: 4px;
+  top: 4px;
+  bottom: 4px;
+}
+
+.ale-scroll--medium .ale-scroll__bar--horizontal {
+  height: 8px;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
+}
+
+/* 大尺寸 */
+.ale-scroll--large {
+  --scroll-bar-size: 12px;
+  --scroll-min-size: 24px;
+}
+
+.ale-scroll--large .ale-scroll__bar--vertical {
+  width: 12px;
+  right: 4px;
+  top: 4px;
+  bottom: 4px;
+}
+
+.ale-scroll--large .ale-scroll__bar--horizontal {
+  height: 12px;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
+}
+
+/* ==================== 方向样式 ==================== */
+/* 垂直方向 */
+.ale-scroll--vertical .ale-scroll__content {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* 水平方向 */
+.ale-scroll--horizontal .ale-scroll__content {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* 双向滚动 */
+.ale-scroll--both .ale-scroll__content {
+  overflow: auto;
+}
+
+/* ==================== 原生滚动条样式覆盖 ==================== */
+/* 隐藏原生滚动条但保持功能 - 只在垂直模式下隐藏水平滚动条 */
+.ale-scroll:not(.is-native).ale-scroll--vertical .ale-scroll__content {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.ale-scroll:not(.is-native).ale-scroll--vertical .ale-scroll__content::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* 水平模式下隐藏垂直滚动条 */
+.ale-scroll:not(.is-native).ale-scroll--horizontal .ale-scroll__content {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.ale-scroll:not(.is-native).ale-scroll--horizontal .ale-scroll__content::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* 双向模式下隐藏原生滚动条 */
+.ale-scroll:not(.is-native).ale-scroll--both .ale-scroll__content {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.ale-scroll:not(.is-native).ale-scroll--both .ale-scroll__content::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* 原生滚动条美化 */
+.ale-scroll.is-native .ale-scroll__content {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scroll-thumb-color) transparent;
+}
+
+.ale-scroll.is-native .ale-scroll__content::-webkit-scrollbar {
+  width: var(--scroll-bar-size, 8px);
+  height: var(--scroll-bar-size, 8px);
+}
+
+.ale-scroll.is-native .ale-scroll__content::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: var(--radius-md, 6px);
+}
+
+.ale-scroll.is-native .ale-scroll__content::-webkit-scrollbar-thumb {
+  background-color: var(--scroll-thumb-color);
+  border-radius: var(--radius-md, 6px);
+}
+
+.ale-scroll.is-native .ale-scroll__content::-webkit-scrollbar-thumb:hover {
+  background-color: var(--scroll-thumb-hover-color);
+}
+
+.ale-scroll.is-native .ale-scroll__content::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* ==================== 禁用状态 ==================== */
+.ale-scroll.is-disabled {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+/* ==================== 动画效果 ==================== */
+@keyframes scroll-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* 滚动条显示动画 - 快速淡入 */
+.ale-scroll__bar.is-visible {
+  animation: scroll-fade-in 0.1s ease-out;
+}
+
+/* ==================== 响应式调整 - 触摸设备 ==================== */
+@media (hover: none) and (pointer: coarse) {
+  /* 触摸设备上滚动条始终可见但半透明 */
+  .ale-scroll__bar {
+    opacity: 0.4;
+    visibility: visible;
+    pointer-events: auto;
+  }
+  
+  .ale-scroll__thumb {
+    opacity: 1;
+  }
+  
+  /* 触摸时增加不透明度 */
+  .ale-scroll:active .ale-scroll__bar {
+    opacity: 0.8;
+  }
+  
+  /* 增大触摸区域 */
+  .ale-scroll__bar--vertical {
+    width: 12px;
+    right: 0;
+  }
+  
+  .ale-scroll__bar--horizontal {
+    height: 12px;
+    bottom: 0;
+  }
+}
+
+/* ==================== 性能优化 ==================== */
+/* 使用 will-change 优化动画性能 */
+.ale-scroll__bar,
+.ale-scroll__thumb {
+  will-change: opacity, transform;
+}
+
+/* 减少动画对性能的影响 */
+@media (prefers-reduced-motion: reduce) {
+  .ale-scroll__bar,
+  .ale-scroll__thumb {
+    transition: none;
+    animation: none;
+  }
+}

@@ -1,0 +1,138 @@
+/* 基础样式 */
+.ale-badge {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* 内容容器 */
+.ale-badge__content {
+  display: inline-block;
+}
+
+/* 徽标标签 */
+.ale-badge__tag {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translateY(-50%) translateX(50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-family-base);
+  font-weight: var(--font-weight-medium);
+  white-space: nowrap;
+  border-radius: var(--radius-full);
+  z-index: var(--z-index-badge);
+  transition: var(--transition-base);
+}
+
+/* 圆点样式 */
+.ale-badge.is-dot .ale-badge__tag {
+  width: 10px;
+  height: 10px;
+  min-width: 10px;
+  padding: var(--spacing-0);
+  border-radius: 50%;
+}
+
+.ale-badge.is-dot .ale-badge__dot {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+/* 尺寸 */
+.ale-badge--small .ale-badge__tag {
+  min-width: 18px;
+  height: 18px;
+  padding: 0 var(--spacing-1);
+  font-size: var(--font-size-xs);
+  line-height: 1;
+}
+
+.ale-badge--medium .ale-badge__tag {
+  min-width: 20px;
+  height: 20px;
+  padding: 0 var(--spacing-2);
+  font-size: var(--font-size-xs);
+  line-height: 1;
+}
+
+.ale-badge--large .ale-badge__tag {
+  min-width: 24px;
+  height: 24px;
+  padding: 0 var(--spacing-2);
+  font-size: var(--font-size-sm);
+  line-height: 1;
+}
+
+/* 类型 - 主要 */
+.ale-badge--primary .ale-badge__tag,
+.ale-badge.is-dot.ale-badge--primary .ale-badge__dot {
+  background-color: var(--color-primary);
+  color: #ffffff;
+}
+
+/* 类型 - 成功 */
+.ale-badge--success .ale-badge__tag,
+.ale-badge.is-dot.ale-badge--success .ale-badge__dot {
+  background-color: var(--color-success);
+  color: #ffffff;
+}
+
+/* 类型 - 警告 */
+.ale-badge--warning .ale-badge__tag,
+.ale-badge.is-dot.ale-badge--warning .ale-badge__dot {
+  background-color: var(--color-warning);
+  color: #ffffff;
+}
+
+/* 类型 - 危险 */
+.ale-badge--danger .ale-badge__tag,
+.ale-badge.is-dot.ale-badge--danger .ale-badge__dot {
+  background-color: var(--color-danger);
+  color: #ffffff;
+}
+
+/* 类型 - 信息 */
+.ale-badge--info .ale-badge__tag,
+.ale-badge.is-dot.ale-badge--info .ale-badge__dot {
+  background-color: var(--color-info);
+  color: #ffffff;
+}
+
+/* 自定义颜色 */
+.ale-badge.is-custom-color .ale-badge__tag {
+  color: #ffffff;
+}
+
+/* 焦点状态 */
+.ale-badge:focus-within .ale-badge__tag {
+  outline: var(--border-width-thick) var(--border-style-solid) var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* 动画效果 */
+@keyframes badge-zoom-in {
+  from {
+    transform: translateY(-50%) translateX(50%) scale(0);
+  }
+  to {
+    transform: translateY(-50%) translateX(50%) scale(1);
+  }
+}
+
+.ale-badge__tag {
+  animation: badge-zoom-in 0.2s ease-out;
+}
+
+/* 无内容时徽标位置 */
+.ale-badge__content:empty + .ale-badge__tag {
+  position: relative;
+  top: 0;
+  right: 0;
+  transform: none;
+  vertical-align: middle;
+}

@@ -1,0 +1,189 @@
+/* Tag 组件样式 */
+
+/* 基础样式 */
+.ale-tag {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-family-base);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-base);
+  white-space: nowrap;
+  cursor: default;
+  user-select: none;
+  transition: var(--transition-base);
+  box-sizing: border-box;
+  margin: var(--spacing-0);
+  vertical-align: middle;
+}
+
+/* 尺寸 */
+.ale-tag--large {
+  height: var(--tag-height-large);
+  padding: var(--tag-padding-large);
+  font-size: var(--font-size-md);
+  border-radius: var(--tag-radius-large);
+}
+
+.ale-tag--medium {
+  height: var(--tag-height-medium);
+  padding: var(--tag-padding-medium);
+  font-size: var(--font-size-base);
+  border-radius: var(--tag-radius-medium);
+}
+
+.ale-tag--small {
+  height: var(--tag-height-small);
+  padding: var(--tag-padding-small);
+  font-size: var(--font-size-xs);
+  border-radius: var(--tag-radius-small);
+}
+
+/* 圆角模式 */
+.ale-tag.is-round {
+  border-radius: var(--radius-full);
+}
+
+/* 图标样式 */
+.ale-tag__icon {
+  display: inline-flex;
+  align-items: center;
+  margin-right: var(--spacing-1);
+  font-size: inherit;
+}
+
+.ale-tag.has-icon .ale-tag__content {
+  margin-left: var(--spacing-1);
+}
+
+/* 内容区域 */
+.ale-tag__content {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* 关闭按钮 */
+.ale-tag__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: var(--spacing-1);
+  width: var(--tag-close-size);
+  height: var(--tag-close-size);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: var(--transition-base);
+  opacity: 0.7;
+}
+
+.ale-tag__close:hover {
+  opacity: 1;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.ale-tag__close-icon {
+  width: var(--icon-size-xs);
+  height: var(--icon-size-xs);
+}
+
+/* 关闭按钮尺寸适配 */
+.ale-tag--large .ale-tag__close {
+  margin-left: var(--spacing-2);
+}
+
+.ale-tag--small .ale-tag__close {
+  margin-left: var(--spacing-1);
+}
+
+/* Primary 类型 */
+.ale-tag--primary {
+  color: var(--color-primary);
+  background-color: var(--color-primary-100);
+  border: var(--border-width-base) var(--border-style-solid) transparent;
+}
+
+.ale-tag--primary.is-bordered {
+  border-color: var(--color-primary-300);
+}
+
+.ale-tag--primary .ale-tag__close:hover {
+  background-color: var(--color-primary-200);
+}
+
+/* Success 类型 */
+.ale-tag--success {
+  color: var(--color-success);
+  background-color: var(--color-success-100);
+  border: var(--border-width-base) var(--border-style-solid) transparent;
+}
+
+.ale-tag--success.is-bordered {
+  border-color: var(--color-success-300);
+}
+
+.ale-tag--success .ale-tag__close:hover {
+  background-color: var(--color-success-200);
+}
+
+/* Warning 类型 */
+.ale-tag--warning {
+  color: var(--color-warning);
+  background-color: var(--color-warning-100);
+  border: var(--border-width-base) var(--border-style-solid) transparent;
+}
+
+.ale-tag--warning.is-bordered {
+  border-color: var(--color-warning-300);
+}
+
+.ale-tag--warning .ale-tag__close:hover {
+  background-color: var(--color-warning-200);
+}
+
+/* Danger 类型 */
+.ale-tag--danger {
+  color: var(--color-danger);
+  background-color: var(--color-danger-100);
+  border: var(--border-width-base) var(--border-style-solid) transparent;
+}
+
+.ale-tag--danger.is-bordered {
+  border-color: var(--color-danger-300);
+}
+
+.ale-tag--danger .ale-tag__close:hover {
+  background-color: var(--color-danger-200);
+}
+
+/* Info 类型 */
+.ale-tag--info {
+  color: var(--color-info);
+  background-color: var(--color-info-100);
+  border: var(--border-width-base) var(--border-style-solid) transparent;
+}
+
+.ale-tag--info.is-bordered {
+  border-color: var(--color-info-300);
+}
+
+.ale-tag--info .ale-tag__close:hover {
+  background-color: var(--color-info-200);
+}
+
+/* 禁用状态 */
+.ale-tag.is-disabled {
+  cursor: not-allowed;
+  opacity: var(--opacity-disabled);
+}
+
+.ale-tag.is-disabled .ale-tag__close {
+  cursor: not-allowed;
+}
+
+/* 可点击状态 */
+.ale-tag:not(.is-disabled) {
+  cursor: pointer;
+}
+
+.ale-tag:not(.is-disabled):hover {
+  opacity: 0.85;
+}

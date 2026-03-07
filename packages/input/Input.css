@@ -1,0 +1,292 @@
+/* 基础样式 */
+.ale-input {
+  display: inline-flex;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  font-size: var(--font-size-base);
+  box-sizing: border-box;
+}
+
+.ale-input__inner {
+  display: inline-block;
+  width: 100%;
+  height: var(--input-height-medium);
+  padding: var(--spacing-2) var(--spacing-3);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-base);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-base);
+  background-image: none;
+  border: var(--border-width-base) var(--border-style-solid) var(--color-border-base);
+  border-radius: var(--radius-base);
+  box-sizing: border-box;
+  transition: background-color 120ms cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 120ms cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 120ms cubic-bezier(0.4, 0, 0.2, 1);
+  outline: none;
+
+  /* 移除默认样式 */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* 占位符样式 */
+.ale-input__inner::placeholder {
+  color: var(--color-text-placeholder);
+}
+
+/* 尺寸变体 */
+.ale-input--large .ale-input__inner {
+  height: var(--input-height-large);
+  font-size: var(--font-size-md);
+  padding: var(--spacing-3) var(--spacing-4);
+}
+
+.ale-input--medium .ale-input__inner {
+  height: var(--input-height-medium);
+  font-size: var(--font-size-base);
+  padding: var(--spacing-2) var(--spacing-3);
+}
+
+.ale-input--small .ale-input__inner {
+  height: var(--input-height-small);
+  font-size: var(--font-size-xs);
+  padding: var(--spacing-1) var(--spacing-2);
+}
+
+/* 聚焦状态 - 必须在 hover 之前定义以确保优先级 */
+.ale-input__inner:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-50);
+}
+
+/* 聚焦且悬停状态 - 保持 focus 样式 */
+.ale-input__inner:focus:hover:not(.is-disabled):not(.is-readonly) {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-50);
+}
+
+/* 悬停状态 */
+.ale-input__inner:hover:not(.is-disabled):not(.is-readonly):not(:focus) {
+  border-color: var(--color-border-dark);
+}
+
+/* 禁用状态 */
+.ale-input__inner.is-disabled {
+  background-color: var(--color-gray-50);
+  color: var(--color-text-disabled);
+  border-color: var(--color-border-lighter);
+  cursor: not-allowed;
+}
+
+/* 只读状态 */
+.ale-input__inner.is-readonly {
+  border-color: var(--color-border-lighter);
+  background-color: var(--color-gray-50);
+  cursor: default;
+}
+
+/* 清除按钮 */
+.ale-input__clear {
+  position: absolute;
+  right: var(--spacing-3);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--icon-size-base);
+  height: var(--icon-size-base);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: var(--transition-base);
+  pointer-events: auto;
+}
+
+.ale-input__clear:hover {
+  color: var(--color-text-regular);
+}
+
+/* 大尺寸的清除按钮位置 */
+.ale-input--large .ale-input__clear {
+  right: var(--spacing-4);
+  width: var(--icon-size-md);
+  height: var(--icon-size-md);
+}
+
+/* 小尺寸的清除按钮位置 */
+.ale-input--small .ale-input__clear {
+  right: var(--spacing-2);
+}
+
+/* 密码显示按钮 */
+.ale-input__password {
+  position: absolute;
+  right: var(--spacing-3);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--icon-size-base);
+  height: var(--icon-size-base);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: var(--transition-base);
+  pointer-events: auto;
+}
+
+.ale-input__password:hover {
+  color: var(--color-text-regular);
+}
+
+.ale-input__password svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* 大尺寸的密码按钮位置 */
+.ale-input--large .ale-input__password {
+  right: var(--spacing-4);
+  width: var(--icon-size-md);
+  height: var(--icon-size-md);
+}
+
+/* 小尺寸的密码按钮位置 */
+.ale-input--small .ale-input__password {
+  right: var(--spacing-2);
+}
+
+/* 当有清除按钮或密码按钮时，输入框右侧增加内边距 */
+.ale-input__clear + .ale-input__inner,
+.ale-input__password + .ale-input__inner,
+.ale-input__inner:has(+ .ale-input__clear),
+.ale-input__inner:has(+ .ale-input__password) {
+  padding-right: calc(var(--spacing-3) * 2 + var(--icon-size-base));
+}
+
+.ale-input--large .ale-input__inner:has(+ .ale-input__clear),
+.ale-input--large .ale-input__inner:has(+ .ale-input__password) {
+  padding-right: calc(var(--spacing-4) * 2 + var(--icon-size-md));
+}
+
+.ale-input--small .ale-input__inner:has(+ .ale-input__clear),
+.ale-input--small .ale-input__inner:has(+ .ale-input__password) {
+  padding-right: calc(var(--spacing-2) * 2 + var(--icon-size-base));
+}
+
+/* 字数限制提示 */
+.ale-input__count {
+  position: absolute;
+  right: var(--spacing-3);
+  bottom: -20px;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+/* 验证状态 - 成功 */
+.ale-input.is-success .ale-input__inner {
+  border-color: var(--color-success);
+}
+
+.ale-input.is-success .ale-input__inner:focus,
+.ale-input.is-success .ale-input__inner:focus:hover {
+  box-shadow: 0 0 0 3px var(--color-success-50);
+}
+
+/* 验证状态 - 警告 */
+.ale-input.is-warning .ale-input__inner {
+  border-color: var(--color-warning);
+}
+
+.ale-input.is-warning .ale-input__inner:focus,
+.ale-input.is-warning .ale-input__inner:focus:hover {
+  box-shadow: 0 0 0 3px var(--color-warning-50);
+}
+
+/* 验证状态 - 错误 */
+.ale-input.is-error .ale-input__inner {
+  border-color: var(--color-danger);
+}
+
+.ale-input.is-error .ale-input__inner:focus,
+.ale-input.is-error .ale-input__inner:focus:hover {
+  box-shadow: 0 0 0 3px var(--color-danger-50);
+}
+
+/* 暗黑模式适配 */
+.dark .ale-input__inner {
+  background-color: var(--color-bg-base);
+  color: var(--color-text-primary);
+}
+
+.dark .ale-input__inner::placeholder {
+  color: var(--color-text-placeholder);
+}
+
+.dark .ale-input__inner.is-disabled {
+  background-color: var(--color-gray-800);
+}
+
+.dark .ale-input__inner.is-readonly {
+  background-color: var(--color-gray-800);
+}
+
+.dark .ale-input__inner:focus {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+}
+
+/* ==================== Textarea 样式 ==================== */
+.ale-textarea {
+  height: auto;
+  min-height: var(--input-height-medium);
+  padding: var(--spacing-1) var(--spacing-3);
+  line-height: var(--line-height-base);
+  vertical-align: top;
+  resize: vertical;
+  font-family: var(--font-family-base);
+  display: inline-block;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+/* Textarea 尺寸变体 */
+.ale-input--large .ale-textarea {
+  min-height: calc(var(--input-height-large) * 1.5);
+  padding: var(--spacing-1) var(--spacing-4);
+  font-size: var(--font-size-md);
+}
+
+.ale-input--medium .ale-textarea {
+  min-height: var(--input-height-medium);
+  padding: var(--spacing-1) var(--spacing-3);
+  font-size: var(--font-size-base);
+}
+
+.ale-input--small .ale-textarea {
+  min-height: var(--input-height-small);
+  padding: var(--spacing-half) var(--spacing-2);
+  font-size: var(--font-size-xs);
+}
+
+/* Textarea resize 控制样式 */
+.ale-textarea[style*="resize: none"] {
+  resize: none !important;
+}
+
+.ale-textarea[style*="resize: both"] {
+  resize: both !important;
+}
+
+.ale-textarea[style*="resize: horizontal"] {
+  resize: horizontal !important;
+}
+
+.ale-textarea[style*="resize: vertical"] {
+  resize: vertical !important;
+}
+
+/* Textarea 禁用状态 */
+.ale-textarea.is-disabled {
+  resize: none;
+}

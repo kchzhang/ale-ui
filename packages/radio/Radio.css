@@ -1,0 +1,299 @@
+/**
+ * Radio 组件样式
+ * @description 单选框组件的样式定义
+ */
+
+/* ==================== 基础样式 ==================== */
+
+.ale-radio {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  font-family: var(--font-family-base);
+  vertical-align: middle;
+}
+
+.ale-radio:hover:not(.is-disabled):not(.is-readonly) {
+  opacity: 0.85;
+}
+
+.ale-radio:focus-within .ale-radio__inner {
+  box-shadow: 0 0 0 2px var(--color-primary-200);
+}
+
+/* ==================== 输入框包装器 ==================== */
+
+.ale-radio__input {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+/* 隐藏原生单选框 */
+.ale-radio__original {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  margin: 0;
+  padding: 0;
+  z-index: -1;
+}
+
+/* ==================== 单选框外观 ==================== */
+
+.ale-radio__inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  border: var(--border-width-base) var(--border-style-solid) var(--color-border-base);
+  border-radius: 50%;
+  background-color: var(--color-bg-base);
+  transition: var(--transition-base);
+  position: relative;
+}
+
+/* ==================== 圆点样式 ==================== */
+
+.ale-radio__dot {
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background-color: #ffffff;
+  transition: all 0.2s ease-in-out;
+  transform: scale(0);
+}
+
+.ale-radio.is-checked .ale-radio__dot {
+  transform: scale(1);
+}
+
+/* ==================== 尺寸变体 ==================== */
+
+/* 小尺寸 */
+.ale-radio--small {
+  font-size: var(--font-size-xs);
+}
+
+.ale-radio--small .ale-radio__inner {
+  width: 14px;
+  height: 14px;
+}
+
+.ale-radio--small .ale-radio__dot {
+  width: 6px;
+  height: 6px;
+}
+
+.ale-radio--small.has-label .ale-radio__label {
+  margin-left: var(--spacing-2);
+}
+
+/* 中尺寸 */
+.ale-radio--medium {
+  font-size: var(--font-size-base);
+}
+
+.ale-radio--medium .ale-radio__inner {
+  width: 18px;
+  height: 18px;
+}
+
+.ale-radio--medium .ale-radio__dot {
+  width: 8px;
+  height: 8px;
+}
+
+.ale-radio--medium.has-label .ale-radio__label {
+  margin-left: var(--spacing-2);
+}
+
+/* 大尺寸 */
+.ale-radio--large {
+  font-size: var(--font-size-md);
+}
+
+.ale-radio--large .ale-radio__inner {
+  width: 22px;
+  height: 22px;
+}
+
+.ale-radio--large .ale-radio__dot {
+  width: 10px;
+  height: 10px;
+}
+
+.ale-radio--large.has-label .ale-radio__label {
+  margin-left: var(--spacing-3);
+}
+
+/* ==================== 主题变体 ==================== */
+
+/* 主色主题 */
+.ale-radio.ale-radio--primary.is-checked .ale-radio__inner {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.ale-radio.ale-radio--primary:not(.is-disabled):hover .ale-radio__inner {
+  border-color: var(--color-primary-hover);
+}
+
+/* 成功主题 */
+.ale-radio.ale-radio--success.is-checked .ale-radio__inner {
+  background-color: var(--color-success);
+  border-color: var(--color-success);
+}
+
+.ale-radio.ale-radio--success:not(.is-disabled):hover .ale-radio__inner {
+  border-color: var(--color-success-hover);
+}
+
+/* 警告主题 */
+.ale-radio.ale-radio--warning.is-checked .ale-radio__inner {
+  background-color: var(--color-warning);
+  border-color: var(--color-warning);
+}
+
+.ale-radio.ale-radio--warning:not(.is-disabled):hover .ale-radio__inner {
+  border-color: var(--color-warning-hover);
+}
+
+/* 危险主题 */
+.ale-radio.ale-radio--danger.is-checked .ale-radio__inner {
+  background-color: var(--color-danger);
+  border-color: var(--color-danger);
+}
+
+.ale-radio.ale-radio--danger:not(.is-disabled):hover .ale-radio__inner {
+  border-color: var(--color-danger-hover);
+}
+
+/* ==================== 状态样式 ==================== */
+
+/* 选中状态 - 默认主题（primary） */
+/* 注意：其他主题在"主题变体"部分定义，使用更高优先级 */
+
+/* 禁用状态 */
+.ale-radio.is-disabled {
+  cursor: not-allowed;
+  opacity: var(--opacity-disabled);
+}
+
+.ale-radio.is-disabled .ale-radio__inner {
+  background-color: var(--color-gray-100);
+  border-color: var(--color-border-light);
+}
+
+.ale-radio.is-disabled.is-checked .ale-radio__inner {
+  background-color: var(--color-gray-300);
+  border-color: var(--color-gray-300);
+}
+
+.ale-radio.is-disabled .ale-radio__label {
+  color: var(--color-text-disabled);
+}
+
+/* 只读状态 */
+.ale-radio.is-readonly {
+  cursor: default;
+}
+
+.ale-radio.is-readonly:hover {
+  opacity: 1;
+}
+
+/* ==================== 标签样式 ==================== */
+
+.ale-radio__label {
+  color: var(--color-text-primary);
+  line-height: 1;
+  transition: var(--transition-base);
+}
+
+/* ==================== 焦点状态 ==================== */
+
+.ale-radio__original:focus-visible + .ale-radio__inner {
+  outline: var(--border-width-thick) var(--border-style-solid) var(--color-primary);
+  outline-offset: var(--spacing-1);
+}
+
+/* ==================== 响应式设计 ==================== */
+
+/* 触摸设备优化 */
+@media (hover: none) and (pointer: coarse) {
+  .ale-radio {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .ale-radio--small .ale-radio__inner,
+  .ale-radio--medium .ale-radio__inner,
+  .ale-radio--large .ale-radio__inner {
+    min-width: 20px;
+    min-height: 20px;
+  }
+}
+
+/* 小屏幕设备 */
+@media (max-width: 640px) {
+  .ale-radio {
+    font-size: var(--font-size-sm);
+  }
+}
+
+/* 打印样式 */
+@media print {
+  .ale-radio__inner {
+    border: 1px solid #000;
+  }
+
+  .ale-radio.is-checked .ale-radio__inner {
+    background-color: #000;
+  }
+}
+
+/* ==================== 动画效果 ==================== */
+
+@keyframes ale-radio-bounce {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.ale-radio.is-checked .ale-radio__inner {
+  animation: ale-radio-bounce 0.2s ease-in-out;
+}
+
+/* ==================== 暗色模式支持 ==================== */
+
+@media (prefers-color-scheme: dark) {
+  .ale-radio__inner {
+    background-color: var(--color-gray-800);
+    border-color: var(--color-gray-600);
+  }
+
+  .ale-radio__label {
+    color: var(--color-gray-100);
+  }
+
+  .ale-radio.is-disabled .ale-radio__inner {
+    background-color: var(--color-gray-700);
+    border-color: var(--color-gray-600);
+  }
+
+  .ale-radio.is-disabled .ale-radio__label {
+    color: var(--color-gray-500);
+  }
+}

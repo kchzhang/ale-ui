@@ -1,0 +1,255 @@
+/* ==================== Tree 组件样式 ==================== */
+
+/* Tree 容器 */
+.ale-tree {
+  position: relative;
+  cursor: default;
+  background: var(--color-bg-base);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-base);
+  line-height: 1.5;
+}
+
+.ale-tree--highlight-current :deep(.ale-tree-node.is-current > .ale-tree-node__content) {
+  background-color: var(--color-primary-100);
+}
+
+/* 空状态 */
+.ale-tree__empty-block {
+  position: relative;
+  min-height: 60px;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+}
+
+.ale-tree__empty-text {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-base);
+}
+
+/* ==================== TreeNode 样式 ==================== */
+
+/* 节点容器 - 垂直布局 */
+.ale-tree-node {
+  position: relative;
+  display: block;
+  white-space: nowrap;
+  outline: none;
+}
+
+/* 节点内容行 - 横向 flex 布局 */
+.ale-tree-node__content {
+  display: flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 8px;
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+  border-radius: var(--radius-sm);
+}
+
+.ale-tree-node__content:hover {
+  background-color: var(--color-primary-50);
+}
+
+.ale-tree-node.is-current > .ale-tree-node__content {
+  background-color: var(--color-primary-100);
+}
+
+.ale-tree-node.is-disabled > .ale-tree-node__content {
+  cursor: not-allowed;
+  opacity: var(--opacity-disabled);
+}
+
+.ale-tree-node.is-disabled > .ale-tree-node__content:hover {
+  background-color: transparent;
+}
+
+/* 展开/收起图标 */
+.ale-tree-node__expand-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  margin-right: 4px;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: transform var(--transition-fast), color var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.ale-tree-node__expand-icon svg {
+  width: 12px;
+  height: 12px;
+}
+
+.ale-tree-node__expand-icon.is-expanded {
+  transform: rotate(90deg);
+}
+
+.ale-tree-node__expand-icon.is-leaf {
+  cursor: default;
+  color: transparent;
+  pointer-events: none;
+}
+
+.ale-tree-node__expand-icon:not(.is-leaf):hover {
+  color: var(--color-text-primary);
+}
+
+/* 复选框 - AleCheckbox 容器样式 */
+.ale-tree-node__content > .ale-checkbox {
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+/* 节点标签 */
+.ale-tree-node__label {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
+}
+
+.ale-tree-node__label.is-disabled {
+  color: var(--color-text-disabled);
+  user-select: none;
+}
+
+/* 子节点容器 - 关键修复 */
+.ale-tree-node__children {
+  display: block;
+  /* 子节点不需要额外的 padding-left，因为每个子节点的 content 已经有缩进 */
+}
+
+/* ==================== 连接线模式 ==================== */
+
+.ale-tree--show-line .ale-tree-node {
+  position: relative;
+}
+
+.ale-tree--show-line .ale-tree-node::before {
+  content: '';
+  position: absolute;
+  left: 9px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background-color: var(--color-border-base);
+}
+
+.ale-tree--show-line .ale-tree-node:last-child::before {
+  bottom: auto;
+  height: 16px;
+}
+
+/* ==================== 拖拽样式 ==================== */
+
+.ale-tree--draggable .ale-tree-node__content {
+  cursor: move;
+}
+
+.ale-tree--draggable .ale-tree-node.is-disabled .ale-tree-node__content {
+  cursor: not-allowed;
+}
+
+.ale-tree-node.dragging > .ale-tree-node__content {
+  opacity: 0.5;
+}
+
+.ale-tree-node.drag-over > .ale-tree-node__content {
+  background-color: var(--color-primary-100);
+  border: 1px dashed var(--color-primary);
+}
+
+/* ==================== 拖拽功能样式 ==================== */
+
+/* 可拖拽节点 */
+.ale-tree-node[draggable="true"] {
+  cursor: move;
+}
+
+.ale-tree-node[draggable="true"] .ale-tree-node__content {
+  cursor: move;
+}
+
+/* 拖拽中状态 */
+.ale-tree-node.is-dragging > .ale-tree-node__content {
+  opacity: 0.5;
+  background-color: var(--color-primary-50);
+  border: 1px dashed var(--color-primary);
+}
+
+/* 放置目标状态 */
+.ale-tree-node.is-drop-target > .ale-tree-node__content {
+  background-color: var(--color-primary-100);
+}
+
+/* 放置位置指示器 - 上方 */
+.ale-tree-node__content.drop-before {
+  position: relative;
+}
+
+.ale-tree-node__content.drop-before::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background-color: var(--color-primary);
+  border-radius: 2px;
+}
+
+/* 放置位置指示器 - 下方 */
+.ale-tree-node__content.drop-after {
+  position: relative;
+}
+
+.ale-tree-node__content.drop-after::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background-color: var(--color-primary);
+  border-radius: 2px;
+}
+
+/* 放置位置指示器 - 内部 */
+.ale-tree-node__content.drop-inner {
+  background-color: var(--color-primary-200);
+  border: 2px dashed var(--color-primary);
+  border-radius: var(--radius-sm);
+}
+
+/* 禁用状态的节点 */
+.ale-tree-node.is-disabled .ale-tree-node__content {
+  cursor: not-allowed;
+}
+
+/* 拖拽时的占位符样式 */
+.ale-tree-node.is-dragging {
+  outline: none;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .ale-tree-node__content {
+    height: 40px;
+    padding: 0 12px;
+  }
+
+  .ale-tree-node__label {
+    font-size: var(--font-size-sm);
+  }
+}

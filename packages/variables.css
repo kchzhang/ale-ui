@@ -1,0 +1,363 @@
+/**
+ * Ale UI 组件库 CSS 变量定义文件
+ * 包含所有基础设计系统变量和组件级变量
+ * 支持亮色和暗黑模式
+ */
+
+:root {
+  /* ==================== Tag 组件变量 ==================== */
+  --tag-height-large: 32px;
+  --tag-height-medium: 28px;
+  --tag-height-small: 22px;
+
+  --tag-padding-large: 0 12px;
+  --tag-padding-medium: 0 10px;
+  --tag-padding-small: 0 8px;
+
+  --tag-radius-large: 6px;
+  --tag-radius-medium: 4px;
+  --tag-radius-small: 2px;
+
+  --tag-close-size: 14px;
+
+  /* ==================== Notification 组件变量 ==================== */
+  --notification-min-width: 320px;
+  --notification-max-width: 480px;
+  --notification-close-btn-size: 20px;
+  --notification-progress-height: 3px;
+  --z-index-notification: 4000;
+
+  /* ==================== 颜色系统 ==================== */
+
+  /* 主色调 */
+  --color-primary-50: #eff6ff;
+  --color-primary-100: #dbeafe;
+  --color-primary-200: #bfdbfe;
+  --color-primary-300: #93c5fd;
+  --color-primary-400: #60a5fa;
+  --color-primary-500: #3b82f6;
+  --color-primary-600: #2563eb;
+  --color-primary-700: #1d4ed8;
+  --color-primary-800: #1e40af;
+  --color-primary-900: #1e3a8a;
+
+  /* 辅助色 */
+  --color-info-50: #f0f9ff;
+  --color-info-100: #e0f2fe;
+  --color-info-200: #bae6fd;
+  --color-info-500: #06b6d4;
+  --color-info-600: #0891b2;
+
+  /* 成功色 */
+  --color-success-50: #f0fdf4;
+  --color-success-100: #dcfce7;
+  --color-success-200: #bbf7d0;
+  --color-success-500: #10b981;
+  --color-success-600: #059669;
+  --color-success-700: #047857;
+
+  /* 警告色 */
+  --color-warning-50: #fffbeb;
+  --color-warning-100: #fef3c7;
+  --color-warning-200: #fde68a;
+  --color-warning-500: #f59e0b;
+  --color-warning-600: #d97706;
+  --color-warning-700: #b45309;
+
+  /* 危险色 */
+  --color-danger-50: #fef2f2;
+  --color-danger-100: #fee2e2;
+  --color-danger-200: #fecaca;
+  --color-danger-500: #ef4444;
+  --color-danger-600: #dc2626;
+  --color-danger-700: #b91c1c;
+
+  /* 中性色 */
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
+
+  /* 语义化颜色 - 亮色模式 */
+  --color-bg-base: #ffffff;
+  --color-bg-page: #f5f7fa;
+  --color-bg-overlay: rgba(0, 0, 0, 0.5);
+
+  --color-text-primary: #1f2937;
+  --color-text-regular: #4b5563;
+  --color-text-secondary: #6b7280;
+  --color-text-placeholder: #9ca3af;
+  --color-text-disabled: #d1d5db;
+
+  --color-border-base: #d1d5db;
+  --color-border-light: #e5e7eb;
+  --color-border-lighter: #f3f4f6;
+  --color-border-dark: #9ca3af;
+
+  --color-primary: var(--color-primary-500);
+  --color-primary-hover: var(--color-primary-600);
+  --color-primary-active: var(--color-primary-700);
+  --color-primary-light: var(--color-primary-100);
+
+  --color-success: var(--color-success-500);
+  --color-success-hover: var(--color-success-600);
+  --color-success-light: var(--color-success-100);
+
+  --color-warning: var(--color-warning-500);
+  --color-warning-hover: var(--color-warning-600);
+  --color-warning-light: var(--color-warning-100);
+
+  --color-danger: var(--color-danger-500);
+  --color-danger-hover: var(--color-danger-600);
+  --color-danger-light: var(--color-danger-100);
+
+  /* Message 组件背景色 - 亮色模式 */
+  --color-success-bg: var(--color-success-50);
+  --color-warning-bg: var(--color-warning-50);
+  --color-danger-bg: var(--color-danger-50);
+  --color-info-bg: var(--color-info-50);
+
+  /* ==================== 字体系统 ==================== */
+
+  /* 字体家族 */
+  --font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-family-code: 'Menlo', 'Monaco', 'Consolas', 'Courier New', monospace;
+
+  /* 字号 */
+  --font-size-xs: 12px;
+  --font-size-sm: 13px;
+  --font-size-base: 14px;
+  --font-size-md: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 20px;
+  --font-size-2xl: 24px;
+  --font-size-3xl: 30px;
+  --font-size-4xl: 36px;
+
+  /* 字重 */
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* 行高 */
+  --line-height-xs: 1.2;
+  --line-height-sm: 1.4;
+  --line-height-base: 1.5;
+  --line-height-lg: 1.6;
+  --line-height-xl: 1.8;
+
+  /* ==================== 间距系统 ==================== */
+
+  /* 基础间距单位 */
+  --spacing-unit: 4px;
+
+  /* 间距变量 */
+  --spacing-0: 0;
+  --spacing-half: 2px;
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-5: 20px;
+  --spacing-6: 24px;
+  --spacing-7: 28px;
+  --spacing-8: 32px;
+  --spacing-10: 40px;
+  --spacing-12: 48px;
+  --spacing-16: 64px;
+  --spacing-20: 80px;
+  --spacing-24: 96px;
+
+  /* ==================== 尺寸系统 ==================== */
+
+  /* 组件尺寸 */
+  --size-xs: 24px;
+  --size-sm: 32px;
+  --size-md: 36px;
+  --size-lg: 40px;
+  --size-xl: 48px;
+
+  /* 按钮尺寸 */
+  --button-height-large: 40px;
+  --button-height-medium: 32px;
+  --button-height-small: 24px;
+
+  --button-padding-large: 0 24px;
+  --button-padding-medium: 0 16px;
+  --button-padding-small: 0 12px;
+
+  /* 输入框尺寸 */
+  --input-height-large: 40px;
+  --input-height-medium: 32px;
+  --input-height-small: 24px;
+
+  /* 图标尺寸 */
+  --icon-size-xs: 12px;
+  --icon-size-sm: 14px;
+  --icon-size-base: 16px;
+  --icon-size-md: 20px;
+  --icon-size-lg: 24px;
+  --icon-size-xl: 32px;
+
+  /* ==================== 圆角系统 ==================== */
+
+  --radius-none: 0;
+  --radius-sm: 2px;
+  --radius-base: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+  --radius-full: 9999px;
+
+  /* ==================== 阴影系统 ==================== */
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-base: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+  --shadow-none: none;
+
+  /* ==================== 过渡动画系统 ==================== */
+
+  --transition-duration-fast: 150ms;
+  --transition-duration-base: 250ms;
+  --transition-duration-slow: 350ms;
+
+  --transition-timing-ease: ease;
+  --transition-timing-ease-in: ease-in;
+  --transition-timing-ease-out: ease-out;
+  --transition-timing-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+
+  --transition-base: var(--transition-duration-base) var(--transition-timing-ease-in-out);
+  --transition-fast: var(--transition-duration-fast) var(--transition-timing-ease-in-out);
+  --transition-slow: var(--transition-duration-slow) var(--transition-timing-ease-in-out);
+
+  /* ==================== 层级系统 ==================== */
+
+  --z-index-dropdown: 1000;
+  --z-index-sticky: 1020;
+  --z-index-fixed: 1030;
+  --z-index-modal-backdrop: 1040;
+  --z-index-modal: 1050;
+  --z-index-popover: 1060;
+  --z-index-tooltip: 1070;
+
+  /* ==================== 边框系统 ==================== */
+
+  --border-width-thin: 1px;
+  --border-width-base: 1px;
+  --border-width-thick: 2px;
+
+  --border-style-solid: solid;
+  --border-style-dashed: dashed;
+  --border-style-dotted: dotted;
+
+  /* ==================== Message 组件变量 ==================== */
+  --message-min-width: 300px;
+  --message-max-width: 600px;
+  --z-index-message: 3000;
+
+  /* 关闭按钮背景色 */
+  --color-close-hover-bg: rgba(0, 0, 0, 0.06);
+  --color-close-active-bg: rgba(0, 0, 0, 0.1);
+
+  /* ==================== 其他变量 ==================== */
+
+  /* 透明度 */
+  --opacity-disabled: 0.6;
+  --opacity-hover: 0.85;
+
+  /* 模糊 */
+  --blur-sm: 4px;
+  --blur-base: 8px;
+  --blur-md: 12px;
+  --blur-lg: 16px;
+  --blur-xl: 24px;
+}
+
+/* ==================== 暗黑模式 ==================== */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* 语义化颜色 - 暗黑模式 */
+    --color-bg-base: #1f2937;
+    --color-bg-page: #111827;
+    --color-bg-overlay: rgba(0, 0, 0, 0.7);
+
+    --color-text-primary: #f9fafb;
+    --color-text-regular: #e5e7eb;
+    --color-text-secondary: #d1d5db;
+    --color-text-placeholder: #9ca3af;
+    --color-text-disabled: #6b7280;
+
+    --color-border-base: #4b5563;
+    --color-border-light: #374151;
+    --color-border-lighter: #1f2937;
+    --color-border-dark: #6b7280;
+
+    /* Message 组件暗色模式背景色 */
+    --color-message-success-bg: var(--color-success-700);
+    --color-message-success-border: var(--color-success-600);
+    --color-message-warning-bg: var(--color-warning-700);
+    --color-message-warning-border: var(--color-warning-600);
+    --color-message-error-bg: var(--color-danger-700);
+    --color-message-error-border: var(--color-danger-600);
+    --color-message-info-bg: var(--color-primary-800);
+    --color-message-info-border: var(--color-primary-600);
+
+    /* Message 组件暗色模式阴影 */
+    --shadow-dark: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+
+    /* 关闭按钮暗色模式背景色 */
+    --color-close-hover-bg-dark: rgba(255, 255, 255, 0.15);
+    --color-close-active-bg-dark: rgba(255, 255, 255, 0.25);
+  }
+}
+
+/* 手动切换暗黑模式类 */
+.dark {
+  /* 语义化颜色 - 暗黑模式 */
+  --color-bg-base: #1f2937;
+  --color-bg-page: #111827;
+  --color-bg-overlay: rgba(0, 0, 0, 0.7);
+
+  --color-text-primary: #f9fafb;
+  --color-text-regular: #e5e7eb;
+  --color-text-secondary: #d1d5db;
+  --color-text-placeholder: #9ca3af;
+  --color-text-disabled: #6b7280;
+
+  --color-border-base: #4b5563;
+  --color-border-light: #374151;
+  --color-border-lighter: #1f2937;
+  --color-border-dark: #6b7280;
+
+  /* Message 组件暗色模式背景色 */
+  --color-message-success-bg: var(--color-success-700);
+  --color-message-success-border: var(--color-success-600);
+  --color-message-warning-bg: var(--color-warning-700);
+  --color-message-warning-border: var(--color-warning-600);
+  --color-message-error-bg: var(--color-danger-700);
+  --color-message-error-border: var(--color-danger-600);
+  --color-message-info-bg: var(--color-primary-800);
+  --color-message-info-border: var(--color-primary-600);
+
+  /* Message 组件暗色模式阴影 */
+  --shadow-dark: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+
+  /* 关闭按钮暗色模式背景色 */
+  --color-close-hover-bg-dark: rgba(255, 255, 255, 0.15);
+  --color-close-active-bg-dark: rgba(255, 255, 255, 0.25);
+}

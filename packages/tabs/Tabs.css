@@ -1,0 +1,393 @@
+
+/* ==================== 基础样式 ==================== */
+.ale-tabs {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ==================== 头部样式 ==================== */
+.ale-tabs__header {
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin: 0 0 15px;
+}
+
+/* 新增按钮 */
+.ale-tabs__new-tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  margin: 12px;
+  border: 1px solid #d3dce6;
+  border-radius: 3px;
+  font-size: 12px;
+  color: #909399;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.ale-tabs__new-tab:hover {
+  color: var(--color-primary, #409eff);
+  border-color: var(--color-primary, #409eff);
+}
+
+/* ==================== 导航包裹层 ==================== */
+.ale-tabs__nav-wrap {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.ale-tabs__nav-wrap.is-scrollable {
+  padding: 0 20px;
+}
+
+/* 滚动按钮 */
+.ale-tabs__nav-prev,
+.ale-tabs__nav-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: #909399;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.ale-tabs__nav-prev {
+  left: 0;
+}
+
+.ale-tabs__nav-next {
+  right: 0;
+}
+
+.ale-tabs__nav-prev:hover,
+.ale-tabs__nav-next:hover {
+  color: var(--color-primary, #409eff);
+}
+
+/* ==================== 导航容器 ==================== */
+.ale-tabs__nav-scroll {
+  overflow: hidden;
+  flex: 1;
+}
+
+.ale-tabs__nav {
+  display: flex;
+  position: relative;
+  transition: transform 0.3s;
+  white-space: nowrap;
+  z-index: 0;
+}
+
+/* 垂直方向导航 */
+.ale-tabs--left .ale-tabs__nav,
+.ale-tabs--right .ale-tabs__nav {
+  flex-direction: column;
+}
+
+/* ==================== 标签项 ==================== */
+.ale-tabs__item {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  padding: 0 20px;
+  height: 40px;
+  box-sizing: border-box;
+  font-size: 14px;
+  font-weight: 500;
+  color: #303133;
+  cursor: pointer;
+  transition: color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.ale-tabs__item:hover {
+  color: var(--color-primary, #409eff);
+}
+
+.ale-tabs__item.is-active {
+  color: var(--color-primary, #409eff);
+}
+
+.ale-tabs__item.is-disabled {
+  color: #c0c4cc;
+  cursor: not-allowed;
+}
+
+.ale-tabs__item:focus.is-focus:not(.is-active) {
+  outline: 2px solid var(--color-primary, #409eff);
+  outline-offset: -2px;
+}
+
+/* 标签内容 */
+.ale-tabs__item__content {
+  display: inline-flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+/* 关闭按钮 */
+.ale-tabs__item__close {
+  margin-left: 5px;
+  font-size: 12px;
+  color: #909399;
+  transition: color 0.3s;
+  pointer-events: auto;
+}
+
+.ale-tabs__item__close:hover {
+  color: #303133;
+}
+
+.ale-tabs__item.is-closable:hover .ale-tabs__item__close {
+  display: inline-block;
+}
+
+/* ==================== 激活条 ==================== */
+.ale-tabs__active-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  background-color: var(--color-primary, #409eff);
+  transition: transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  list-style: none;
+  z-index: 1;
+}
+
+/* ==================== 卡片类型 ==================== */
+.ale-tabs--card > .ale-tabs__header {
+  border-bottom: 1px solid #e4e7ed;
+  margin-bottom: 0;
+}
+
+.ale-tabs--card > .ale-tabs__header .ale-tabs__nav-wrap::after {
+  content: none;
+}
+
+.ale-tabs--card > .ale-tabs__header .ale-tabs__nav {
+  border: 1px solid #e4e7ed;
+  border-bottom: none;
+  border-radius: 4px 4px 0 0;
+  box-sizing: border-box;
+}
+
+.ale-tabs--card > .ale-tabs__header .ale-tabs__item {
+  border-left: 1px solid #e4e7ed;
+  border-bottom: 1px solid #e4e7ed;
+  height: 40px;
+  line-height: 40px;
+  background-color: #fff;
+}
+
+.ale-tabs--card > .ale-tabs__header .ale-tabs__item:first-child {
+  border-left: none;
+}
+
+.ale-tabs--card > .ale-tabs__header .ale-tabs__item.is-active {
+  border-bottom-color: #fff;
+}
+
+/* ==================== 边框卡片类型 ==================== */
+.ale-tabs--border-card {
+  background: #fff;
+  border: 1px solid #e4e7ed;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.12), 0 0 6px 0 rgba(0, 0, 0, 0.04);
+}
+
+.ale-tabs--border-card > .ale-tabs__header {
+  background-color: #f5f7fa;
+  border-bottom: 1px solid #e4e7ed;
+  margin: 0;
+}
+
+.ale-tabs--border-card > .ale-tabs__header .ale-tabs__item {
+  color: #909399;
+  border-right: 1px solid #e4e7ed;
+  margin: 0 -1px -1px;
+}
+
+.ale-tabs--border-card > .ale-tabs__header .ale-tabs__item:hover {
+  color: var(--color-primary, #409eff);
+}
+
+.ale-tabs--border-card > .ale-tabs__header .ale-tabs__item.is-active {
+  background-color: #fff;
+  color: var(--color-primary, #409eff);
+  border-bottom-color: #fff;
+}
+
+/* ==================== 位置样式 ==================== */
+
+/* 左侧 */
+.ale-tabs--left {
+  flex-direction: row;
+}
+
+.ale-tabs--left > .ale-tabs__header {
+  flex-direction: column;
+  margin: 0 10px 0 0;
+  border-right: 1px solid #e4e7ed;
+  border-bottom: none;
+  height: 100%;
+}
+
+.ale-tabs--left > .ale-tabs__header .ale-tabs__nav-wrap {
+  flex-direction: column;
+}
+
+.ale-tabs--left > .ale-tabs__header .ale-tabs__nav {
+  flex-direction: column;
+}
+
+.ale-tabs--left > .ale-tabs__header .ale-tabs__item {
+  border-right: 2px solid transparent;
+  border-bottom: none;
+}
+
+.ale-tabs--left > .ale-tabs__header .ale-tabs__item.is-active {
+  border-right-color: var(--color-primary, #409eff);
+  border-bottom: none;
+}
+
+.ale-tabs--left > .ale-tabs__header .ale-tabs__active-bar {
+  width: 2px;
+  height: auto;
+  top: 0;
+  bottom: auto;
+  left: auto;
+  right: 0;
+}
+
+/* 右侧 */
+.ale-tabs--right {
+  flex-direction: row-reverse;
+}
+
+.ale-tabs--right > .ale-tabs__header {
+  flex-direction: column;
+  margin: 0 0 0 10px;
+  border-left: 1px solid #e4e7ed;
+  border-bottom: none;
+  height: 100%;
+}
+
+.ale-tabs--right > .ale-tabs__header .ale-tabs__nav-wrap {
+  flex-direction: column;
+}
+
+.ale-tabs--right > .ale-tabs__header .ale-tabs__nav {
+  flex-direction: column;
+}
+
+.ale-tabs--right > .ale-tabs__header .ale-tabs__item {
+  border-left: 2px solid transparent;
+  border-bottom: none;
+}
+
+.ale-tabs--right > .ale-tabs__header .ale-tabs__item.is-active {
+  border-left-color: var(--color-primary, #409eff);
+  border-bottom: none;
+}
+
+.ale-tabs--right > .ale-tabs__header .ale-tabs__active-bar {
+  width: 2px;
+  height: auto;
+  top: 0;
+  bottom: auto;
+  left: 0;
+  right: auto;
+}
+
+/* 底部 */
+.ale-tabs--bottom {
+  flex-direction: column-reverse;
+}
+
+.ale-tabs--bottom > .ale-tabs__header {
+  margin: 10px 0 0;
+}
+
+.ale-tabs--bottom > .ale-tabs__header .ale-tabs__active-bar {
+  top: 0;
+  bottom: auto;
+}
+
+/* ==================== 内容区域 ==================== */
+.ale-tabs__content {
+  flex: 1;
+  overflow: auto;
+  position: relative;
+}
+
+/* ==================== 图标样式 ==================== */
+[class^="ale-icon-"],
+[class*=" ale-icon-"] {
+  font-family: "element-icons" !important;
+  speak: none;
+  font-style: normal;
+  font-weight: 400;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  vertical-align: baseline;
+  display: inline-block;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.ale-icon-plus:before {
+  content: "+";
+}
+
+.ale-icon-close:before {
+  content: "×";
+}
+
+.ale-icon-arrow-left:before {
+  content: "‹";
+}
+
+.ale-icon-arrow-right:before {
+  content: "›";
+}
+
+.ale-icon-arrow-up:before {
+  content: "˄";
+}
+
+.ale-icon-arrow-down:before {
+  content: "˅";
+}
+
+/* ==================== Tab Pane ==================== */
+.ale-tab-pane {
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* 卡片和边框卡片类型内容区域 */
+.ale-tabs--card > .ale-tabs__content,
+.ale-tabs--border-card > .ale-tabs__content {
+  padding: 15px;
+}
+
+/* ==================== 响应式 ==================== */
+@media (max-width: 768px) {
+  .ale-tabs__item {
+    padding: 0 15px;
+    height: 36px;
+    font-size: 13px;
+  }
+}

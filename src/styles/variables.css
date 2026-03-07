@@ -1,0 +1,7 @@
+/**
+ * Ale UI 应用层 CSS 变量文件
+ * 从组件库导入所有 CSS 变量
+ * 可在此处添加应用特定的变量覆盖
+ */
+
+@import '../../packages/variables.css';

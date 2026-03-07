@@ -1,0 +1,387 @@
+/**
+ * Notification 组件样式
+ * @description 通知提醒组件的样式定义
+ */
+
+/* ==================== 基础样式 ==================== */
+
+.ale-notification {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-4);
+  min-width: var(--notification-min-width, 320px);
+  max-width: var(--notification-max-width, 480px);
+  background-color: var(--color-bg-base);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  font-family: var(--font-family-base);
+  z-index: var(--z-index-notification, 4000);
+  pointer-events: auto;
+  overflow: hidden;
+  transition:
+    box-shadow var(--transition-slow),
+    transform var(--transition-fast);
+}
+
+/* 悬停时略微上浮并增强阴影 */
+.ale-notification:hover {
+  box-shadow: var(--shadow-xl);
+}
+
+/* ==================== 位置变体 ==================== */
+
+.ale-notification.is-top-right {
+  top: var(--spacing-6);
+  right: var(--spacing-6);
+}
+
+.ale-notification.is-top-left {
+  top: var(--spacing-6);
+  left: var(--spacing-6);
+}
+
+.ale-notification.is-bottom-right {
+  bottom: var(--spacing-6);
+  right: var(--spacing-6);
+}
+
+.ale-notification.is-bottom-left {
+  bottom: var(--spacing-6);
+  left: var(--spacing-6);
+}
+
+/* ==================== 图标样式 ==================== */
+
+.ale-notification__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--icon-size-lg, 24px);
+  height: var(--icon-size-lg, 24px);
+  animation: ale-notification-icon-in var(--transition-duration-slow) cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both;
+}
+
+.ale-notification__svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* 图标入场动画 */
+@keyframes ale-notification-icon-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.5) rotate(-10deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+/* ==================== 内容样式 ==================== */
+
+.ale-notification__content {
+  flex: 1;
+  min-width: 0;
+  animation: ale-notification-content-in var(--transition-duration-slow) var(--transition-timing-ease-in-out) 0.05s both;
+}
+
+/* 标题样式 */
+.ale-notification__title {
+  font-size: var(--font-size-base, 14px);
+  font-weight: 500;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-1);
+  line-height: var(--line-height-base, 1.5);
+}
+
+/* 有标题时的消息内容样式 */
+.ale-notification.has-title .ale-notification__message {
+  font-size: var(--font-size-sm, 13px);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-base, 1.5);
+}
+
+/* 消息内容样式 */
+.ale-notification__message {
+  font-size: var(--font-size-base, 14px);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-base, 1.6);
+  word-break: break-word;
+}
+
+/* 内容入场动画 */
+@keyframes ale-notification-content-in {
+  0% {
+    opacity: 0;
+    transform: translateX(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ==================== 关闭按钮样式 ==================== */
+
+.ale-notification__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--notification-close-btn-size);
+  height: var(--notification-close-btn-size);
+  padding: 0;
+  margin-left: var(--spacing-2);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--color-text-tertiary);
+  border-radius: var(--radius-sm);
+  transition:
+    color var(--transition-fast),
+    background-color var(--transition-fast);
+}
+
+.ale-notification__close:hover {
+  color: var(--color-text-primary);
+  background-color: var(--color-close-hover-bg, rgba(0, 0, 0, 0.04));
+}
+
+.ale-notification__close:active {
+  background-color: var(--color-close-active-bg, rgba(0, 0, 0, 0.08));
+}
+
+.ale-notification__close-icon {
+  width: var(--icon-size-sm, 16px);
+  height: var(--icon-size-sm, 16px);
+}
+
+/* ==================== 进度条样式 ==================== */
+
+.ale-notification__progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: var(--notification-progress-height);
+  background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+  transition: width 0.1s linear;
+  border-radius: 0 0 0 var(--radius-lg);
+}
+
+/* ==================== 类型变体 ==================== */
+
+/* 成功类型 */
+.ale-notification--success {
+  background-color: var(--color-success-bg);
+  border: 1px solid var(--color-success-200);
+}
+
+.ale-notification--success .ale-notification__icon {
+  color: var(--color-success);
+}
+
+.ale-notification--success .ale-notification__title {
+  color: var(--color-success-dark, var(--color-success));
+}
+
+/* 警告类型 */
+.ale-notification--warning {
+  background-color: var(--color-warning-bg);
+  border: 1px solid var(--color-warning-200);
+}
+
+.ale-notification--warning .ale-notification__icon {
+  color: var(--color-warning);
+}
+
+.ale-notification--warning .ale-notification__title {
+  color: var(--color-warning-dark, var(--color-warning));
+}
+
+/* 错误类型 */
+.ale-notification--error {
+  background-color: var(--color-danger-bg);
+  border: 1px solid var(--color-danger-200);
+}
+
+.ale-notification--error .ale-notification__icon {
+  color: var(--color-danger);
+}
+
+.ale-notification--error .ale-notification__title {
+  color: var(--color-danger-dark, var(--color-danger));
+}
+
+/* 信息类型 */
+.ale-notification--info {
+  background-color: var(--color-info-bg);
+  border: 1px solid var(--color-info-200);
+}
+
+.ale-notification--info .ale-notification__icon {
+  color: var(--color-info);
+}
+
+.ale-notification--info .ale-notification__title {
+  color: var(--color-info-dark, var(--color-info));
+}
+
+/* ==================== 过渡动画 ==================== */
+
+.ale-notification {
+  will-change: transform, opacity;
+}
+
+/* 入场动画 */
+.ale-notification-fade-enter-active {
+  transition:
+    opacity var(--transition-duration-slow) var(--transition-timing-ease-in-out),
+    transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* 出场动画 */
+.ale-notification-fade-leave-active {
+  transition:
+    opacity var(--transition-duration-base) cubic-bezier(0.4, 0, 1, 1),
+    transform 0.3s cubic-bezier(0.4, 0, 1, 1);
+}
+
+/* 右上角 - 从右侧滑入 */
+.ale-notification.is-top-right.ale-notification-fade-enter-from,
+.ale-notification.is-bottom-right.ale-notification-fade-enter-from {
+  opacity: 0;
+  transform: translateX(100%) scale(0.95);
+}
+
+.ale-notification.is-top-right.ale-notification-fade-leave-to,
+.ale-notification.is-bottom-right.ale-notification-fade-leave-to {
+  opacity: 0;
+  transform: translateX(20px) scale(0.98);
+}
+
+/* 左上角 - 从左侧滑入 */
+.ale-notification.is-top-left.ale-notification-fade-enter-from,
+.ale-notification.is-bottom-left.ale-notification-fade-enter-from {
+  opacity: 0;
+  transform: translateX(-100%) scale(0.95);
+}
+
+.ale-notification.is-top-left.ale-notification-fade-leave-to,
+.ale-notification.is-bottom-left.ale-notification-fade-leave-to {
+  opacity: 0;
+  transform: translateX(-20px) scale(0.98);
+}
+
+/* 动画结束状态 */
+.ale-notification-fade-enter-to,
+.ale-notification-fade-leave-from {
+  will-change: auto;
+}
+
+/* ==================== 响应式设计 ==================== */
+
+@media (max-width: 640px) {
+  .ale-notification {
+    min-width: auto;
+    max-width: calc(100vw - var(--spacing-8));
+    left: var(--spacing-4) !important;
+    right: var(--spacing-4) !important;
+  }
+
+  .ale-notification.is-top-right,
+  .ale-notification.is-top-left {
+    top: var(--spacing-4);
+  }
+
+  .ale-notification.is-bottom-right,
+  .ale-notification.is-bottom-left {
+    bottom: var(--spacing-4);
+  }
+}
+
+/* ==================== 暗色模式支持 ==================== */
+
+@media (prefers-color-scheme: dark) {
+  .ale-notification {
+    background-color: var(--color-gray-800);
+    color: var(--color-gray-100);
+    box-shadow: var(--shadow-dark, 0 10px 15px -3px rgba(0, 0, 0, 0.5));
+  }
+
+  .ale-notification__title {
+    color: var(--color-gray-100);
+  }
+
+  .ale-notification__message {
+    color: var(--color-gray-300);
+  }
+
+  .ale-notification__close:hover {
+    background-color: var(--color-close-hover-bg-dark, rgba(255, 255, 255, 0.15));
+    color: var(--color-gray-100);
+  }
+
+  .ale-notification__close:active {
+    background-color: var(--color-close-active-bg-dark, rgba(255, 255, 255, 0.25));
+  }
+
+  .ale-notification--success {
+    background-color: var(--color-success-900, rgba(34, 197, 94, 0.15));
+    border-color: var(--color-success-700, rgba(34, 197, 94, 0.3));
+  }
+
+  .ale-notification--warning {
+    background-color: var(--color-warning-900, rgba(245, 158, 11, 0.15));
+    border-color: var(--color-warning-700, rgba(245, 158, 11, 0.3));
+  }
+
+  .ale-notification--error {
+    background-color: var(--color-danger-900, rgba(239, 68, 68, 0.15));
+    border-color: var(--color-danger-700, rgba(239, 68, 68, 0.3));
+  }
+
+  .ale-notification--info {
+    background-color: var(--color-info-900, rgba(59, 130, 246, 0.15));
+    border-color: var(--color-info-700, rgba(59, 130, 246, 0.3));
+  }
+}
+
+/* ==================== 减少动画偏好支持 ==================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .ale-notification,
+  .ale-notification__close {
+    transition: none;
+  }
+
+  .ale-notification__icon,
+  .ale-notification__content {
+    animation: none;
+  }
+
+  .ale-notification-fade-enter-active,
+  .ale-notification-fade-leave-active {
+    transition: opacity var(--transition-duration-fast) var(--transition-timing-ease);
+  }
+
+  .ale-notification-fade-enter-from,
+  .ale-notification-fade-leave-to {
+    opacity: 0;
+    transform: none;
+  }
+
+  .ale-notification.is-top-right.ale-notification-fade-enter-from,
+  .ale-notification.is-top-right.ale-notification-fade-leave-to,
+  .ale-notification.is-top-left.ale-notification-fade-enter-from,
+  .ale-notification.is-top-left.ale-notification-fade-leave-to,
+  .ale-notification.is-bottom-right.ale-notification-fade-enter-from,
+  .ale-notification.is-bottom-right.ale-notification-fade-leave-to,
+  .ale-notification.is-bottom-left.ale-notification-fade-enter-from,
+  .ale-notification.is-bottom-left.ale-notification-fade-leave-to {
+    transform: none;
+  }
+}

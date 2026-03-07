@@ -1,0 +1,69 @@
+/**
+ * AleOption 组件样式
+ */
+
+.ale-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: var(--font-size-base, 14px);
+  color: var(--color-text-primary, rgba(0, 0, 0, 0.85));
+  border-radius: var(--radius-sm, 4px);
+  margin: 0 4px;
+  list-style: none;
+}
+
+.ale-option:hover:not(.is-disabled) {
+  background-color: var(--color-bg-hover, rgba(0, 0, 0, 0.04));
+}
+
+.ale-option.is-selected {
+  color: var(--color-primary, #3b82f6);
+  font-weight: 500;
+}
+
+.ale-option.is-highlighted {
+  background-color: var(--color-bg-hover, rgba(0, 0, 0, 0.04));
+}
+
+.ale-option.is-disabled {
+  color: var(--color-text-disabled, rgba(0, 0, 0, 0.25));
+  cursor: not-allowed;
+  background-color: transparent;
+}
+
+.ale-option__label {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ale-option__check-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  margin-left: 8px;
+}
+
+.ale-option__check-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.ale-option__sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

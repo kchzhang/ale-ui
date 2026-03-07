@@ -1,0 +1,419 @@
+/**
+ * Form 组件样式
+ * @description 表单组件的样式定义
+ */
+
+/* ==================== 基础表单样式 ==================== */
+.ale-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.ale-form.is-disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* 表单禁用时，表单内容不响应鼠标事件 */
+.ale-form.is-disabled .ale-form-item__content {
+  pointer-events: none;
+}
+
+/* ==================== 表单项基础样式 ==================== */
+.ale-form-item {
+  display: flex;
+  width: 100%;
+}
+
+/* ==================== 垂直布局 ==================== */
+.ale-form.ale-form--vertical {
+  flex-direction: column;
+}
+
+.ale-form.ale-form--vertical > .ale-form-item {
+  flex-direction: column !important;
+}
+
+.ale-form.ale-form--vertical > .ale-form-item > .ale-form-item__label {
+  margin-bottom: 6px;
+  width: 100%;
+  /* 垂直布局：label 高度自适应，支持多行 */
+  min-height: auto;
+  height: auto;
+  padding: 4px 0;
+  align-items: flex-start;
+  /* 垂直布局需要底部间距 */
+}
+
+.ale-form.ale-form--vertical > .ale-form-item > .ale-form-item__content {
+  width: 100%;
+}
+
+/* ==================== 水平布局 ==================== */
+.ale-form.ale-form--horizontal {
+  flex-direction: column;
+}
+
+.ale-form.ale-form--horizontal > .ale-form-item {
+  flex-direction: row !important;
+  align-items: flex-start;
+}
+
+.ale-form.ale-form--horizontal > .ale-form-item > .ale-form-item__label {
+  flex-shrink: 0;
+  margin-right: 12px;
+  /* 水平布局：默认自适应宽度，也可通过 labelWidth 固定 */
+  align-items: flex-start;
+  padding: 6px 0;
+  /* 未设置 labelWidth 时，宽度自适应内容 */
+  width: auto;
+  white-space: nowrap;
+}
+
+.ale-form.ale-form--horizontal > .ale-form-item > .ale-form-item__content {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ==================== 行内布局 ==================== */
+.ale-form.ale-form--inline {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.ale-form.ale-form--inline > .ale-form-item {
+  flex-direction: row !important;
+  align-items: center;
+  width: auto;
+}
+
+.ale-form.ale-form--inline > .ale-form-item > .ale-form-item__label {
+  flex-shrink: 0;
+  margin-right: 8px;
+  margin-bottom: 24px;
+  /* 行内布局：单行省略，高度自适应 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 150px;
+  /* 行内布局下取消 flex 布局，使用 line-height 垂直居中 */
+  display: inline-flex;
+  align-items: center;
+  min-height: auto;
+  height: auto;
+  line-height: 1.5;
+  padding: 0;
+}
+
+/* ==================== 表单项类名样式（备用）==================== */
+.ale-form-item.ale-form-item--vertical {
+  flex-direction: column;
+}
+
+.ale-form-item.ale-form-item--horizontal {
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.ale-form-item.ale-form-item--inline {
+  flex-direction: row;
+  align-items: center;
+}
+
+/* ==================== 表单尺寸样式 ==================== */
+.ale-form--large {
+  font-size: var(--font-size-lg, 16px);
+}
+
+.ale-form--large .ale-form-item__label {
+  font-size: var(--font-size-base, 14px);
+}
+
+.ale-form--medium {
+  font-size: var(--font-size-base, 14px);
+}
+
+.ale-form--small {
+  font-size: var(--font-size-sm, 12px);
+}
+
+.ale-form--small .ale-form-item__label {
+  font-size: var(--font-size-sm, 12px);
+}
+
+/* ==================== 标签样式 ==================== */
+.ale-form-item__label {
+  font-weight: 600;
+  color: var(--color-text-primary, rgba(0, 0, 0, 0.85));
+  line-height: 1.5;
+  /* 自适应高度方案 */
+  display: flex;
+  align-items: center;
+  min-height: 32px; /* 对应中等输入框高度 */
+  box-sizing: border-box;
+  /* 水平布局不需要 margin-bottom */
+}
+
+/* 标签位置 - 使用 justify-content 因为 label 是 flex 容器 */
+.ale-form-item__label--left {
+  justify-content: flex-start;
+}
+
+.ale-form-item__label--right {
+  justify-content: flex-end;
+}
+
+.ale-form-item__label--top {
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding-top: 6px;
+}
+
+/* 标签尺寸 - 对应不同输入框尺寸 */
+.ale-form-item__label--large {
+  font-size: var(--font-size-base, 14px);
+  min-height: 40px; /* 对应大号输入框高度 */
+}
+
+.ale-form-item__label--medium {
+  font-size: var(--font-size-sm, 13px);
+  min-height: 32px; /* 对应中号输入框高度 */
+}
+
+.ale-form-item__label--small {
+  font-size: var(--font-size-sm, 12px);
+  min-height: 24px; /* 对应小号输入框高度 */
+}
+
+/* 必填标记 */
+.ale-form-item__required {
+  color: var(--color-danger, #ff4d4f);
+  margin-right: 4px;
+}
+
+/* ==================== 内容区域样式 ==================== */
+.ale-form-item__content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ==================== 错误信息样式 ==================== */
+.ale-form-item__error-wrapper {
+  min-height: 24px;
+  position: relative;
+}
+
+.ale-form-item__error {
+  color: var(--color-danger, #ff4d4f);
+  font-size: var(--font-size-sm, 12px);
+  line-height: 1.5;
+  position: absolute;
+  top: 2px;
+  left: 0;
+}
+
+/* 错误状态 */
+.ale-form-item.is-error .ale-input__inner,
+.ale-form-item.is-error .ale-select,
+.ale-form-item.is-error .ale-textarea {
+  border-color: var(--color-danger, #ff4d4f);
+}
+
+.ale-form-item.is-error .ale-input__inner:focus,
+.ale-form-item.is-error .ale-select:focus,
+.ale-form-item.is-error .ale-textarea:focus {
+  border-color: var(--color-danger, #ff4d4f);
+  box-shadow: 0 0 0 2px rgba(255, 77, 79, 0.2);
+}
+
+/* 错误信息动画 */
+.ale-form-error-enter-active,
+.ale-form-error-leave-active {
+  transition: all 0.2s ease;
+}
+
+.ale-form-error-enter-from,
+.ale-form-error-leave-to {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+
+/* ==================== 额外提示样式 ==================== */
+.ale-form-item__extra {
+  color: var(--color-text-secondary, rgba(0, 0, 0, 0.45));
+  font-size: var(--font-size-sm, 12px);
+  line-height: 1.5;
+}
+
+/* ==================== 禁用状态样式 ==================== */
+.ale-form-item.is-disabled {
+  cursor: not-allowed;
+}
+
+/* 只禁用表单控件，不影响标签 */
+.ale-form-item.is-disabled .ale-form-item__content {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* ==================== 响应式适配 ==================== */
+@media (max-width: 768px) {
+  /* 水平布局转为垂直 */
+  .ale-form.ale-form--horizontal > .ale-form-item {
+    flex-direction: column !important;
+  }
+
+  .ale-form.ale-form--horizontal > .ale-form-item > .ale-form-item__label {
+    margin-bottom: 6px;
+    margin-right: 0;
+    width: 100%;
+    /* 小屏幕：label 高度自适应 */
+    min-height: auto;
+    height: auto;
+    padding: 4px 0;
+  }
+
+  /* 行内布局换行 */
+  .ale-form.ale-form--inline {
+    flex-direction: column;
+  }
+
+  .ale-form.ale-form--inline > .ale-form-item {
+    width: 100%;
+  }
+}
+
+/* ==================== 组件集成 ==================== */
+.ale-form-item .ale-input,
+.ale-form-item .ale-select,
+.ale-form-item .ale-checkbox-group,
+.ale-form-item .ale-radio-group,
+.ale-form-item .ale-switch {
+  width: 100%;
+}
+
+/* ==================== 表单操作区域 ==================== */
+.ale-form__actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-border-light, #f0f0f0);
+}
+
+/* ==================== 表单分组 ==================== */
+.ale-form-group {
+  margin-bottom: 24px;
+}
+
+.ale-form-group__title {
+  font-size: var(--font-size-base, 14px);
+  font-weight: 600;
+  color: var(--color-text-primary, rgba(0, 0, 0, 0.85));
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--color-border-light, #f0f0f0);
+}
+
+.ale-form-group__content {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ==================== Label 高度自适应方案 ==================== */
+/*
+ * 方案说明：
+ * 1. 基础样式使用 min-height 确保最小高度，同时允许内容溢出时自动扩展
+ * 2. 使用 flex + align-items: center 实现垂直居中
+ * 3. 针对不同尺寸设置对应的最小高度
+ * 4. 垂直布局下 label 完全自适应（min-height: auto）
+ * 5. 水平布局下 label 高度自适应，宽度固定
+ * 6. 行内布局下 label 单行显示，超出省略
+ */
+
+/* CSS 变量定义 - 可通过覆盖变量自定义 */
+:root {
+  --form-label-height-large: 40px;
+  --form-label-height-medium: 32px;
+  --form-label-height-small: 24px;
+  --form-label-line-height: 1.5;
+  --form-label-padding-vertical: 4px;
+}
+
+/* 多行文本支持 - 垂直布局 */
+.ale-form--vertical .ale-form-item__label.is-multiline,
+.ale-form--vertical .ale-form-item__label[data-multiline="true"] {
+  min-height: auto;
+  height: auto;
+  padding: var(--form-label-padding-vertical) 0;
+  align-items: flex-start;
+  line-height: var(--form-label-line-height);
+}
+
+/* 多行文本支持 - 水平布局 */
+.ale-form--horizontal .ale-form-item__label.is-multiline,
+.ale-form--horizontal .ale-form-item__label[data-multiline="true"] {
+  min-height: auto;
+  height: auto;
+  padding: var(--form-label-padding-vertical) 0;
+  align-items: flex-start;
+  line-height: var(--form-label-line-height);
+}
+
+/* 固定高度模式 - 适用于需要严格对齐的场景 */
+.ale-form-item__label.is-fixed-height {
+  height: var(--form-label-height-medium);
+  min-height: var(--form-label-height-medium);
+  overflow: hidden;
+}
+
+.ale-form-item__label.is-fixed-height.ale-form-item__label--large {
+  height: var(--form-label-height-large);
+  min-height: var(--form-label-height-large);
+}
+
+.ale-form-item__label.is-fixed-height.ale-form-item__label--small {
+  height: var(--form-label-height-small);
+  min-height: var(--form-label-height-small);
+}
+
+/* 自动高度模式 - 完全根据内容自适应 */
+.ale-form-item__label.is-auto-height {
+  min-height: auto;
+  height: auto;
+  padding: var(--form-label-padding-vertical) 0;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  /* 小屏幕下所有 label 默认自适应高度 */
+  .ale-form-item__label {
+    min-height: auto;
+    height: auto;
+    padding: var(--form-label-padding-vertical) 0;
+  }
+  
+  /* 但保持固定高度模式 */
+  .ale-form-item__label.is-fixed-height {
+    height: var(--form-label-height-medium);
+    min-height: var(--form-label-height-medium);
+  }
+}
+
+/* 高对比度模式支持 */
+@media (prefers-contrast: high) {
+  .ale-form-item__label {
+    font-weight: 600;
+  }
+}
+
+/* 减少动画模式支持 */
+@media (prefers-reduced-motion: reduce) {
+  .ale-form-item__label {
+    transition: none;
+  }
+}

@@ -1,0 +1,267 @@
+/* 基础样式 */
+.ale-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-base);
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  text-align: center;
+  border: var(--border-width-base) var(--border-style-solid) transparent;
+  border-radius: var(--radius-base);
+  transition: var(--transition-base);
+  outline: none;
+  box-sizing: border-box;
+  margin: var(--spacing-0);
+  position: relative;
+}
+
+/* 尺寸 */
+.ale-button--large {
+  height: var(--button-height-large);
+  padding: var(--button-padding-large);
+  font-size: var(--font-size-md);
+}
+
+.ale-button--medium {
+  height: var(--button-height-medium);
+  padding: var(--button-padding-medium);
+  font-size: var(--font-size-base);
+}
+
+.ale-button--small {
+  height: var(--button-height-small);
+  padding: var(--button-padding-small);
+  font-size: var(--font-size-xs);
+}
+
+/* 默认类型 */
+.ale-button--default {
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-base);
+  border-color: var(--color-border-base);
+}
+
+.ale-button--default:hover:not(.is-disabled) {
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+  background-color: var(--color-primary-50);
+}
+
+.ale-button--default:active:not(.is-disabled) {
+  color: var(--color-primary-active);
+  border-color: var(--color-primary-active);
+  background-color: var(--color-primary-100);
+}
+
+/* 主要类型 */
+.ale-button--primary {
+  color: #ffffff;
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.ale-button--primary:hover:not(.is-disabled) {
+  background-color: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
+}
+
+.ale-button--primary:active:not(.is-disabled) {
+  background-color: var(--color-primary-active);
+  border-color: var(--color-primary-active);
+}
+
+/* 危险类型 */
+.ale-button--danger {
+  color: #ffffff;
+  background-color: var(--color-danger);
+  border-color: var(--color-danger);
+}
+
+.ale-button--danger:hover:not(.is-disabled) {
+  background-color: var(--color-danger-hover);
+  border-color: var(--color-danger-hover);
+}
+
+.ale-button--danger:active:not(.is-disabled) {
+  background-color: var(--color-danger-700);
+  border-color: var(--color-danger-700);
+}
+
+/* 成功类型 */
+.ale-button--success {
+  color: #ffffff;
+  background-color: var(--color-success);
+  border-color: var(--color-success);
+}
+
+.ale-button--success:hover:not(.is-disabled) {
+  background-color: var(--color-success-hover);
+  border-color: var(--color-success-hover);
+}
+
+.ale-button--success:active:not(.is-disabled) {
+  background-color: var(--color-success-700);
+  border-color: var(--color-success-700);
+}
+
+/* 警告类型 */
+.ale-button--warning {
+  color: #ffffff;
+  background-color: var(--color-warning);
+  border-color: var(--color-warning);
+}
+
+.ale-button--warning:hover:not(.is-disabled) {
+  background-color: var(--color-warning-hover);
+  border-color: var(--color-warning-hover);
+}
+
+.ale-button--warning:active:not(.is-disabled) {
+  background-color: var(--color-warning-700);
+  border-color: var(--color-warning-700);
+}
+
+/* 幽灵按钮 */
+.ale-button--default.is-plain,
+.ale-button--primary.is-plain,
+.ale-button--danger.is-plain,
+.ale-button--success.is-plain,
+.ale-button--warning.is-plain {
+  background-color: var(--color-bg-base);
+}
+
+.ale-button--default.is-plain:hover:not(.is-disabled) {
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.ale-button--primary.is-plain {
+  color: var(--color-primary);
+  border-color: var(--color-primary-200);
+}
+
+.ale-button--primary.is-plain:hover:not(.is-disabled) {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #ffffff;
+}
+
+.ale-button--danger.is-plain {
+  color: var(--color-danger);
+  border-color: var(--color-danger-200);
+}
+
+.ale-button--danger.is-plain:hover:not(.is-disabled) {
+  background-color: var(--color-danger);
+  border-color: var(--color-danger);
+  color: #ffffff;
+}
+
+.ale-button--success.is-plain {
+  color: var(--color-success);
+  border-color: var(--color-success-200);
+}
+
+.ale-button--success.is-plain:hover:not(.is-disabled) {
+  background-color: var(--color-success);
+  border-color: var(--color-success);
+  color: #ffffff;
+}
+
+.ale-button--warning.is-plain {
+  color: var(--color-warning);
+  border-color: var(--color-warning-200);
+}
+
+.ale-button--warning.is-plain:hover:not(.is-disabled) {
+  background-color: var(--color-warning);
+  border-color: var(--color-warning);
+  color: #ffffff;
+}
+
+/* 圆角 */
+.ale-button.is-round {
+  border-radius: var(--radius-xl);
+}
+
+.ale-button.is-circle {
+  border-radius: var(--radius-full);
+  padding: var(--spacing-0);
+}
+
+.ale-button.is-circle.ale-button--large {
+  width: var(--button-height-large);
+  height: var(--button-height-large);
+}
+
+.ale-button.is-circle.ale-button--medium {
+  width: var(--button-height-medium);
+  height: var(--button-height-medium);
+}
+
+.ale-button.is-circle.ale-button--small {
+  width: var(--button-height-small);
+  height: var(--button-height-small);
+}
+
+/* 块级按钮 */
+.ale-button.is-block {
+  width: 100%;
+  display: flex;
+}
+
+/* 禁用状态 */
+.ale-button.is-disabled,
+.ale-button.is-disabled:hover,
+.ale-button.is-disabled:active {
+  cursor: not-allowed;
+  opacity: var(--opacity-disabled);
+  box-shadow: var(--shadow-none);
+}
+
+/* 加载状态 */
+.ale-button.is-loading {
+  position: relative;
+  pointer-events: none;
+}
+
+.ale-button__loading {
+  display: inline-flex;
+  align-items: center;
+  margin-right: var(--spacing-2);
+}
+
+.ale-button__loading-icon {
+  width: var(--icon-size-sm);
+  height: var(--icon-size-sm);
+  animation: rotate 1s linear infinite;
+}
+
+.ale-button.is-circle .ale-button__loading {
+  margin-right: var(--spacing-0);
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.ale-button__content {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* 焦点状态 */
+.ale-button:focus-visible {
+  outline: var(--border-width-thick) var(--border-style-solid) var(--color-primary);
+  outline-offset: var(--spacing-1);
+}

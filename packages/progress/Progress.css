@@ -1,0 +1,187 @@
+/* ==================== Progress 组件样式 ==================== */
+
+.ale-progress {
+  display: flex;
+  align-items: center;
+  font-family: var(--font-family-base);
+  line-height: 1;
+}
+
+/* ==================== 线性进度条 ==================== */
+
+.ale-progress--line {
+  width: 100%;
+}
+
+.ale-progress-bar {
+  flex: 1;
+}
+
+.ale-progress-bar__outer {
+  width: 100%;
+  background-color: var(--color-gray-200);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  position: relative;
+}
+
+.ale-progress-bar__inner {
+  height: 100%;
+  background-color: var(--color-primary);
+  border-radius: var(--radius-full);
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+/* 条纹效果 */
+.ale-progress-bar__inner.is-striped {
+  background-image: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.15) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.15) 75%,
+    transparent 75%,
+    transparent
+  );
+  background-size: 40px 40px;
+}
+
+/* 流动条纹效果 */
+.ale-progress-bar__inner.is-striped-flow {
+  background-image: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.15) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.15) 75%,
+    transparent 75%,
+    transparent
+  );
+  background-size: 40px 40px;
+  animation: progress-stripes 1s linear infinite;
+}
+
+@keyframes progress-stripes {
+  from {
+    background-position: 40px 0;
+  }
+  to {
+    background-position: 0 0;
+  }
+}
+
+/* ==================== 进度条文字 ==================== */
+
+.ale-progress__text {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  margin-left: var(--spacing-2);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+
+.ale-progress__icon {
+  width: 18px;
+  height: 18px;
+}
+
+.ale-progress.is-success .ale-progress__icon {
+  color: var(--color-success);
+}
+
+.ale-progress.is-warning .ale-progress__icon {
+  color: var(--color-warning);
+}
+
+.ale-progress.is-danger .ale-progress__icon {
+  color: var(--color-danger);
+}
+
+/* ==================== 环形进度条 ==================== */
+
+.ale-progress--circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ale-progress-circle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ale-progress-circle svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.ale-progress-circle__track {
+  stroke: var(--color-gray-200);
+}
+
+.ale-progress-circle__path {
+  stroke: var(--color-primary);
+  transition: stroke-dashoffset 0.3s ease;
+}
+
+/* 环形进度条文字 */
+.ale-progress-circle__text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.ale-progress-circle .ale-progress__icon {
+  width: 24px;
+  height: 24px;
+  display: block;
+  transform: rotate(0deg);
+}
+
+/* ==================== 状态样式 ==================== */
+
+.ale-progress.is-success .ale-progress-bar__inner {
+  background-color: var(--color-success);
+}
+
+.ale-progress.is-warning .ale-progress-bar__inner {
+  background-color: var(--color-warning);
+}
+
+.ale-progress.is-danger .ale-progress-bar__inner {
+  background-color: var(--color-danger);
+}
+
+/* ==================== 暗黑模式 ==================== */
+
+.dark .ale-progress-bar__outer {
+  background-color: var(--color-gray-700);
+}
+
+.dark .ale-progress-circle__track {
+  stroke: var(--color-gray-700);
+}
+
+.dark .ale-progress__text {
+  color: var(--color-text-primary);
+}
+
+.dark .ale-progress-circle__text {
+  color: var(--color-text-primary);
+}
