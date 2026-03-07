@@ -252,7 +252,7 @@ const updateScrollBar = () => {
   }
 };
 
-// 处理滚动事件
+// 处理滚动事件 - 零延迟同步更新
 const handleScroll = () => {
   if (!contentRef.value || props.disabled) return;
 
@@ -266,9 +266,12 @@ const handleScroll = () => {
   } = contentRef.value;
 
   // 拖动时跳过更新，由拖动处理函数同步更新
-  // 非拖动时直接同步更新，实现与原生滚动相同的零延迟体验
+  // 非拖动时立即同步更新，实现零延迟体验
   if (!isDraggingVertical.value && !isDraggingHorizontal.value) {
-    updateScrollBar();
+    // 使用 requestAnimationFrame 确保流畅更新，但保持即时响应
+    requestAnimationFrame(() => {
+      updateScrollBar();
+    });
   }
 
   const position: ScrollPosition = { scrollTop, scrollLeft };
@@ -360,26 +363,31 @@ const handleVerticalDragMove = (e: MouseEvent) => {
   const bar = verticalBarRef.value;
   if (!bar) return;
 
-  const deltaY = e.clientY - dragStartY;
-  const barHeight = bar.clientHeight;
-  const { scrollHeight, clientHeight } = contentRef.value;
+  // 使用 requestAnimationFrame 确保流畅的动画
+  requestAnimationFrame(() => {
+    if (!contentRef.value) return;
 
-  const scrollRatio = deltaY / barHeight;
-  const maxScrollTop = scrollHeight - clientHeight;
-  let newScrollTop = dragStartScrollTop + scrollRatio * scrollHeight;
+    const deltaY = e.clientY - dragStartY;
+    const barHeight = bar.clientHeight;
+    const { scrollHeight, clientHeight } = contentRef.value;
 
-  // 限制滚动范围在有效边界内
-  newScrollTop = Math.max(0, Math.min(newScrollTop, maxScrollTop));
-  contentRef.value.scrollTop = newScrollTop;
+    const scrollRatio = deltaY / barHeight;
+    const maxScrollTop = scrollHeight - clientHeight;
+    let newScrollTop = dragStartScrollTop + scrollRatio * scrollHeight;
 
-  // 拖动时直接同步更新滑块位置，实现零延迟跟随
-  const thumbHeight = Math.max(
-    (clientHeight / scrollHeight) * 100,
-    (props.minSize / clientHeight) * 100
-  );
-  verticalThumbHeight.value = thumbHeight;
-  verticalThumbTop.value = (newScrollTop / maxScrollTop) * (100 - thumbHeight);
-  verticalVisible.value = true;
+    // 限制滚动范围在有效边界内
+    newScrollTop = Math.max(0, Math.min(newScrollTop, maxScrollTop));
+    contentRef.value.scrollTop = newScrollTop;
+
+    // 拖动时直接同步更新滑块位置，实现零延迟跟随
+    const thumbHeight = Math.max(
+      (clientHeight / scrollHeight) * 100,
+      (props.minSize / clientHeight) * 100
+    );
+    verticalThumbHeight.value = thumbHeight;
+    verticalThumbTop.value = (newScrollTop / maxScrollTop) * (100 - thumbHeight);
+    verticalVisible.value = true;
+  });
 };
 
 const handleVerticalDragEnd = () => {
@@ -409,26 +417,31 @@ const handleHorizontalDragMove = (e: MouseEvent) => {
   const bar = horizontalBarRef.value;
   if (!bar) return;
 
-  const deltaX = e.clientX - dragStartX;
-  const barWidth = bar.clientWidth;
-  const { scrollWidth, clientWidth } = contentRef.value;
+  // 使用 requestAnimationFrame 确保流畅的动画
+  requestAnimationFrame(() => {
+    if (!contentRef.value) return;
 
-  const scrollRatio = deltaX / barWidth;
-  const maxScrollLeft = scrollWidth - clientWidth;
-  let newScrollLeft = dragStartScrollLeft + scrollRatio * scrollWidth;
+    const deltaX = e.clientX - dragStartX;
+    const barWidth = bar.clientWidth;
+    const { scrollWidth, clientWidth } = contentRef.value;
 
-  // 限制滚动范围在有效边界内
-  newScrollLeft = Math.max(0, Math.min(newScrollLeft, maxScrollLeft));
-  contentRef.value.scrollLeft = newScrollLeft;
+    const scrollRatio = deltaX / barWidth;
+    const maxScrollLeft = scrollWidth - clientWidth;
+    let newScrollLeft = dragStartScrollLeft + scrollRatio * scrollWidth;
 
-  // 拖动时直接同步更新滑块位置，实现零延迟跟随
-  const thumbWidth = Math.max(
-    (clientWidth / scrollWidth) * 100,
-    (props.minSize / clientWidth) * 100
-  );
-  horizontalThumbWidth.value = thumbWidth;
-  horizontalThumbLeft.value = (newScrollLeft / maxScrollLeft) * (100 - thumbWidth);
-  horizontalVisible.value = true;
+    // 限制滚动范围在有效边界内
+    newScrollLeft = Math.max(0, Math.min(newScrollLeft, maxScrollLeft));
+    contentRef.value.scrollLeft = newScrollLeft;
+
+    // 拖动时直接同步更新滑块位置，实现零延迟跟随
+    const thumbWidth = Math.max(
+      (clientWidth / scrollWidth) * 100,
+      (props.minSize / clientWidth) * 100
+    );
+    horizontalThumbWidth.value = thumbWidth;
+    horizontalThumbLeft.value = (newScrollLeft / maxScrollLeft) * (100 - thumbWidth);
+    horizontalVisible.value = true;
+  });
 };
 
 const handleHorizontalDragEnd = () => {
@@ -539,6 +552,7 @@ onUnmounted(() => {
 
 // 暴露方法
 defineExpose<ScrollExpose>({
+  get containerRef() { return containerRef.value; },
   scrollTo,
   scrollToTop,
   scrollToBottom,

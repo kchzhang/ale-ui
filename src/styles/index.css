@@ -286,3 +286,85 @@ img {
   cursor: not-allowed;
   pointer-events: none;
 }
+
+/* ==================== 全局滚动条优化 ==================== */
+
+/* 原生滚动条样式美化 */
+* {
+  /* 确保滚动流畅，无延迟 */
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-gray-400, rgba(0, 0, 0, 0.25)) transparent;
+  
+  /* 触摸设备优化 */
+  -webkit-overflow-scrolling: touch;
+  
+  /* 预留滚动条空间 */
+  scrollbar-gutter: stable;
+}
+
+/* WebKit 浏览器滚动条样式 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-gray-400, rgba(0, 0, 0, 0.25));
+  border-radius: 4px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  
+  /* 禁用过渡，确保即时响应 */
+  transition: background-color 0.1s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-gray-500, rgba(0, 0, 0, 0.4));
+}
+
+::-webkit-scrollbar-thumb:active {
+  background-color: var(--color-gray-600, rgba(0, 0, 0, 0.5));
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* 拖动时确保零延迟 */
+*:active::-webkit-scrollbar-thumb {
+  transition: none;
+}
+
+/* 平滑滚动优化 - 但拖动时禁用以确保即时响应 */
+html {
+  scroll-behavior: smooth;
+}
+
+/* 拖动滚动条时禁用平滑滚动 */
+*:active {
+  scroll-behavior: auto !important;
+}
+
+/* 性能优化 - 启用 GPU 加速 */
+* {
+  /* 对滚动元素启用硬件加速 */
+  will-change: scroll-position;
+  /* 优化渲染性能 */
+  backface-visibility: hidden;
+}
+
+/* 减少动画模式支持 */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto !important;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    transition: none !important;
+  }
+}

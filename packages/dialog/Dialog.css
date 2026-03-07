@@ -19,7 +19,7 @@
 }
 
 .ale-dialog-wrapper.is-mask {
-  background-color: rgba(0, 0, 0, 0.45);
+  background-color: var(--color-bg-overlay);
 }
 
 .ale-dialog-wrapper.is-position-top {
@@ -49,7 +49,7 @@
   align-items: center;
   justify-content: space-between;
   padding: var(--spacing-4) var(--spacing-6);
-  border-bottom: 1px solid var(--color-border-light);
+  border-bottom: var(--border-width-base) var(--border-style-solid) var(--color-border-light);
   flex-shrink: 0;
 }
 
@@ -74,7 +74,7 @@
   background: transparent;
   cursor: pointer;
   border-radius: var(--radius-md);
-  transition: all 0.2s ease;
+  transition: var(--transition-fast);
   color: var(--color-text-secondary);
 }
 
@@ -85,6 +85,14 @@
 
 .ale-dialog__close:active {
   background-color: var(--color-gray-200);
+}
+
+/* 焦点状态 - Radix UI 风格 */
+.ale-dialog__close:focus-visible {
+  outline: none;
+  box-shadow: 
+    0 0 0 var(--border-width-base) var(--color-bg-base),
+    0 0 0 calc(var(--border-width-base) + 1px) var(--color-primary);
 }
 
 .ale-dialog__close-icon {
@@ -112,7 +120,7 @@
   justify-content: flex-end;
   gap: var(--spacing-3);
   padding: var(--spacing-4) var(--spacing-6);
-  border-top: 1px solid var(--color-border-light);
+  border-top: var(--border-width-base) var(--border-style-solid) var(--color-border-light);
   flex-shrink: 0;
 }
 
@@ -151,11 +159,11 @@
 /* ==================== 过渡动画 ==================== */
 
 .ale-dialog-fade-enter-active {
-  transition: opacity 0.3s ease;
+  transition: opacity var(--transition-duration-base) var(--transition-timing-ease);
 }
 
 .ale-dialog-fade-leave-active {
-  transition: opacity 0.2s ease;
+  transition: opacity var(--transition-duration-fast) var(--transition-timing-ease);
 }
 
 .ale-dialog-fade-enter-from,
@@ -164,11 +172,11 @@
 }
 
 .ale-dialog-fade-enter-active .ale-dialog {
-  animation: ale-dialog-zoom-in 0.3s ease;
+  animation: ale-dialog-zoom-in var(--transition-duration-base) var(--transition-timing-ease);
 }
 
 .ale-dialog-fade-leave-active .ale-dialog {
-  animation: ale-dialog-zoom-out 0.2s ease;
+  animation: ale-dialog-zoom-out var(--transition-duration-fast) var(--transition-timing-ease);
 }
 
 @keyframes ale-dialog-zoom-in {
@@ -243,39 +251,39 @@
 
 @media (prefers-color-scheme: dark) {
   .ale-dialog {
-    background-color: var(--color-gray-800);
+    background-color: var(--color-bg-base);
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   }
 
   .ale-dialog__header {
-    border-bottom-color: var(--color-gray-700);
+    border-bottom-color: var(--color-border-light);
   }
 
   .ale-dialog__title {
-    color: var(--color-gray-100);
+    color: var(--color-text-primary);
   }
 
   .ale-dialog__close {
-    color: var(--color-gray-400);
+    color: var(--color-text-secondary);
   }
 
   .ale-dialog__close:hover {
     background-color: var(--color-gray-700);
-    color: var(--color-gray-100);
+    color: var(--color-text-primary);
   }
 
   .ale-dialog__body {
-    color: var(--color-gray-200);
+    color: var(--color-text-regular);
   }
 
   .ale-dialog__footer {
-    border-top-color: var(--color-gray-700);
+    border-top-color: var(--color-border-light);
   }
 
   .ale-dialog__btn--cancel {
-    background-color: var(--color-gray-800);
-    color: var(--color-gray-200);
-    border-color: var(--color-gray-600);
+    background-color: var(--color-bg-base);
+    color: var(--color-text-regular);
+    border-color: var(--color-border-base);
   }
 
   .ale-dialog__btn--cancel:hover:not(:disabled) {

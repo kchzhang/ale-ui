@@ -39,6 +39,9 @@
   z-index: 10;
   /* 确保滚动条不影响内容布局 - 使用负边距或定位 */
   pointer-events: none;
+  /* 性能优化：启用 GPU 加速 */
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 /* 鼠标悬停或拖动时显示滚动条 */
@@ -88,10 +91,15 @@
   border-radius: var(--radius-md, 6px);
   background-color: var(--scroll-thumb-color, rgba(0, 0, 0, 0.25));
   cursor: pointer;
-  /* 滑块过渡效果，与原生滚动条一致 */
+  /* 滑块过渡效果 - 默认启用，拖动时禁用以实现零延迟 */
   transition: background-color 0.1s ease;
   /* 默认隐藏 */
   opacity: 0;
+  /* 性能优化：使用 GPU 加速 */
+  will-change: transform, top, left;
+  /* 使用 transform 替代 top/left 以获得更好的性能 */
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 /* 鼠标悬停时显示滑块 */
@@ -107,10 +115,12 @@
   background-color: var(--scroll-thumb-hover-color, rgba(0, 0, 0, 0.4));
 }
 
-/* 拖动时滑块样式 */
+/* 拖动时滑块样式 - 禁用所有过渡以实现零延迟 */
 .ale-scroll.is-dragging-vertical .ale-scroll__thumb--vertical,
 .ale-scroll.is-dragging-horizontal .ale-scroll__thumb--horizontal {
   background-color: var(--scroll-thumb-active-color, rgba(0, 0, 0, 0.5));
+  /* 拖动时完全禁用过渡，确保即时响应 */
+  transition: none !important;
 }
 
 /* 垂直滑块 */
@@ -363,6 +373,26 @@
 .ale-scroll__bar,
 .ale-scroll__thumb {
   will-change: opacity, transform;
+  /* 启用 GPU 加速 */
+  transform: translateZ(0);
+}
+
+/* 内容区域性能优化 */
+.ale-scroll__content {
+  /* 确保 overflow 滚动性能 */
+  -webkit-overflow-scrolling: touch;
+  /* 启用硬件加速 */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* 拖动时的性能优化 - 禁用不必要的重绘 */
+.ale-scroll.is-dragging-vertical .ale-scroll__content,
+.ale-scroll.is-dragging-horizontal .ale-scroll__content {
+  /* 拖动时禁用平滑滚动，确保即时响应 */
+  scroll-behavior: auto !important;
+  /* 减少重绘 */
+  pointer-events: none;
 }
 
 /* 减少动画对性能的影响 */

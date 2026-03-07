@@ -41,7 +41,7 @@
   border: var(--border-width-base) var(--border-style-solid) var(--color-border-base);
   border-radius: 9999px;
   background-color: var(--color-gray-300);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--transition-duration-base) var(--transition-timing-ease-in-out);
   position: relative;
   cursor: pointer;
   overflow: hidden;
@@ -59,9 +59,9 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background-color: #ffffff;
+  background-color: var(--color-bg-base);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform var(--transition-duration-base) var(--transition-timing-ease-in-out);
   position: relative;
 }
 
@@ -244,8 +244,10 @@
 /* ==================== 焦点状态 ==================== */
 
 .ale-switch__input:focus-visible + .ale-switch__core {
-  outline: var(--border-width-thick) var(--border-style-solid) var(--color-primary);
-  outline-offset: var(--spacing-1);
+  outline: none;
+  box-shadow: 
+    0 0 0 var(--border-width-base) var(--color-bg-base),
+    0 0 0 calc(var(--border-width-base) + 2px) var(--color-primary);
 }
 
 /* ==================== 响应式设计 ==================== */

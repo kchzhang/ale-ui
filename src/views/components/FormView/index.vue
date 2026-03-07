@@ -32,7 +32,7 @@
         </AleForm>
       </div>
       <div class="component-demo-view__code">
-        <CodeBlock :code="basicCode" language="vue" title="示例代码" />
+        <CodeBlock :code="codes.basicCode" language="vue" title="示例代码" />
       </div>
     </section>
 
@@ -66,7 +66,7 @@
         </AleForm>
       </div>
       <div class="component-demo-view__code">
-        <CodeBlock :code="layoutCode" language="vue" title="示例代码" />
+        <CodeBlock :code="codes.layoutCode" language="vue" title="示例代码" />
       </div>
     </section>
 
@@ -103,7 +103,7 @@
         </AleForm>
       </div>
       <div class="component-demo-view__code">
-        <CodeBlock :code="positionCode" language="vue" title="示例代码" />
+        <CodeBlock :code="codes.positionCode" language="vue" title="示例代码" />
       </div>
     </section>
 
@@ -134,7 +134,7 @@
         </AleForm>
       </div>
       <div class="component-demo-view__code">
-        <CodeBlock :code="sizeCode" language="vue" title="示例代码" />
+        <CodeBlock :code="codes.sizeCode" language="vue" title="示例代码" />
       </div>
     </section>
 
@@ -196,7 +196,7 @@
         </AleForm>
       </div>
       <div class="component-demo-view__code">
-        <CodeBlock :code="validateCode" language="vue" title="示例代码" />
+        <CodeBlock :code="codes.validateCode" language="vue" title="示例代码" />
       </div>
     </section>
 
@@ -245,7 +245,7 @@
         </AleForm>
       </div>
       <div class="component-demo-view__code">
-        <CodeBlock :code="customCode" language="vue" title="示例代码" />
+        <CodeBlock :code="codes.customCode" language="vue" title="示例代码" />
       </div>
     </section>
 
@@ -266,7 +266,7 @@
         </AleForm>
       </div>
       <div class="component-demo-view__code">
-        <CodeBlock :code="disabledCode" language="vue" title="示例代码" />
+        <CodeBlock :code="codes.disabledCode" language="vue" title="示例代码" />
       </div>
     </section>
 
@@ -284,7 +284,7 @@
         </AleForm>
       </div>
       <div class="component-demo-view__code">
-        <CodeBlock :code="extraCode" language="vue" title="示例代码" />
+        <CodeBlock :code="codes.extraCode" language="vue" title="示例代码" />
       </div>
     </section>
 
@@ -456,7 +456,7 @@
         </AleForm>
       </div>
       <div class="component-demo-view__code">
-        <CodeBlock :code="allFieldsCode" language="vue" title="示例代码" />
+        <CodeBlock :code="codes.allFieldsCode" language="vue" title="示例代码" />
       </div>
     </section>
 
@@ -539,7 +539,7 @@
         </AleForm>
       </div>
       <div class="component-demo-view__code">
-        <CodeBlock :code="dynamicLoopCode" language="vue" title="示例代码" />
+        <CodeBlock :code="codes.dynamicLoopCode" language="vue" title="示例代码" />
       </div>
     </section>
 
@@ -606,262 +606,67 @@
         </AleForm>
       </div>
       <div class="component-demo-view__code">
-        <CodeBlock :code="triggerCode" language="vue" title="示例代码" />
+        <CodeBlock :code="codes.triggerCode" language="vue" title="示例代码" />
       </div>
     </section>
 
     <!-- API 说明 -->
-    <section class="component-demo-view__section">
-      <h2 class="component-demo-view__section-title">API 说明</h2>
-      <div class="api-section">
-        <h3>Form Props</h3>
-        <table class="api-table">
-          <thead>
-            <tr>
-              <th>参数</th>
-              <th>说明</th>
-              <th>类型</th>
-              <th>默认值</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>model</td>
-              <td>表单数据对象（必填）</td>
-              <td>object</td>
-              <td>-</td>
-            </tr>
-            <tr>
-              <td>layout</td>
-              <td>表单布局</td>
-              <td>'horizontal' | 'vertical' | 'inline'</td>
-              <td>'vertical'</td>
-            </tr>
-            <tr>
-              <td>labelPosition</td>
-              <td>标签位置</td>
-              <td>'left' | 'right' | 'top'</td>
-              <td>'right'</td>
-            </tr>
-            <tr>
-              <td>labelWidth</td>
-              <td>标签宽度</td>
-              <td>string | number</td>
-              <td>120</td>
-            </tr>
-            <tr>
-              <td>size</td>
-              <td>表单尺寸</td>
-              <td>'large' | 'medium' | 'small'</td>
-              <td>'medium'</td>
-            </tr>
-            <tr>
-              <td>disabled</td>
-              <td>是否禁用整个表单</td>
-              <td>boolean</td>
-              <td>false</td>
-            </tr>
-            <tr>
-              <td>showRequiredMark</td>
-              <td>是否显示必填标记</td>
-              <td>boolean</td>
-              <td>true</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="api-section">
-        <h3>Form 方法</h3>
-        <table class="api-table">
-          <thead>
-            <tr>
-              <th>方法名</th>
-              <th>说明</th>
-              <th>参数</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>validate</td>
-              <td>验证整个表单</td>
-              <td>-</td>
-            </tr>
-            <tr>
-              <td>validateField</td>
-              <td>验证指定字段</td>
-              <td>field: string | string[]</td>
-            </tr>
-            <tr>
-              <td>resetFields</td>
-              <td>重置表单字段</td>
-              <td>-</td>
-            </tr>
-            <tr>
-              <td>clearValidate</td>
-              <td>清除验证状态</td>
-              <td>field?: string | string[]</td>
-            </tr>
-            <tr>
-              <td>getFormData</td>
-              <td>获取表单数据</td>
-              <td>-</td>
-            </tr>
-            <tr>
-              <td>setFormData</td>
-              <td>设置表单数据</td>
-              <td>data: object</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="api-section">
-        <h3>FormItem Props</h3>
-        <table class="api-table">
-          <thead>
-            <tr>
-              <th>参数</th>
-              <th>说明</th>
-              <th>类型</th>
-              <th>默认值</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>name</td>
-              <td>字段名称</td>
-              <td>string</td>
-              <td>-</td>
-            </tr>
-            <tr>
-              <td>label</td>
-              <td>标签文本</td>
-              <td>string</td>
-              <td>-</td>
-            </tr>
-            <tr>
-              <td>rules</td>
-              <td>验证规则</td>
-              <td>FormRule[]</td>
-              <td>-</td>
-            </tr>
-            <tr>
-              <td>required</td>
-              <td>是否必填</td>
-              <td>boolean</td>
-              <td>false</td>
-            </tr>
-            <tr>
-              <td>extra</td>
-              <td>额外提示信息</td>
-              <td>string</td>
-              <td>-</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="api-section">
-        <h3>验证规则</h3>
-        <table class="api-table">
-          <thead>
-            <tr>
-              <th>规则</th>
-              <th>说明</th>
-              <th>示例</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>required</td>
-              <td>是否必填</td>
-              <td>{ required: true, message: '不能为空' }</td>
-            </tr>
-            <tr>
-              <td>minLength</td>
-              <td>最小长度</td>
-              <td>{ minLength: 3, message: '至少3个字符' }</td>
-            </tr>
-            <tr>
-              <td>maxLength</td>
-              <td>最大长度</td>
-              <td>{ maxLength: 20, message: '最多20个字符' }</td>
-            </tr>
-            <tr>
-              <td>min</td>
-              <td>最小值</td>
-              <td>{ min: 18, message: '不能小于18' }</td>
-            </tr>
-            <tr>
-              <td>max</td>
-              <td>最大值</td>
-              <td>{ max: 100, message: '不能大于100' }</td>
-            </tr>
-            <tr>
-              <td>pattern</td>
-              <td>正则表达式</td>
-              <td>{ pattern: /^\d+$/, message: '只能是数字' }</td>
-            </tr>
-            <tr>
-              <td>validator</td>
-              <td>自定义验证函数</td>
-              <td>{ validator: (value) => value > 0 }</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
+    <ApiSection />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue';
+import { ref } from 'vue';
 import { AleForm, AleFormItem, AleInput, AleButton, AleRadio, AleRadioGroup, AleCheckbox, AleCheckboxGroup, AleSelect, AleOption, AleSwitch, AleCascader, AleUpload } from 'ale-ui';
 import type { FormInstance, FormLayout, LabelPosition, FormSize } from 'ale-ui';
 import CodeBlock from '@/components/CodeBlock.vue';
 import { AleMessage } from 'ale-ui';
+import ApiSection from './ApiSection.vue';
 
-// 布局选项
-const layouts: { value: FormLayout; label: string }[] = [
-  { value: 'vertical', label: '垂直布局' },
-  { value: 'horizontal', label: '水平布局' },
-  { value: 'inline', label: '行内布局' }
-];
+// 导入代码示例
+import * as codes from './codes';
+
+// 导入表单数据和方法
+import {
+  layouts,
+  labelPositions,
+  sizes,
+  basicForm,
+  emailRules,
+  passwordRules,
+  layoutForm,
+  positionForm,
+  sizeForm,
+  validateForm,
+  customForm,
+  validatePasswordStrength,
+  validateConfirmPassword,
+  disabledForm,
+  extraForm,
+  allFieldsForm,
+  regionOptions,
+  validateHobbies,
+  validateSkills,
+  validateRegion,
+  validateAttachments,
+  validateAgreement,
+  dynamicLoopForm,
+  addDynamicItem,
+  removeDynamicItem,
+  resetDynamicLoopForm,
+  triggerForm,
+  resetTriggerForm
+} from './formData';
+
+// 当前选中的布局/位置/尺寸
 const currentLayout = ref<FormLayout>('vertical');
-
-// 标签位置选项
-const labelPositions: { value: LabelPosition; label: string }[] = [
-  { value: 'left', label: '左对齐' },
-  { value: 'right', label: '右对齐' },
-  { value: 'top', label: '顶部对齐' }
-];
 const currentLabelPosition = ref<LabelPosition>('right');
-
-// 尺寸选项
-const sizes: { value: FormSize; label: string }[] = [
-  { value: 'large', label: '大号' },
-  { value: 'medium', label: '中号' },
-  { value: 'small', label: '小号' }
-];
 const currentSize = ref<FormSize>('medium');
 
-// 基础表单
-const basicForm = reactive({
-  username: '',
-  email: '',
-  password: ''
-});
+// 验证表单 ref
+const validateFormRef = ref<FormInstance>();
 
-const emailRules = [
-  { required: true, message: '请输入邮箱' },
-  { pattern: /^[^\s@]+@[^\s@]+$/, message: '邮箱格式不正确' }
-];
-
-const passwordRules = [
-  { required: true, message: '请输入密码' },
-  { minLength: 6, message: '密码至少6位' }
-];
+// ========== 事件处理 ==========
 
 const handleBasicSubmit = (data: Record<string, any>) => {
   AleMessage.success(`提交成功: ${JSON.stringify(data)}`);
@@ -899,189 +704,28 @@ const validateBasicForm = () => {
   AleMessage.success('校验通过！');
 };
 
-// 布局表单
-const layoutForm = reactive({
-  name: '',
-  phone: '',
-  address: ''
-});
-
-const handleLayoutSubmit = (_data: Record<string, any>) => {
+const handleLayoutSubmit = () => {
   AleMessage.success('布局表单提交成功！');
 };
-
-// 标签位置表单
-const positionForm = reactive({
-  nickname: '',
-  bio: ''
-});
 
 const handlePositionSubmit = (data: Record<string, any>) => {
   AleMessage.success(`标签位置表单提交: ${JSON.stringify(data)}`);
 };
 
-// 尺寸表单
-const sizeForm = reactive({
-  title: '',
-  description: ''
-});
-
 const handleSizeSubmit = (data: Record<string, any>) => {
   AleMessage.success(`尺寸表单提交: ${JSON.stringify(data)}`);
 };
 
-// 验证表单
-const validateFormRef = ref<FormInstance>();
-const validateForm = reactive({
-  username: '',
-  email: '',
-  age: '',
-  phone: ''
-});
-
-const handleValidateSubmit = (_data: Record<string, any>) => {
+const handleValidateSubmit = () => {
   AleMessage.success('验证通过，提交成功！');
 };
 
-const handleValidateFail = (_errors: Record<string, string[]>) => {
+const handleValidateFail = () => {
   AleMessage.error('表单验证失败，请检查输入');
 };
 
-// 自定义验证表单
-const customForm = reactive({
-  username: '',
-  password: '',
-  confirmPassword: ''
-});
-
-const validatePasswordStrength = (value: string) => {
-  const hasLetter = /[a-zA-Z]/.test(value);
-  const hasNumber = /\d/.test(value);
-  return hasLetter && hasNumber ? true : false;
-};
-
-const validateConfirmPassword = (value: string) => {
-  return value === customForm.password ? true : '两次输入的密码不一致';
-};
-
-const handleCustomSubmit = (_data: Record<string, any>) => {
+const handleCustomSubmit = () => {
   AleMessage.success('自定义验证通过！');
-};
-
-// 禁用表单
-const disabledForm = reactive({
-  name: '张三',
-  email: 'zhangsan@example.com'
-});
-
-// 提示信息表单
-const extraForm = reactive({
-  username: '',
-  email: ''
-});
-
-// ========== 全部表单字段校验 ==========
-const allFieldsForm = reactive({
-  username: '',
-  description: '',
-  gender: '',
-  hobbies: [] as string[],
-  city: '',
-  region: [] as (string | number)[],
-  skills: [] as string[],
-  newsletter: true,
-  attachments: [] as any[],
-  agreement: false
-});
-
-// 级联选择器选项
-const regionOptions = [
-  {
-    value: 'beijing',
-    label: '北京市',
-    children: [
-      {
-        value: 'haidian',
-        label: '海淀区',
-        children: [
-          { value: 'zhongguancun', label: '中关村' },
-          { value: 'wudaokou', label: '五道口' }
-        ]
-      },
-      {
-        value: 'chaoyang',
-        label: '朝阳区',
-        children: [
-          { value: 'sanlitun', label: '三里屯' },
-          { value: 'guomao', label: '国贸' }
-        ]
-      }
-    ]
-  },
-  {
-    value: 'shanghai',
-    label: '上海市',
-    children: [
-      {
-        value: 'pudong',
-        label: '浦东新区',
-        children: [
-          { value: 'lujiazui', label: '陆家嘴' },
-          { value: 'zhangjiang', label: '张江' }
-        ]
-      },
-      {
-        value: 'huangpu',
-        label: '黄浦区',
-        children: [
-          { value: 'nanjinglu', label: '南京路' },
-          { value: 'waitan', label: '外滩' }
-        ]
-      }
-    ]
-  },
-  {
-    value: 'guangdong',
-    label: '广东省',
-    children: [
-      {
-        value: 'guangzhou',
-        label: '广州市',
-        children: [
-          { value: 'tianhe', label: '天河区' },
-          { value: 'yuexiu', label: '越秀区' }
-        ]
-      },
-      {
-        value: 'shenzhen',
-        label: '深圳市',
-        children: [
-          { value: 'nanshan', label: '南山区' },
-          { value: 'futian', label: '福田区' }
-        ]
-      }
-    ]
-  }
-];
-
-const validateHobbies = (value: string[]) => {
-  return value && value.length > 0;
-};
-
-const validateSkills = (value: string[]) => {
-  return value && value.length > 0;
-};
-
-const validateRegion = (value: (string | number)[]) => {
-  return value && value.length > 0;
-};
-
-const validateAttachments = (value: any[]) => {
-  return value && value.length > 0;
-};
-
-const validateAgreement = (value: boolean) => {
-  return value === true;
 };
 
 const handleAllFieldsSubmit = () => {
@@ -1101,575 +745,14 @@ const resetAllFieldsForm = () => {
   allFieldsForm.agreement = false;
 };
 
-// ========== 动态循环表单 ==========
-interface DynamicFormItem {
-  id: number;
-  name: string;
-  email: string;
-  role: string;
-  permissions: string[];
-}
-
-let dynamicIdCounter = 1;
-
-const dynamicLoopForm = reactive({
-  items: [{ id: dynamicIdCounter++, name: '', email: '', role: '', permissions: [] }] as DynamicFormItem[]
-});
-
-const addDynamicItem = () => {
-  dynamicLoopForm.items.push({
-    id: dynamicIdCounter++,
-    name: '',
-    email: '',
-    role: '',
-    permissions: []
-  });
-};
-
-const removeDynamicItem = (index: number) => {
-  if (dynamicLoopForm.items.length > 1) {
-    dynamicLoopForm.items.splice(index, 1);
-  }
-};
-
 const handleDynamicLoopSubmit = () => {
-  const validItems = dynamicLoopForm.items.filter(item => item.name && item.email && item.role);
+  const validItems = dynamicLoopForm.items.filter((item: { name: string; email: string; role: string }) => item.name && item.email && item.role);
   AleMessage.success(`提交成功！共 ${validItems.length} 个成员`);
 };
 
-const resetDynamicLoopForm = () => {
-  dynamicLoopForm.items = [{ id: dynamicIdCounter++, name: '', email: '', role: '', permissions: [] }];
-};
-
-// ========== 验证触发事件 ==========
-const triggerForm = reactive({
-  username: '',
-  email: '',
-  phone: '',
-  password: ''
-});
-
-const handleTriggerSubmit = (_data: Record<string, any>) => {
+const handleTriggerSubmit = () => {
   AleMessage.success('验证通过，提交成功！');
 };
-
-const resetTriggerForm = () => {
-  triggerForm.username = '';
-  triggerForm.email = '';
-  triggerForm.phone = '';
-  triggerForm.password = '';
-};
-
-// 代码示例
-const basicCode = `<template>
-  <AleForm :model="form" @submit="handleSubmit">
-    <AleFormItem name="username" label="用户名" :rules="[{ required: true }]">
-      <AleInput v-model="form.username" placeholder="请输入用户名" />
-    </AleFormItem>
-    <AleFormItem name="email" label="邮箱" :rules="emailRules">
-      <AleInput v-model="form.email" placeholder="请输入邮箱" />
-    </AleFormItem>
-    <AleFormItem>
-      <AleButton type="primary" native-type="submit">提交</AleButton>
-      <AleButton @click="resetForm">重置</AleButton>
-      <AleButton type="success" @click="fillExample">填充示例</AleButton>
-      <AleButton type="warning" @click="validateForm">校验</AleButton>
-    </AleFormItem>
-  </AleForm>
-</template>
-
-<script setup>
-import { reactive } from 'vue';
-
-const form = reactive({
-  username: '',
-  email: ''
-});
-
-const emailRules = [
-  { required: true, message: '请输入邮箱' },
-  { pattern: /^[^\s@]+@[^\s@]+$/, message: '邮箱格式不正确' }
-];
-
-const resetForm = () => {
-  form.username = '';
-  form.email = '';
-};
-
-const fillExample = () => {
-  form.username = 'zhangsan';
-  form.email = 'zhangsan@example.com';
-};
-
-const validateForm = () => {
-  // 手动校验逻辑
-};
-
-const handleSubmit = (data) => {
-  console.log('提交数据:', data);
-};
-<\/script>`;
-
-const layoutCode = `<template>
-  <AleForm :model="form" layout="horizontal" @submit="handleSubmit">
-    <AleFormItem name="name" label="姓名" :rules="[{ required: true }]">
-      <AleInput v-model="form.name" />
-    </AleFormItem>
-    <AleFormItem name="phone" label="手机号" :rules="[{ required: true }]">
-      <AleInput v-model="form.phone" />
-    </AleFormItem>
-    <AleFormItem>
-      <AleButton type="primary" native-type="submit">提交</AleButton>
-    </AleFormItem>
-  </AleForm>
-</template>`;
-
-const positionCode = `<template>
-  <AleForm
-    :model="form"
-    layout="horizontal"
-    label-position="right"
-    label-width="100px"
-  >
-    <AleFormItem name="nickname" label="昵称">
-      <AleInput v-model="form.nickname" />
-    </AleFormItem>
-    <AleFormItem name="bio" label="个人简介">
-      <AleInput v-model="form.bio" type="textarea" :rows="3" />
-    </AleFormItem>
-  </AleForm>
-</template>`;
-
-const sizeCode = `<template>
-  <AleForm :model="form" size="large">
-    <AleFormItem name="title" label="标题">
-      <AleInput v-model="form.title" />
-    </AleFormItem>
-    <AleFormItem>
-      <AleButton type="primary" size="large">提交</AleButton>
-    </AleFormItem>
-  </AleForm>
-</template>`;
-
-const validateCode = `<template>
-  <AleForm ref="formRef" :model="form" @submit="handleSubmit" @validate-fail="handleFail">
-    <AleFormItem name="username" label="用户名" :rules="usernameRules">
-      <AleInput v-model="form.username" />
-    </AleFormItem>
-    <AleFormItem name="email" label="邮箱" :rules="emailRules">
-      <AleInput v-model="form.email" />
-    </AleFormItem>
-    <AleFormItem>
-      <AleButton type="primary" native-type="submit">提交</AleButton>
-      <AleButton @click="formRef?.resetFields()">重置</AleButton>
-    </AleFormItem>
-  </AleForm>
-</template>
-
-<script setup>
-import { ref, reactive } from 'vue';
-
-const formRef = ref();
-const form = reactive({
-  username: '',
-  email: ''
-});
-
-const usernameRules = [
-  { required: true, message: '用户名不能为空' },
-  { minLength: 3, message: '至少3个字符' },
-  { maxLength: 20, message: '最多20个字符' }
-];
-
-const emailRules = [
-  { required: true, message: '邮箱不能为空' },
-  { pattern: /^[^\s@]+@[^\s@]+$/, message: '邮箱格式不正确' }
-];
-<\/script>`;
-
-const customCode = `<template>
-  <AleForm :model="form" @submit="handleSubmit">
-    <AleFormItem name="username" label="用户名" :rules="usernameRules">
-      <AleInput v-model="form.username" autocomplete="username" />
-    </AleFormItem>
-    <AleFormItem name="password" label="密码" :rules="passwordRules">
-      <AleInput v-model="form.password" type="password" autocomplete="new-password" />
-    </AleFormItem>
-    <AleFormItem name="confirmPassword" label="确认密码" :rules="confirmRules">
-      <AleInput v-model="form.confirmPassword" type="password" autocomplete="new-password" />
-    </AleFormItem>
-  </AleForm>
-</template>
-
-<script setup>
-const usernameRules = [
-  { required: true, message: '请输入用户名' },
-  { minLength: 3, message: '用户名至少3位' }
-];
-
-const passwordRules = [
-  { required: true, message: '请输入密码' },
-  { 
-    validator: (value) => /[a-zA-Z]/.test(value) && /\\d/.test(value),
-    message: '密码必须包含字母和数字'
-  }
-];
-
-const confirmRules = [
-  { required: true, message: '请确认密码' },
-  { 
-    validator: (value) => value === form.password,
-    message: '两次输入的密码不一致'
-  }
-];
-<\/script>`;
-
-const disabledCode = `<template>
-  <AleForm :model="form" disabled>
-    <AleFormItem name="name" label="姓名">
-      <AleInput v-model="form.name" />
-    </AleFormItem>
-    <AleFormItem>
-      <AleButton type="primary" disabled>提交</AleButton>
-    </AleFormItem>
-  </AleForm>
-</template>`;
-
-const extraCode = `<template>
-  <AleForm :model="form">
-    <AleFormItem name="username" label="用户名" extra="用户名用于登录系统">
-      <AleInput v-model="form.username" />
-    </AleFormItem>
-  </AleForm>
-</template>`;
-
-const allFieldsCode = `<template>
-  <AleForm :model="form" @submit="handleSubmit">
-    <!-- 文本输入 -->
-    <AleFormItem name="username" label="用户名" :rules="usernameRules">
-      <AleInput v-model="form.username" placeholder="3-20个字符" />
-    </AleFormItem>
-
-    <!-- 文本域 -->
-    <AleFormItem name="description" label="个人简介" :rules="descriptionRules">
-      <AleInput v-model="form.description" type="textarea" :rows="4" />
-    </AleFormItem>
-
-    <!-- 单选框 -->
-    <AleFormItem name="gender" label="性别" :rules="[{ required: true }]">
-      <AleRadioGroup v-model="form.gender">
-        <AleRadio value="male">男</AleRadio>
-        <AleRadio value="female">女</AleRadio>
-      </AleRadioGroup>
-    </AleFormItem>
-
-    <!-- 多选框 -->
-    <AleFormItem name="hobbies" label="兴趣爱好" :rules="[{ validator: validateHobbies }]">
-      <AleCheckboxGroup v-model="form.hobbies">
-        <AleCheckbox value="reading">阅读</AleCheckbox>
-        <AleCheckbox value="sports">运动</AleCheckbox>
-        <AleCheckbox value="music">音乐</AleCheckbox>
-      </AleCheckboxGroup>
-    </AleFormItem>
-
-    <!-- 下拉选择 -->
-    <AleFormItem name="city" label="城市" :rules="[{ required: true }]">
-      <AleSelect v-model="form.city" placeholder="请选择城市">
-        <AleOption value="beijing">北京</AleOption>
-        <AleOption value="shanghai">上海</AleOption>
-        <AleOption value="guangzhou">广州</AleOption>
-        <AleOption value="shenzhen">深圳</AleOption>
-      </AleSelect>
-    </AleFormItem>
-
-    <!-- 下拉多选 -->
-    <AleFormItem name="skills" label="技能标签" :rules="[{ validator: validateSkills }]">
-      <AleSelect v-model="form.skills" multiple placeholder="请选择技能（可多选）">
-        <AleOption value="javascript">JavaScript</AleOption>
-        <AleOption value="typescript">TypeScript</AleOption>
-        <AleOption value="vue">Vue.js</AleOption>
-        <AleOption value="react">React</AleOption>
-        <AleOption value="node">Node.js</AleOption>
-        <AleOption value="python">Python</AleOption>
-        <AleOption value="go">Go</AleOption>
-        <AleOption value="rust">Rust</AleOption>
-      </AleSelect>
-    </AleFormItem>
-
-    <!-- 级联选择 -->
-    <AleFormItem name="region" label="所在地区" :rules="[{ required: true }, { validator: validateRegion }]">
-      <AleCascader
-        v-model="form.region"
-        :options="regionOptions"
-        placeholder="请选择省/市/区"
-        clearable
-      />
-    </AleFormItem>
-
-    <!-- Switch 开关 -->
-    <AleFormItem name="newsletter" label="订阅通知">
-      <AleSwitch v-model="form.newsletter" active-text="接收" inactive-text="不接收" />
-    </AleFormItem>
-
-    <!-- 文件上传 -->
-    <AleFormItem
-      name="attachments"
-      label="附件上传"
-      :rules="[
-        { required: true, message: '请上传附件' },
-        { validator: validateAttachments, message: '请至少上传一个文件' }
-      ]"
-    >
-      <AleUpload
-        v-model="form.attachments"
-        list-type="text"
-        :limit="3"
-      >
-        <AleButton type="primary" size="small">点击上传</AleButton>
-      </AleUpload>
-    </AleFormItem>
-
-    <!-- 单个 Checkbox -->
-    <AleFormItem name="agreement" :rules="[{ validator: validateAgreement }]">
-      <AleCheckbox v-model="form.agreement">
-        我已阅读并同意《用户服务协议》
-      </AleCheckbox>
-    </AleFormItem>
-
-    <AleFormItem>
-      <AleButton type="primary" native-type="submit">提交</AleButton>
-    </AleFormItem>
-  </AleForm>
-</template>
-
-<script setup>
-import { reactive } from 'vue';
-
-const form = reactive({
-  username: '',
-  description: '',
-  gender: '',
-  hobbies: [],
-  city: '',
-  region: [],
-  skills: [],
-  newsletter: true,
-  attachments: [],
-  agreement: false
-});
-
-// 级联选择器选项
-const regionOptions = [
-  {
-    value: 'beijing',
-    label: '北京市',
-    children: [
-      {
-        value: 'haidian',
-        label: '海淀区',
-        children: [
-          { value: 'zhongguancun', label: '中关村' },
-          { value: 'wudaokou', label: '五道口' }
-        ]
-      },
-      {
-        value: 'chaoyang',
-        label: '朝阳区',
-        children: [
-          { value: 'sanlitun', label: '三里屯' },
-          { value: 'guomao', label: '国贸' }
-        ]
-      }
-    ]
-  },
-  {
-    value: 'shanghai',
-    label: '上海市',
-    children: [
-      {
-        value: 'pudong',
-        label: '浦东新区',
-        children: [
-          { value: 'lujiazui', label: '陆家嘴' },
-          { value: 'zhangjiang', label: '张江' }
-        ]
-      }
-    ]
-  }
-];
-
-const usernameRules = [
-  { required: true, message: '请输入用户名' },
-  { minLength: 3, message: '至少3个字符' },
-  { maxLength: 20, message: '最多20个字符' }
-];
-
-const descriptionRules = [
-  { required: true, message: '请输入个人简介' },
-  { minLength: 10, message: '至少10个字符' },
-  { maxLength: 200, message: '最多200个字符' }
-];
-
-const validateHobbies = (value) => value && value.length > 0;
-const validateSkills = (value) => value && value.length > 0;
-const validateRegion = (value) => value && value.length > 0;
-const validateAttachments = (value) => value && value.length > 0;
-const validateAgreement = (value) => value === true;
-<\/script>`;
-
-const dynamicLoopCode = `<template>
-  <AleForm :model="form" @submit="handleSubmit">
-    <!-- 动态表单项循环 -->
-    <div v-for="(item, index) in form.items" :key="item.id">
-      <h4>成员 {{ index + 1 }}</h4>
-      <AleButton
-        v-if="form.items.length > 1"
-        type="danger"
-        size="small"
-        @click="removeItem(index)"
-      >
-        删除
-      </AleButton>
-
-      <AleFormItem
-        :name="\`items.\${index}.name\`"
-        label="姓名"
-        :rules="[{ required: true }]"
-      >
-        <AleInput v-model="item.name" />
-      </AleFormItem>
-
-      <AleFormItem
-        :name="\`items.\${index}.email\`"
-        label="邮箱"
-        :rules="emailRules"
-      >
-        <AleInput v-model="item.email" />
-      </AleFormItem>
-
-      <AleFormItem
-        :name="\`items.\${index}.role\`"
-        label="角色"
-        :rules="[{ required: true }]"
-      >
-        <AleRadioGroup v-model="item.role">
-          <AleRadio value="admin">管理员</AleRadio>
-          <AleRadio value="editor">编辑</AleRadio>
-        </AleRadioGroup>
-      </AleFormItem>
-    </div>
-
-    <AleButton type="primary" @click="addItem">+ 添加成员</AleButton>
-    <AleButton type="primary" native-type="submit">提交</AleButton>
-  </AleForm>
-</template>
-
-<script setup>
-import { reactive } from 'vue';
-
-let idCounter = 1;
-
-const form = reactive({
-  items: [{ id: idCounter++, name: '', email: '', role: '' }]
-});
-
-const addItem = () => {
-  form.items.push({
-    id: idCounter++,
-    name: '',
-    email: '',
-    role: ''
-  });
-};
-
-const removeItem = (index) => {
-  if (form.items.length > 1) {
-    form.items.splice(index, 1);
-  }
-};
-
-const emailRules = [
-  { required: true, message: '请输入邮箱' },
-  { pattern: /^[^\s@]+@[^\s@]+$/, message: '邮箱格式不正确' }
-];
-<\/script>`;
-
-const triggerCode = `<template>
-  <AleForm :model="form" @submit="handleSubmit">
-    <!-- change 触发 -->
-    <AleFormItem
-      name="username"
-      label="用户名"
-      :rules="[
-        { required: true, message: '请输入用户名', trigger: 'change' },
-        { minLength: 3, message: '至少3个字符', trigger: 'change' }
-      ]"
-    >
-      <AleInput v-model="form.username" placeholder="输入时实时验证" autocomplete="username" />
-    </AleFormItem>
-
-    <!-- blur 触发 -->
-    <AleFormItem
-      name="email"
-      label="邮箱"
-      :rules="[
-        { required: true, message: '请输入邮箱', trigger: 'blur' },
-        { pattern: /^[^\s@]+@[^\s@]+$/, message: '邮箱格式不正确', trigger: 'blur' }
-      ]"
-    >
-      <AleInput v-model="form.email" placeholder="失去焦点时验证" />
-    </AleFormItem>
-
-    <!-- 多种触发方式 -->
-    <AleFormItem
-      name="phone"
-      label="手机号"
-      :rules="[
-        { required: true, message: '请输入手机号', trigger: ['change', 'blur'] },
-        { pattern: /^1[3-9]\\d{9}$/, message: '手机号格式不正确', trigger: ['change', 'blur'] }
-      ]"
-    >
-      <AleInput v-model="form.phone" placeholder="输入和失去焦点都验证" />
-    </AleFormItem>
-
-    <!-- password -->
-    <AleFormItem
-      name="password"
-      label="密码"
-      :rules="[
-        { required: true, message: '请输入密码', trigger: 'blur' },
-        { minLength: 6, message: '至少6位', trigger: 'blur' }
-      ]"
-    >
-      <AleInput v-model="form.password" type="password" placeholder="请输入密码" autocomplete="current-password" />
-    </AleFormItem>
-
-    <AleFormItem>
-      <AleButton type="primary" native-type="submit">提交</AleButton>
-      <AleButton @click="resetForm">重置</AleButton>
-    </AleFormItem>
-  </AleForm>
-</template>
-
-<script setup>
-import { reactive } from 'vue';
-
-const form = reactive({
-  username: '',
-  email: '',
-  phone: ''
-});
-
-const handleSubmit = (data) => {
-  console.log('提交数据:', data);
-};
-
-const resetForm = () => {
-  form.username = '';
-  form.email = '';
-  form.phone = '';
-};
-<\/script>`;
 </script>
 
 <style scoped>
@@ -1751,53 +834,6 @@ const resetForm = () => {
 .form-actions {
   display: flex;
   gap: 12px;
-}
-
-.api-section {
-  margin-bottom: 32px;
-}
-
-.api-section:last-child {
-  margin-bottom: 0;
-}
-
-.api-section h3 {
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--color-text-primary);
-  margin: 0 0 16px 0;
-}
-
-.api-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 14px;
-}
-
-.api-table th,
-.api-table td {
-  padding: 12px 16px;
-  text-align: left;
-  border-bottom: 1px solid var(--color-border-light);
-}
-
-.api-table th {
-  background: var(--color-bg-secondary);
-  font-weight: 600;
-  color: var(--color-text-primary);
-}
-
-.api-table td {
-  color: var(--color-text-secondary);
-}
-
-.api-table code {
-  padding: 2px 6px;
-  background: var(--color-bg-secondary);
-  border-radius: 4px;
-  font-family: monospace;
-  font-size: 13px;
-  color: var(--color-primary);
 }
 
 /* 适配表单样式 */

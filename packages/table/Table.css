@@ -191,7 +191,16 @@
   background: linear-gradient(90deg, rgba(0, 0, 0, 0.08) 0%, transparent 100%);
   z-index: 1;
   opacity: var(--table-show-left-shadow, 0);
+  /* 默认平滑过渡，拖动时禁用以确保零延迟 */
   transition: opacity 0.15s ease;
+}
+
+/* 拖动时禁用阴影过渡，确保即时响应 */
+.ale-table__wrapper.is-dragging .ale-table__header-cell--fixed-left-last::after,
+.ale-table__wrapper.is-dragging .ale-table__cell--fixed-left-last::after,
+.ale-table__wrapper.is-dragging .ale-table__header-cell--fixed-right-first::after,
+.ale-table__wrapper.is-dragging .ale-table__cell--fixed-right-first::after {
+  transition: none !important;
 }
 
 /* 固定列阴影效果 - 第一个右固定列 */
@@ -213,6 +222,7 @@
   background: linear-gradient(-90deg, rgba(0, 0, 0, 0.08) 0%, transparent 100%);
   z-index: 1;
   opacity: var(--table-show-right-shadow, 0);
+  /* 默认平滑过渡，拖动时禁用以确保零延迟 */
   transition: opacity 0.15s ease;
 }
 
@@ -233,6 +243,17 @@
   /* 启用硬件加速，提升滚动性能 */
   transform: translateZ(0);
   will-change: scroll-position;
+  /* 确保滚动流畅 */
+  -webkit-overflow-scrolling: touch;
+  backface-visibility: hidden;
+}
+
+/* 拖动时优化表格体性能 */
+.ale-table__wrapper.is-dragging .ale-table__body-wrapper {
+  /* 拖动时禁用平滑滚动，确保即时响应 */
+  scroll-behavior: auto !important;
+  /* 减少重绘 */
+  pointer-events: none;
 }
 
 .ale-table__row {
@@ -242,7 +263,13 @@
 
 .ale-table__row:hover {
   background: var(--color-primary-50, #eff6ff);
+  /* 只在 hover 时启用 transition，避免滚动时的性能开销 */
   transition: background var(--tb-transition-fast);
+}
+
+/* 拖动时禁用 hover 过渡效果，提升性能 */
+.ale-table__wrapper.is-dragging .ale-table__row:hover {
+  transition: none !important;
 }
 
 /* 普通行hover时的固定列单元格背景 */
@@ -838,6 +865,65 @@
   
   .ale-table__body-wrapper--scrollable::-webkit-scrollbar-thumb:hover {
     background: var(--color-text-secondary, #9ca3af);
+  }
+}
+
+/* ==================== 性能优化 - 拖动时零延迟 ==================== */
+
+/* 拖动时的性能优化 */
+.ale-table__wrapper.is-dragging {
+  /* 禁用所有过渡效果，确保零延迟 */
+  --tb-transition-fast: 0ms;
+  --tb-transition-normal: 0ms;
+}
+
+/* 拖动时优化固定列 */
+.ale-table__wrapper.is-dragging .ale-table__header-cell--fixed-left,
+.ale-table__wrapper.is-dragging .ale-table__header-cell--fixed-right,
+.ale-table__wrapper.is-dragging .ale-table__cell--fixed-left,
+.ale-table__wrapper.is-dragging .ale-table__cell--fixed-right {
+  /* 完全禁用过渡 */
+  transition: none !important;
+  /* 提升渲染优先级 */
+  will-change: transform, opacity;
+}
+
+/* 拖动时优化表头 */
+.ale-table__wrapper.is-dragging .ale-table__header-wrapper {
+  /* 禁用过渡 */
+  transition: none !important;
+}
+
+/* 拖动时优化行 */
+.ale-table__wrapper.is-dragging .ale-table__row {
+  /* 禁用所有过渡 */
+  transition: none !important;
+}
+
+/* 拖动时优化单元格 */
+.ale-table__wrapper.is-dragging .ale-table__cell {
+  /* 禁用所有过渡 */
+  transition: none !important;
+}
+
+/* 拖动时优化滚动条 */
+.ale-table__wrapper.is-dragging .ale-table__body-wrapper::-webkit-scrollbar-thumb {
+  /* 禁用过渡 */
+  transition: none !important;
+}
+
+/* 减少动画模式支持 */
+@media (prefers-reduced-motion: reduce) {
+  .ale-table *,
+  .ale-table *::before,
+  .ale-table *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+  
+  .ale-table__wrapper {
+    --tb-transition-fast: 0ms;
+    --tb-transition-normal: 0ms;
   }
 }
 

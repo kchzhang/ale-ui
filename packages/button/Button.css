@@ -60,7 +60,7 @@
 
 /* 主要类型 */
 .ale-button--primary {
-  color: #ffffff;
+  color: var(--color-bg-base);
   background-color: var(--color-primary);
   border-color: var(--color-primary);
 }
@@ -77,7 +77,7 @@
 
 /* 危险类型 */
 .ale-button--danger {
-  color: #ffffff;
+  color: var(--color-bg-base);
   background-color: var(--color-danger);
   border-color: var(--color-danger);
 }
@@ -94,7 +94,7 @@
 
 /* 成功类型 */
 .ale-button--success {
-  color: #ffffff;
+  color: var(--color-bg-base);
   background-color: var(--color-success);
   border-color: var(--color-success);
 }
@@ -111,7 +111,7 @@
 
 /* 警告类型 */
 .ale-button--warning {
-  color: #ffffff;
+  color: var(--color-bg-base);
   background-color: var(--color-warning);
   border-color: var(--color-warning);
 }
@@ -148,7 +148,7 @@
 .ale-button--primary.is-plain:hover:not(.is-disabled) {
   background-color: var(--color-primary);
   border-color: var(--color-primary);
-  color: #ffffff;
+  color: var(--color-bg-base);
 }
 
 .ale-button--danger.is-plain {
@@ -159,7 +159,7 @@
 .ale-button--danger.is-plain:hover:not(.is-disabled) {
   background-color: var(--color-danger);
   border-color: var(--color-danger);
-  color: #ffffff;
+  color: var(--color-bg-base);
 }
 
 .ale-button--success.is-plain {
@@ -170,7 +170,7 @@
 .ale-button--success.is-plain:hover:not(.is-disabled) {
   background-color: var(--color-success);
   border-color: var(--color-success);
-  color: #ffffff;
+  color: var(--color-bg-base);
 }
 
 .ale-button--warning.is-plain {
@@ -181,7 +181,7 @@
 .ale-button--warning.is-plain:hover:not(.is-disabled) {
   background-color: var(--color-warning);
   border-color: var(--color-warning);
-  color: #ffffff;
+  color: var(--color-bg-base);
 }
 
 /* 圆角 */
@@ -260,8 +260,38 @@
   align-items: center;
 }
 
-/* 焦点状态 */
+/* 焦点状态 - Radix UI 风格 */
 .ale-button:focus-visible {
-  outline: var(--border-width-thick) var(--border-style-solid) var(--color-primary);
-  outline-offset: var(--spacing-1);
+  outline: none;
+  box-shadow: 
+    0 0 0 var(--border-width-thick) var(--color-bg-base),
+    0 0 0 calc(var(--border-width-thick) * 2) var(--color-primary);
+}
+
+/* 主要按钮焦点状态 */
+.ale-button--primary:focus-visible {
+  box-shadow: 
+    0 0 0 var(--border-width-thick) var(--color-bg-base),
+    0 0 0 calc(var(--border-width-thick) * 2) var(--color-primary-700);
+}
+
+/* 危险按钮焦点状态 */
+.ale-button--danger:focus-visible {
+  box-shadow: 
+    0 0 0 var(--border-width-thick) var(--color-bg-base),
+    0 0 0 calc(var(--border-width-thick) * 2) var(--color-danger-700);
+}
+
+/* 成功按钮焦点状态 */
+.ale-button--success:focus-visible {
+  box-shadow: 
+    0 0 0 var(--border-width-thick) var(--color-bg-base),
+    0 0 0 calc(var(--border-width-thick) * 2) var(--color-success-700);
+}
+
+/* 警告按钮焦点状态 */
+.ale-button--warning:focus-visible {
+  box-shadow: 
+    0 0 0 var(--border-width-thick) var(--color-bg-base),
+    0 0 0 calc(var(--border-width-thick) * 2) var(--color-warning-700);
 }

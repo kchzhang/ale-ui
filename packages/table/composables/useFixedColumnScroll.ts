@@ -24,7 +24,7 @@ export interface FixedColumnScrollConfig {
 }
 
 export function useFixedColumnScroll(
-  props: TableProps,
+  _props: TableProps,
   bodyRef: Ref<HTMLElement | undefined>,
   headerRef: Ref<HTMLElement | undefined>,
   config: FixedColumnScrollConfig = {}
@@ -32,8 +32,8 @@ export function useFixedColumnScroll(
   const {
     renderDelay = 100,
     enableInertialScroll = true,
-    shadowThrottleMs = 80,
-    headerSyncThrottleMs = 16
+    shadowThrottleMs: _shadowThrottleMs = 0, // 改为 0，确保即时更新
+    headerSyncThrottleMs: _headerSyncThrottleMs = 0 // 改为 0，确保即时同步
   } = config;
 
   // ==================== 滚动状态 ====================
@@ -47,11 +47,8 @@ export function useFixedColumnScroll(
   
   // 缓存变量，避免频繁创建
   let lastScrollLeft = 0;
-  let lastScrollTop = 0;
   let lastScrollTime = 0;
   let scrollStopTimer: ReturnType<typeof setTimeout> | null = null;
-  let inertialTimer: ReturnType<typeof setTimeout> | null = null;
-  let isProcessingScroll = false;
 
   // ==================== 阴影状态 ====================
   // 使用 ref 供外部读取，但通过 CSS 变量更新，避免触发 Vue 响应式
@@ -63,15 +60,11 @@ export function useFixedColumnScroll(
   let lastShowRightShadow = false;
   
   let shadowRAF: number | null = null;
-  let lastShadowUpdate = 0;
   
   // 表格容器引用，用于设置 CSS 变量
   let tableWrapperEl: HTMLElement | null = null;
 
   // ==================== 表头同步 ====================
-
-  let headerSyncRAF: number | null = null;
-  let lastHeaderSync = 0;
 
   // ==================== 滚动控制 ====================
 
@@ -110,7 +103,7 @@ export function useFixedColumnScroll(
   }
 
   /**
-   * 同步阴影状态
+   * 同步阴影状态（即时更新，零延迟）
    */
   function syncShadowStateImmediate() {
     if (!bodyRef.value) return;
@@ -135,39 +128,32 @@ export function useFixedColumnScroll(
   }
 
   /**
-   * 立即同步表头
+   * 立即同步表头（零延迟）
    */
   function syncHeaderImmediate() {
     if (!headerRef.value || !bodyRef.value) return;
+    // 直接同步，零延迟
     headerRef.value.scrollLeft = bodyRef.value.scrollLeft;
   }
 
   /**
-   * 主滚动处理器（RAF 节流）
+   * 主滚动处理器（零延迟优化版）
    */
   function handleScroll() {
-    // 如果已经在处理中，跳过
-    if (isProcessingScroll) return;
-    
-    isProcessingScroll = true;
-    
-    // 使用 RAF 确保在下一帧处理
-    if (shadowRAF !== null || headerSyncRAF !== null) {
-      isProcessingScroll = false;
-      return;
+    // 使用 RAF 确保流畅的动画，但保持即时响应
+    if (shadowRAF !== null) {
+      cancelAnimationFrame(shadowRAF);
     }
 
     shadowRAF = requestAnimationFrame(() => {
       shadowRAF = null;
       
       if (!bodyRef.value) {
-        isProcessingScroll = false;
         return;
       }
 
       const currentTime = performance.now();
       const currentLeft = bodyRef.value.scrollLeft;
-      const currentTop = bodyRef.value.scrollTop;
 
       // 检测惯性滚动
       const isInertial = detectInertialScroll(currentLeft, currentTime);
@@ -178,21 +164,13 @@ export function useFixedColumnScroll(
 
       // 更新缓存
       lastScrollLeft = currentLeft;
-      lastScrollTop = currentTop;
       lastScrollTime = currentTime;
 
-      // 表头同步（高频更新）
-      const now = performance.now();
-      if (now - lastHeaderSync >= headerSyncThrottleMs) {
-        lastHeaderSync = now;
-        syncHeaderImmediate();
-      }
+      // 表头同步（即时更新，零延迟）
+      syncHeaderImmediate();
 
-      // 阴影更新（低频更新，减少重绘）
-      if (now - lastShadowUpdate >= shadowThrottleMs) {
-        lastShadowUpdate = now;
-        syncShadowStateImmediate();
-      }
+      // 阴影更新（即时更新，零延迟）
+      syncShadowStateImmediate();
 
       // 设置滚动结束定时器
       if (scrollStopTimer) {
@@ -206,14 +184,22 @@ export function useFixedColumnScroll(
         // 滚动结束后强制同步最终状态
         syncShadowStateImmediate();
         syncHeaderImmediate();
+        
+        // 移除拖动状态类
+        if (tableWrapperEl) {
+          tableWrapperEl.classList.remove('is-dragging');
+        }
       }, renderDelay);
 
-      isProcessingScroll = false;
+      // 添加拖动状态类（用于禁用过渡效果）
+      if (tableWrapperEl) {
+        tableWrapperEl.classList.add('is-dragging');
+      }
     });
   }
 
   /**
-   * 滚动到指定位置
+   * 滚动到指定位置（优化版）
    */
   function scrollTo(options: { top?: number; left?: number; behavior?: ScrollBehavior }) {
     if (!bodyRef.value) return;
@@ -223,6 +209,11 @@ export function useFixedColumnScroll(
     }
 
     isScrolling.value = true;
+
+    // 添加拖动状态类
+    if (tableWrapperEl) {
+      tableWrapperEl.classList.add('is-dragging');
+    }
 
     bodyRef.value.scrollTo({
       top: options.top,
@@ -236,6 +227,11 @@ export function useFixedColumnScroll(
 
       scrollStopTimer = setTimeout(() => {
         isScrolling.value = false;
+        
+        // 移除拖动状态类
+        if (tableWrapperEl) {
+          tableWrapperEl.classList.remove('is-dragging');
+        }
       }, renderDelay);
     });
   }
@@ -275,16 +271,8 @@ export function useFixedColumnScroll(
       clearTimeout(scrollStopTimer);
     }
 
-    if (inertialTimer) {
-      clearTimeout(inertialTimer);
-    }
-
     if (shadowRAF !== null) {
       cancelAnimationFrame(shadowRAF);
-    }
-
-    if (headerSyncRAF !== null) {
-      cancelAnimationFrame(headerSyncRAF);
     }
     
     window.removeEventListener('resize', doLayout);

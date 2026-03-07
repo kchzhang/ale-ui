@@ -9,7 +9,9 @@
     "preview": "vite preview",
     "test": "vitest run packages/**/__tests__/*.test.ts",
     "test:ui": "vitest --ui",
-    "type-check": "vue-tsc --noEmit -p tsconfig.json"
+    "type-check": "vue-tsc --noEmit -p tsconfig.json",
+    "check:size": "node scripts/check-component-size.js",
+    "check:size:detail": "node scripts/check-component-size.js --detail"
   },
   "dependencies": {
     "prismjs": "^1.30.0",

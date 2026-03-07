@@ -160,6 +160,10 @@ export interface ScrollEmits {
  */
 export interface ScrollExpose {
   /**
+   * 滚动容器 DOM 引用
+   */
+  readonly containerRef: HTMLElement | null;
+  /**
    * 滚动到指定位置
    */
   scrollTo: (options: { top?: number; left?: number; behavior?: ScrollBehavior }) => void;

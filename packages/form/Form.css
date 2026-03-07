@@ -227,13 +227,13 @@
 .ale-form-item.is-error .ale-select:focus,
 .ale-form-item.is-error .ale-textarea:focus {
   border-color: var(--color-danger, #ff4d4f);
-  box-shadow: 0 0 0 2px rgba(255, 77, 79, 0.2);
+  box-shadow: 0 0 0 2px var(--color-danger-light);
 }
 
 /* 错误信息动画 */
 .ale-form-error-enter-active,
 .ale-form-error-leave-active {
-  transition: all 0.2s ease;
+  transition: var(--transition-fast);
 }
 
 .ale-form-error-enter-from,

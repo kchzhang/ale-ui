@@ -72,46 +72,48 @@
 .ale-badge--primary .ale-badge__tag,
 .ale-badge.is-dot.ale-badge--primary .ale-badge__dot {
   background-color: var(--color-primary);
-  color: #ffffff;
+  color: var(--color-bg-base);
 }
 
 /* 类型 - 成功 */
 .ale-badge--success .ale-badge__tag,
 .ale-badge.is-dot.ale-badge--success .ale-badge__dot {
   background-color: var(--color-success);
-  color: #ffffff;
+  color: var(--color-bg-base);
 }
 
 /* 类型 - 警告 */
 .ale-badge--warning .ale-badge__tag,
 .ale-badge.is-dot.ale-badge--warning .ale-badge__dot {
   background-color: var(--color-warning);
-  color: #ffffff;
+  color: var(--color-bg-base);
 }
 
 /* 类型 - 危险 */
 .ale-badge--danger .ale-badge__tag,
 .ale-badge.is-dot.ale-badge--danger .ale-badge__dot {
   background-color: var(--color-danger);
-  color: #ffffff;
+  color: var(--color-bg-base);
 }
 
 /* 类型 - 信息 */
 .ale-badge--info .ale-badge__tag,
 .ale-badge.is-dot.ale-badge--info .ale-badge__dot {
   background-color: var(--color-info);
-  color: #ffffff;
+  color: var(--color-bg-base);
 }
 
 /* 自定义颜色 */
 .ale-badge.is-custom-color .ale-badge__tag {
-  color: #ffffff;
+  color: var(--color-bg-base);
 }
 
-/* 焦点状态 */
+/* 焦点状态 - Radix UI 风格 */
 .ale-badge:focus-within .ale-badge__tag {
-  outline: var(--border-width-thick) var(--border-style-solid) var(--color-primary);
-  outline-offset: 2px;
+  outline: none;
+  box-shadow: 
+    0 0 0 var(--border-width-base) var(--color-bg-base),
+    0 0 0 calc(var(--border-width-base) + 1px) var(--color-primary);
 }
 
 /* 动画效果 */
@@ -125,7 +127,7 @@
 }
 
 .ale-badge__tag {
-  animation: badge-zoom-in 0.2s ease-out;
+  animation: badge-zoom-in var(--transition-duration-fast) var(--transition-timing-ease-out);
 }
 
 /* 无内容时徽标位置 */

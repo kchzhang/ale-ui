@@ -84,7 +84,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: '/components/form',
         name: 'Form',
-        component: () => import('../views/components/FormView.vue')
+        component: () => import('../views/components/FormView/index.vue')
       },
       {
         path: '/components/tag',
@@ -124,7 +124,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: '/components/cascader',
         name: 'Cascader',
-        component: () => import('../views/components/CascaderView.vue')
+        component: () => import('../views/components/CascaderView/index.vue')
       },
       {
         path: '/components/upload',
