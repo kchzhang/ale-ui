@@ -90,3 +90,6 @@
 
 /* ==================== TimePicker 组件样式 ==================== */
 @import './time-picker/TimePicker.css';
+
+/* ==================== Split 组件样式 ==================== */
+@import './split/Split.css';

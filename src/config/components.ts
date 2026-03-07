@@ -272,6 +272,14 @@ export const basicComponents: ComponentConfig[] = [
     description: '用于选择或输入时间，支持12/24小时制',
     icon: '🕐',
     category: 'basic'
+  },
+  {
+    id: 'split',
+    name: 'Split 分割面板',
+    path: '/components/split',
+    description: '用于将容器分割为多个可调整大小的面板',
+    icon: '⊞',
+    category: 'basic'
   }
 ];
 

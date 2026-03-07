@@ -254,3 +254,14 @@ export type {
   TimePickerTheme,
   TimePickerExpose
 } from './time-picker';
+
+export { AleSplit, AleSplitPanel } from './split';
+export type {
+  SplitProps,
+  SplitEmits,
+  SplitPanelProps,
+  SplitPanelEmits,
+  SplitDirection,
+  SplitPanelState,
+  SplitContext
+} from './split';
