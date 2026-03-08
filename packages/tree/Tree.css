@@ -10,10 +10,6 @@
   line-height: 1.5;
 }
 
-.ale-tree--highlight-current :deep(.ale-tree-node.is-current > .ale-tree-node__content) {
-  background-color: var(--color-primary-100);
-}
-
 /* 空状态 */
 .ale-tree__empty-block {
   position: relative;
