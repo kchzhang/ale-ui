@@ -100,7 +100,7 @@ jobs:
 
       - name: Create package.json for dist
         run: |
-          cat > dist-lib/package.json << 'EOF'
+          cat > dist-lib/package.json << EOF
           {
             "name": "ale-ui",
             "version": "${GITHUB_REF_NAME#v}",
