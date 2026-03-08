@@ -64,7 +64,7 @@ interface SearchItem {
   matchIndex: number;
 }
 
-interface Props {
+export interface CascaderDropdownProps {
   visible: boolean;
   loading?: boolean;
   loadingText?: string;
@@ -83,7 +83,7 @@ interface Props {
   triggerRect: DOMRect | null;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<CascaderDropdownProps>(), {
   loading: false
 });
 

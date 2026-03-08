@@ -43,7 +43,8 @@
     "test:ui": "vitest --ui",
     "type-check": "vue-tsc --noEmit -p tsconfig.json",
     "check:size": "node scripts/check-component-size.js",
-    "check:size:detail": "node scripts/check-component-size.js --detail"
+    "check:size:detail": "node scripts/check-component-size.js --detail",
+    "build:all": "npm run build:lib && npm run build && npm run test"
   },
   "peerDependencies": {
     "vue": "^3.5.0"

@@ -64,7 +64,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 
-interface Props {
+export interface CascaderTriggerProps {
   isOpen: boolean;
   isFocused: boolean;
   disabled: boolean;
@@ -74,7 +74,7 @@ interface Props {
   showClear: boolean;
 }
 
-const props = defineProps<Props>();
+const props = defineProps<CascaderTriggerProps>();
 
 const emit = defineEmits<{
   (e: 'click'): void;

@@ -24,7 +24,7 @@ import { computed } from 'vue';
 import type { CascaderOption, CascaderCheckStrictly } from '../types';
 import CascaderMenu from './CascaderMenu.vue';
 
-interface Props {
+interface CascaderPanelProps {
   options: CascaderOption[];
   activePath: CascaderOption[];
   selectedPath: CascaderOption[];
@@ -34,7 +34,7 @@ interface Props {
   isMultipleMode: boolean;
 }
 
-const props = defineProps<Props>();
+const props = defineProps<CascaderPanelProps>();
 
 const emit = defineEmits<{
   (e: 'option-click', option: CascaderOption, menuIndex: number): void;

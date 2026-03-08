@@ -52,7 +52,7 @@ import type { CascaderOption } from '../types';
 import { Radio as AleRadio } from '../../radio';
 import { AleCheckbox } from '../../checkbox';
 
-interface Props {
+interface CascaderOptionItemProps {
   option: CascaderOption;
   menuIndex: number;
   isActive: boolean;
@@ -63,7 +63,7 @@ interface Props {
   isCheckStrictlyMode: boolean;
 }
 
-const props = defineProps<Props>();
+const props = defineProps<CascaderOptionItemProps>();
 
 const emit = defineEmits<{
   (e: 'click', option: CascaderOption, menuIndex: number): void;

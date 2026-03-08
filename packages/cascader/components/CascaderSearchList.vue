@@ -33,13 +33,13 @@ interface SearchItem {
   matchIndex: number;
 }
 
-interface Props {
+interface CascaderSearchListProps {
   filteredOptions: SearchItem[];
   selectedPath: CascaderOption[];
   separator: string;
 }
 
-const props = defineProps<Props>();
+const props = defineProps<CascaderSearchListProps>();
 
 const emit = defineEmits<{
   (e: 'select', path: CascaderOption[]): void;

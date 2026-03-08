@@ -32,7 +32,7 @@ import type { CascaderOption, CascaderCheckStrictly } from '../types';
 import { AleScroll } from '../../scroll';
 import OptionItem from './CascaderOption.vue';
 
-interface Props {
+interface CascaderMenuProps {
   options: CascaderOption[];
   menuIndex: number;
   activePath: CascaderOption[];
@@ -43,7 +43,7 @@ interface Props {
   isMultipleMode: boolean;
 }
 
-const props = defineProps<Props>();
+const props = defineProps<CascaderMenuProps>();
 
 const emit = defineEmits<{
   (e: 'option-click', option: CascaderOption, menuIndex: number): void;

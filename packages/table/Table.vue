@@ -554,7 +554,13 @@ defineExpose({
     }
   },
   setCurrentRow: (row: any) => {
+    const oldRow = currentRow.value;
     currentRow.value = row;
+    // 触发 current-change 事件
+    if (oldRow !== row) {
+      emit('current-change', row, oldRow);
+      props.onCurrentChange?.(row, oldRow);
+    }
   },
   getCurrentRow: () => currentRow.value,
   // 树形数据相关方法
