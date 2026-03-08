@@ -25,21 +25,41 @@
 
 <script setup lang="ts">
 import { ref, onMounted, nextTick, watch, computed } from 'vue';
-import Prism from 'prismjs';
 
-// 导入 Prism 主题和语言支持
+// 导入 Prism 主题
 import 'prismjs/themes/prism-tomorrow.css';
-
-// 按依赖顺序导入语言（必须先导入依赖）
-import 'prismjs/components/prism-markup';
-import 'prismjs/components/prism-javascript';
-import 'prismjs/components/prism-typescript';
-import 'prismjs/components/prism-css';
-import 'prismjs/components/prism-json';
-import 'prismjs/components/prism-bash';
-
 import 'prismjs/plugins/line-numbers/prism-line-numbers.css';
-import 'prismjs/plugins/line-numbers/prism-line-numbers';
+
+// 动态导入 Prism 及其组件
+let Prism: any = null;
+
+const loadPrism = async () => {
+  if (Prism) return Prism;
+
+  // @ts-ignore
+  const prismModule = await import('prismjs');
+  Prism = prismModule.default || prismModule;
+
+  // 按依赖顺序导入语言
+  // @ts-ignore
+  await import('prismjs/components/prism-markup');
+  // @ts-ignore
+  await import('prismjs/components/prism-javascript');
+  // @ts-ignore
+  await import('prismjs/components/prism-typescript');
+  // @ts-ignore
+  await import('prismjs/components/prism-css');
+  // @ts-ignore
+  await import('prismjs/components/prism-json');
+  // @ts-ignore
+  await import('prismjs/components/prism-bash');
+
+  // 导入行号插件
+  // @ts-ignore
+  await import('prismjs/plugins/line-numbers/prism-line-numbers');
+
+  return Prism;
+};
 
 // 导入组件样式
 import './CodeBlock.css';
@@ -78,8 +98,12 @@ const actualLanguage = computed(() => {
   return languageMap[lang] || lang;
 });
 
-const highlightCode = () => {
+const highlightCode = async () => {
   if (!codeRef.value) return;
+
+  // 确保 Prism 已加载
+  const prism = await loadPrism();
+  if (!prism) return;
 
   // 处理空代码情况
   const codeContent = props.code ?? '';
@@ -107,7 +131,7 @@ const highlightCode = () => {
   }
 
   // 执行语法高亮
-  Prism.highlightElement(codeRef.value);
+  prism.highlightElement(codeRef.value);
 };
 
 /**
@@ -149,7 +173,8 @@ const handleCopy = async () => {
   }
 };
 
-onMounted(() => {
+onMounted(async () => {
+  await loadPrism();
   nextTick(() => {
     highlightCode();
   });
