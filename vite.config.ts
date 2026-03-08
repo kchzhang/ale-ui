@@ -4,6 +4,7 @@ import { resolve } from 'path';
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: '/ale-ui/',
   plugins: [vue()],
   resolve: {
     alias: {
