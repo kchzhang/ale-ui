@@ -66,7 +66,7 @@ interface SearchItem {
 
 interface Props {
   visible: boolean;
-  loading: boolean;
+  loading?: boolean;
   loadingText?: string;
   noDataText?: string;
   filterable: boolean;
@@ -83,7 +83,9 @@ interface Props {
   triggerRect: DOMRect | null;
 }
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  loading: false
+});
 
 const emit = defineEmits<{
   (e: 'search-select', path: CascaderOption[]): void;

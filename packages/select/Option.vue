@@ -60,7 +60,7 @@ const displayLabel = computed(() => {
 const getOptionLabel = (): string => {
   if (slots.default) {
     // 如果有 slot，从 slot 内容获取文本
-    const slotContent = slots.default();
+    const slotContent = slots.default({});
     if (slotContent && slotContent.length > 0) {
       const firstChild = slotContent[0];
       if (firstChild && typeof firstChild.children === 'string') {
