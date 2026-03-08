@@ -85,6 +85,19 @@ jobs:
           name: lib-dist
           path: ./dist-lib
 
+      - name: Determine npm tag
+        id: npm-tag
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          if [[ "$VERSION" == *"-"* ]]; then
+            # 预发布版本 (如: 0.1.0-beta.1, 0.1.0-rc.1)
+            TAG=$(echo "$VERSION" | sed 's/.*-\([a-zA-Z]*\).*/\1/')
+            echo "tag=$TAG" >> $GITHUB_OUTPUT
+          else
+            # 正式版本
+            echo "tag=latest" >> $GITHUB_OUTPUT
+          fi
+
       - name: Create package.json for dist
         run: |
           cat > dist-lib/package.json << 'EOF'
@@ -126,4 +139,4 @@ jobs:
       - name: Publish to npm
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npm publish ./dist-lib --access public
+        run: npm publish ./dist-lib --access public --tag ${{ steps.npm-tag.outputs.tag }}
