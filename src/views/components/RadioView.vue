@@ -230,7 +230,7 @@ const paymentLabel = computed(() => {
   return option?.label || '';
 });
 
-const handlePaymentChange = (value: string) => {
+const handlePaymentChange = (value: string | number | boolean) => {
   console.log('支付方式:', value);
 };
 

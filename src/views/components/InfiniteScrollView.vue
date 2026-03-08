@@ -475,7 +475,7 @@ let basicId = 1;
 const handleBasicLoad = () => {
   basicStatus.value = 'loading';
   setTimeout(() => {
-    const newItems = Array.from({ length: 5 }, (_, i) => ({
+    const newItems = Array.from({ length: 5 }, () => ({
       id: basicId++,
       text: `列表项 ${basicId - 1}`
     }));
@@ -514,7 +514,7 @@ const handleErrorLoad = () => {
       errorStatus.value = 'error';
       shouldError = false;
     } else {
-      const newItems = Array.from({ length: 3 }, (_, i) => ({
+      const newItems = Array.from({ length: 3 }, () => ({
         id: errorId++,
         text: `列表项 ${errorId - 1}`
       }));
@@ -546,7 +546,7 @@ let customId = 1;
 const handleCustomLoad = () => {
   customStatus.value = 'loading';
   setTimeout(() => {
-    const newItems = Array.from({ length: 5 }, (_, i) => ({
+    const newItems = Array.from({ length: 5 }, () => ({
       id: customId++,
       text: `自定义列表项 ${customId - 1}`
     }));
@@ -571,7 +571,7 @@ let disabledId = 1;
 const handleDisabledLoad = () => {
   disabledStatus.value = 'loading';
   setTimeout(() => {
-    const newItems = Array.from({ length: 5 }, (_, i) => ({
+    const newItems = Array.from({ length: 5 }, () => ({
       id: disabledId++,
       text: `禁用列表项 ${disabledId - 1}`
     }));
@@ -599,7 +599,7 @@ let horizontalId = 1;
 const handleHorizontalLoad = () => {
   horizontalStatus.value = 'loading';
   setTimeout(() => {
-    const newItems = Array.from({ length: 3 }, (_, i) => ({
+    const newItems = Array.from({ length: 3 }, () => ({
       id: horizontalId++,
       text: `卡片 ${horizontalId - 1}`
     }));
@@ -683,7 +683,7 @@ const names = ['张三', '李四', '王五', '赵六', '陈七', '刘八', '杨�
 const loadMoreUsers = () => {
   userStatus.value = 'loading';
   setTimeout(() => {
-    const newUsers = Array.from({ length: 5 }, (_, i) => {
+    const newUsers = Array.from({ length: 5 }, () => {
       const id = userId++;
       const name = names[(id - 1) % names.length];
       return {

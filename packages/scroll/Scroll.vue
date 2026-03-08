@@ -91,6 +91,8 @@ const verticalBarRef = ref<HTMLElement | null>(null);
 const verticalThumbRef = ref<HTMLElement | null>(null);
 const horizontalBarRef = ref<HTMLElement | null>(null);
 const horizontalThumbRef = ref<HTMLElement | null>(null);
+void verticalThumbRef; // 用于模板引用，避免 TS6133 错误
+void horizontalThumbRef; // 用于模板引用，避免 TS6133 错误
 
 // 状态
 const isDraggingVertical = ref(false);

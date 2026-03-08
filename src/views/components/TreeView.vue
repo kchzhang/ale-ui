@@ -258,14 +258,14 @@ const handleCheck = (data: TreeData, checkedInfo: { checkedKeys: (string | numbe
 };
 
 // 拖拽事件处理
-const handleDragStart = (node: TreeData) => {
-  console.log('开始拖拽:', node.label);
+const handleDragStart = (node: TreeNode) => {
+  console.log('开始拖拽:', node.data.label);
 };
-const handleDragEnd = (draggingNode: TreeData, dropNode: TreeData | null, dropType: string) => {
-  console.log('拖拽结束:', draggingNode.label, dropType, dropNode?.label);
+const handleDragEnd = (draggingNode: TreeNode, dropNode: TreeNode | null, dropType: 'before' | 'after' | 'inner' | undefined) => {
+  console.log('拖拽结束:', draggingNode.data.label, dropType, dropNode?.data.label);
 };
-const handleDrop = (draggingNode: TreeData, dropNode: TreeData, dropType: string) => {
-  console.log('放置成功:', draggingNode.label, dropType, dropNode.label);
+const handleDrop = (draggingNode: TreeNode, dropNode: TreeNode | null, dropType: 'before' | 'after' | 'inner' | undefined) => {
+  console.log('放置成功:', draggingNode.data.label, dropType, dropNode?.data.label);
 };
 
 // 代码示例字符串

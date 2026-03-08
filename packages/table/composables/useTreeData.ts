@@ -33,14 +33,6 @@ export function useTreeData(props: TableProps) {
   // 是否默认展开所有
   const defaultExpandAll = computed(() => props.treeConfig?.defaultExpandAll || false);
 
-  // 初始化展开状态
-  const initExpandedState = () => {
-    expandedRowKeys.value.clear();
-    if (defaultExpandAll.value) {
-      flattenTree(props.data, 0, undefined, true);
-    }
-  };
-
   // 获取行 key
   const getRowKey = (row: any): string | number => {
     if (typeof props.rowKey === 'function') {

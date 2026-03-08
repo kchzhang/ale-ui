@@ -4,7 +4,7 @@
  */
 
 import { nextTick } from 'vue';
-import type { TableExpose, TableColumn } from '../types';
+import type { TableExpose } from '../types';
 
 export function useTableExpose(
   clearSelection: () => void,
@@ -45,9 +45,7 @@ export function useTableExpose(
       });
     },
     setCurrentRow: (row: any) => {
-      const oldRow = currentRow.value;
       currentRow.value = row;
-      // emit('current-change', row, oldRow); // 需要在 Table.vue 中处理
     },
     getCurrentRow: () => currentRow.value
   };

@@ -116,7 +116,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import { AleProgress, AleButton } from 'ale-ui';
 import CodeBlock from '@/components/CodeBlock.vue';
 

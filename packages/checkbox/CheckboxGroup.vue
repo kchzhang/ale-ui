@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, provide, toRefs } from 'vue';
+import { computed, provide } from 'vue';
 import AleCheckbox from './Checkbox.vue';
 import type { 
   CheckboxGroupProps, 
@@ -84,11 +84,6 @@ const props = withDefaults(defineProps<CheckboxGroupProps>(), {
 });
 
 const emit = defineEmits<CheckboxGroupEmits>();
-
-/**
- * 组件引用
- */
-const checkboxRefs = toRefs(props);
 
 /**
  * 规范化选项数据

@@ -3,7 +3,7 @@
  * 管理表格的核心状态：选择、展开、排序、筛选等
  */
 
-import { ref, computed, watch } from 'vue';
+import { ref, watch } from 'vue';
 import type { TableProps, TableColumn, SortOrder } from '../types';
 
 export function useTableState(props: TableProps) {

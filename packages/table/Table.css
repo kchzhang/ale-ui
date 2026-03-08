@@ -132,7 +132,7 @@
 }
 
 .ale-table__header-cell:hover {
-  color: var();
+  color: var(--color-primary);
 }
 
 /* 表头对齐 */

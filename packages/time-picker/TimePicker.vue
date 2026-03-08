@@ -213,7 +213,6 @@ const dropdownPosition = ref({ top: 0, left: 0 });
 
 // 滚动吸附相关
 const ITEM_HEIGHT = 36;
-const PADDING_HEIGHT = 90;
 const scrollTimeouts = ref<Record<string, number>>({
   hour: 0,
   minute: 0,

@@ -159,7 +159,7 @@
               {{ String.fromCharCode(65 + index) }}
             </div>
           </template>
-          <template #actions="{ item, index, onAction }">
+          <template #actions="{ onAction }">
             <AleButton type="primary" size="small" @click="onAction('edit')">编辑</AleButton>
             <AleButton type="danger" size="small" @click="onAction('delete')">删除</AleButton>
           </template>

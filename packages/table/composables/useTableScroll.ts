@@ -32,12 +32,14 @@ export interface ScrollController {
 
 export function useTableScroll(
   props: TableProps,
-  tableWrapperRef: Ref<HTMLElement | undefined>,
+  _tableWrapperRef: Ref<HTMLElement | undefined>,
   headerRef: Ref<HTMLElement | undefined>,
   bodyRef: Ref<HTMLElement | undefined>,
   /** 是否跳过表头同步（当有固定列时） */
-  skipHeaderSync: Ref<boolean> | ComputedRef<boolean> | boolean = false
+  _skipHeaderSync: Ref<boolean> | ComputedRef<boolean> | boolean = false
 ) {
+  void _tableWrapperRef; // 标记为已使用
+  void _skipHeaderSync; // 标记为已使用
   // 滚动状态
   const scrollState = ref<TableScrollState>({
     scrollLeft: 0,

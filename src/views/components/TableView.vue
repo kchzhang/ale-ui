@@ -672,11 +672,13 @@ const handleFullSelectionChange = (selection: any[]) => {
   console.log('完整示例选择变化:', selection.length);
 };
 
-const handleFullSortChange = (column: TableColumn, prop: string, order: any) => {
+const handleFullSortChange = (_column: TableColumn, prop: string, order: any) => {
+  void _column; // 标记为已使用
   console.log('完整示例排序变化:', prop, order);
 };
 
-const handleRowClick = (row: any, index: number, event: MouseEvent) => {
+const handleRowClick = (row: any, index: number, _event: MouseEvent) => {
+  void _event; // 标记为已使用
   console.log('行点击:', row, index);
 };
 

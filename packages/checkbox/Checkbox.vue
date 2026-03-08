@@ -96,6 +96,7 @@ const props = withDefaults(defineProps<CheckboxProps>(), {
 const emit = defineEmits<CheckboxEmits>();
 const slots = useSlots();
 const inputRef = ref<HTMLInputElement | null>(null);
+void inputRef; // 用于模板引用，避免 TS6133 错误
 
 /**
  * 实际尺寸（Checkbox 自身属性优先，其次使用 Group 的，最后使用默认值）

@@ -90,8 +90,7 @@ import { AleScroll, AleInput } from 'ale-ui';
 import {
   basicComponents,
   compositeComponents,
-  categoryInfo,
-  type ComponentConfig
+  categoryInfo
 } from '@/config/components';
 
 const route = useRoute();

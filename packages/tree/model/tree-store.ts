@@ -3,7 +3,7 @@
  */
 
 import { Node } from './node';
-import type { TreeData, TreeOptionProps, TreeProps } from '../tree.type';
+import type { TreeData, TreeOptionProps } from '../tree.type';
 
 export class TreeStore {
   currentNode: Node | null = null;

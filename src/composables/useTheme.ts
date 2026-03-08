@@ -39,7 +39,8 @@ const applyTheme = () => {
 /**
  * 监听系统主题变化
  */
-const handleSystemThemeChange = (e: MediaQueryListEvent) => {
+const handleSystemThemeChange = (_e: MediaQueryListEvent) => {
+  void _e; // 标记为已使用
   if (currentTheme.value === 'auto') {
     applyTheme();
   }

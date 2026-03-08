@@ -92,7 +92,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch, nextTick, onMounted, onUnmounted } from 'vue';
-import type { TreeNodeProps, TreeNode, TreeOptionProps, TreeData } from './tree.type';
+import type { TreeNodeProps, TreeNode, TreeData } from './tree.type';
 import type { Node as NodeType } from './model/node';
 import { Node } from './model/node';
 import AleCheckbox from '../checkbox/Checkbox.vue';
@@ -126,9 +126,6 @@ const emit = defineEmits<{
   'node-drag-end': [draggingNode: NodeType, dropNode: NodeType | null, dropType: 'before' | 'after' | 'inner' | undefined, ev: DragEvent];
   'node-drop': [draggingNode: NodeType, dropNode: NodeType, dropType: 'before' | 'after' | 'inner', ev: DragEvent];
 }>();
-
-// 当前拖拽状态
-let draggingNodeKey: string | null = null;
 
 // 类型转换后的节点
 const typedNode = computed(() => props.node as unknown as NodeType);
@@ -295,7 +292,6 @@ const nodeCheckedProxy = computed({
 // 解构 props
 const {
   renderContent,
-  showCheckbox,
   checkStrictly,
   expandOnClickNode,
   checkOnClickNode,

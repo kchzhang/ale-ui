@@ -53,12 +53,6 @@ const active = computed(() => {
   return currentName === paneName;
 });
 
-// 是否应该渲染
-const shouldBeRender = computed(() => {
-  if (!props.lazy) return true;
-  return loaded.value || active.value;
-});
-
 // 监听激活状态，延迟加载时标记已加载
 watch(active, (val) => {
   if (val) {

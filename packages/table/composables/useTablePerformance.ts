@@ -263,7 +263,8 @@ export function useTablePerformance(
   /**
    * 获取性能优化后的行样式
    */
-  function getOptimizedRowStyle(rowIndex: number) {
+  function getOptimizedRowStyle(_rowIndex: number) {
+    void _rowIndex; // 标记为已使用
     const style: Record<string, string> = {};
 
     if (isVirtualEnabled.value) {
@@ -302,7 +303,7 @@ export function useTablePerformance(
     }
 
     // 启动 FPS 监控（开发模式）
-    if (process.env.NODE_ENV === 'development') {
+    if (import.meta.env.DEV) {
       startFpsMonitoring();
     }
   });

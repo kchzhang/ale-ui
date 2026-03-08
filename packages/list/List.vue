@@ -130,12 +130,15 @@ const listClass = computed(() => ({
 /**
  * 获取列表项类名
  */
-const getItemClass = (item: ListItemData, index: number) => ({
-  'ale-list__item': true,
-  'is-disabled': item.disabled,
-  'is-clickable': props.clickable && !item.disabled,
-  'is-active': false
-});
+const getItemClass = (item: ListItemData, _index: number) => {
+  void _index; // 标记为已使用
+  return {
+    'ale-list__item': true,
+    'is-disabled': item.disabled,
+    'is-clickable': props.clickable && !item.disabled,
+    'is-active': false
+  };
+};
 
 /**
  * 判断头像是否为图片

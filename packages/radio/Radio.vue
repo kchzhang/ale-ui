@@ -29,7 +29,7 @@
 
 <script setup lang="ts">
 import { computed, useSlots, ref, inject } from 'vue';
-import type { RadioProps, RadioEmits, RadioSize, RadioTheme, RadioValue } from './types';
+import type { RadioProps, RadioEmits, RadioSize, RadioTheme } from './types';
 import { radioGroupContextKey } from './index';
 
 /**
@@ -52,6 +52,7 @@ const props = withDefaults(defineProps<RadioProps>(), {
 const emit = defineEmits<RadioEmits>();
 const slots = useSlots();
 const inputRef = ref<HTMLInputElement | null>(null);
+void inputRef; // 用于模板引用，避免 TS6133 错误
 
 /**
  * 注入 RadioGroup 上下文
@@ -181,8 +182,6 @@ const handleChange = (event: Event) => {
     emit('change', props.value);
   } else {
     // 独立使用时
-    const newValue = target.checked ? props.value : undefined;
-    
     if (isControlled.value) {
       emit('update:modelValue', props.value);
     } else {

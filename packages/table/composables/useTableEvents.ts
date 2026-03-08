@@ -49,7 +49,8 @@ export function useTableEvents(
   }
 
   /** 处理单元格点击 */
-  function handleCellClick(row: any, column: TableColumn, rowIndex: number, colIndex: number, event: MouseEvent) {
+  function handleCellClick(row: any, column: TableColumn, rowIndex: number, _colIndex: number, event: MouseEvent) {
+    void _colIndex; // 标记为已使用
     emit('cell-click', row, column, null, rowIndex, event);
     props.onCellClick?.(row, column, null, rowIndex, event);
   }

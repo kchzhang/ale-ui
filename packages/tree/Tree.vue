@@ -223,8 +223,8 @@ const handleCheckChange = (node: NodeType) => {
   }
 };
 
-const handleKeydown = (event: KeyboardEvent) => {
-  // 键盘导航处理
+const handleKeydown = (_event: KeyboardEvent) => {
+  void _event; // 键盘导航处理 - 预留扩展
 };
 
 // 暴露方法

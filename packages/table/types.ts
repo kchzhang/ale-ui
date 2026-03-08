@@ -3,7 +3,7 @@
  * 参考 Element Plus Table 组件设计
  */
 
-import type { VNode, Slot } from 'vue';
+import type { VNode } from 'vue';
 
 /** 表格尺寸 */
 export type TableSize = 'small' | 'medium' | 'large';

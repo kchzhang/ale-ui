@@ -355,11 +355,7 @@ const {
 
 // 1. 固定列功能（需要在其他 composables 之前初始化）
 const fixedColumns = useFixedColumns(props, bodyRef, headerRef, tableRef);
-const {
-  showLeftShadow,
-  showRightShadow,
-  doLayout
-} = fixedColumns;
+const { doLayout } = fixedColumns;
 
 // 2. 状态管理
 const tableState = useTableState(props);
@@ -387,7 +383,7 @@ const { getCellValue, formatCellValue, getIndex, getSortOrder, hasFilter } = tab
 // 3. 布局样式
 const {
   tableClass, tableStyle, wrapperStyle, headerWrapperStyle, headerTableStyle, headerRowClass,
-  bodyWrapperStyle, bodyTableStyle, getColumnKey, getColStyle, getHeaderCellClass, getHeaderCellStyle,
+  bodyTableStyle, getColumnKey, getColStyle, getHeaderCellClass, getHeaderCellStyle,
   getCellClass, getCellStyle
 } = useTableLayout(props, columnWidths.value, {
   getFixedLeftPosition: fixedColumns.getFixedLeftPosition,
@@ -558,11 +554,7 @@ defineExpose({
     }
   },
   setCurrentRow: (row: any) => {
-    const oldRow = currentRow.value;
     currentRow.value = row;
-    if (oldRow !== row) {
-      emit('current-change', row, oldRow);
-    }
   },
   getCurrentRow: () => currentRow.value,
   // 树形数据相关方法
