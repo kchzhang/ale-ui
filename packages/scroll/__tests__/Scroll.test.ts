@@ -3,6 +3,9 @@ import { mount, flushPromises } from '@vue/test-utils';
 import Scroll from '../Scroll.vue';
 
 describe('Scroll', () => {
+  let rafCallbacks: FrameRequestCallback[] = [];
+  let rafId = 0;
+
   beforeEach(() => {
     vi.useFakeTimers();
     // Mock ResizeObserver as a proper class
@@ -12,11 +15,27 @@ describe('Scroll', () => {
       unobserve(target: Element) {}
       disconnect() {}
     };
+
+    // Mock requestAnimationFrame
+    rafCallbacks = [];
+    rafId = 0;
+    global.requestAnimationFrame = (callback: FrameRequestCallback): number => {
+      rafCallbacks.push(callback);
+      return ++rafId;
+    };
+    global.cancelAnimationFrame = () => {};
   });
 
   afterEach(() => {
     vi.useRealTimers();
+    rafCallbacks = [];
   });
+
+  // Helper: 执行所有 RAF callbacks
+  const flushRaf = () => {
+    rafCallbacks.forEach(cb => cb(performance.now()));
+    rafCallbacks = [];
+  };
 
   // 1. 基础渲染测试
   it('renders correctly', async () => {
@@ -252,6 +271,7 @@ describe('Scroll', () => {
 
     // 触发更新
     await wrapper.find('.ale-scroll').trigger('mouseenter');
+    flushRaf();
     await flushPromises();
 
     // 滚动条应该渲染且可见
@@ -277,6 +297,7 @@ describe('Scroll', () => {
 
     // 触发更新
     await wrapper.find('.ale-scroll').trigger('mouseenter');
+    flushRaf();
     await flushPromises();
 
     // 滚动条应该渲染且可见
@@ -467,6 +488,7 @@ describe('Scroll', () => {
     Object.defineProperty(content, 'clientWidth', { value: 300, configurable: true });
 
     await wrapper.find('.ale-scroll').trigger('mouseenter');
+    flushRaf();
     await flushPromises();
 
     expect(wrapper.find('.ale-scroll__bar--vertical').exists()).toBe(true);
@@ -710,6 +732,7 @@ describe('Scroll', () => {
     (wrapper.vm as any).update();
     await flushPromises();
     vi.advanceTimersByTime(100);
+    flushRaf();
     await flushPromises();
 
     const thumb = wrapper.find('.ale-scroll__thumb--vertical');
@@ -727,6 +750,7 @@ describe('Scroll', () => {
 
     // 模拟拖动移动
     document.dispatchEvent(new MouseEvent('mousemove', { clientY: 100 }));
+    flushRaf();
     await flushPromises();
 
     // 验证滚动位置已更新（content.scrollTop 应该被设置）
@@ -763,6 +787,7 @@ describe('Scroll', () => {
     (wrapper.vm as any).update();
     await flushPromises();
     vi.advanceTimersByTime(100);
+    flushRaf();
     await flushPromises();
 
     const thumb = wrapper.find('.ale-scroll__thumb--horizontal');
@@ -780,6 +805,7 @@ describe('Scroll', () => {
 
     // 模拟拖动移动
     document.dispatchEvent(new MouseEvent('mousemove', { clientX: 100 }));
+    flushRaf();
     await flushPromises();
 
     // 验证滚动位置已更新（content.scrollLeft 应该被设置）
@@ -814,6 +840,7 @@ describe('Scroll', () => {
     (wrapper.vm as any).update();
     await flushPromises();
     vi.advanceTimersByTime(100);
+    flushRaf();
     await flushPromises();
 
     const thumb = wrapper.find('.ale-scroll__thumb--vertical');
@@ -831,6 +858,7 @@ describe('Scroll', () => {
 
     // 模拟大幅度向上拖动（超出边界）
     document.dispatchEvent(new MouseEvent('mousemove', { clientY: -1000 }));
+    flushRaf();
     await flushPromises();
 
     // 滚动位置应该被限制在 0
@@ -865,6 +893,7 @@ describe('Scroll', () => {
     (wrapper.vm as any).update();
     await flushPromises();
     vi.advanceTimersByTime(100);
+    flushRaf();
     await flushPromises();
 
     const thumb = wrapper.find('.ale-scroll__thumb--horizontal');
@@ -882,6 +911,7 @@ describe('Scroll', () => {
 
     // 模拟大幅度向左拖动（超出边界）
     document.dispatchEvent(new MouseEvent('mousemove', { clientX: -1000 }));
+    flushRaf();
     await flushPromises();
 
     // 滚动位置应该被限制在 0

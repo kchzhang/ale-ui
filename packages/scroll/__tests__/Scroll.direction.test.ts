@@ -3,6 +3,9 @@ import { mount, flushPromises } from '@vue/test-utils';
 import Scroll from '../Scroll.vue';
 
 describe('Scroll 方向和滚动测试', () => {
+  let rafCallbacks: FrameRequestCallback[] = [];
+  let rafId = 0;
+
   beforeEach(() => {
     vi.useFakeTimers();
     global.ResizeObserver = class ResizeObserver {
@@ -11,11 +14,27 @@ describe('Scroll 方向和滚动测试', () => {
       unobserve(target: Element) {}
       disconnect() {}
     };
+
+    // Mock requestAnimationFrame
+    rafCallbacks = [];
+    rafId = 0;
+    global.requestAnimationFrame = (callback: FrameRequestCallback): number => {
+      rafCallbacks.push(callback);
+      return ++rafId;
+    };
+    global.cancelAnimationFrame = () => {};
   });
 
   afterEach(() => {
     vi.useRealTimers();
+    rafCallbacks = [];
   });
+
+  // Helper: 执行所有 RAF callbacks
+  const flushRaf = () => {
+    rafCallbacks.forEach(cb => cb(performance.now()));
+    rafCallbacks = [];
+  };
 
   // 水平滚动功能测试
   it('horizontal direction allows horizontal scrolling', async () => {
@@ -37,6 +56,7 @@ describe('Scroll 方向和滚动测试', () => {
 
     // 触发更新
     await wrapper.find('.ale-scroll').trigger('mouseenter');
+    flushRaf();
     await flushPromises();
 
     // 水平滚动条应该可见
@@ -68,6 +88,7 @@ describe('Scroll 方向和滚动测试', () => {
 
     // 触发更新
     await wrapper.find('.ale-scroll').trigger('mouseenter');
+    flushRaf();
     await flushPromises();
 
     // 两个滚动条都应该可见
@@ -98,6 +119,7 @@ describe('Scroll 方向和滚动测试', () => {
     content.scrollLeft = 1000;
     
     await wrapper.find('.ale-scroll__content').trigger('scroll');
+    flushRaf();
     await flushPromises();
 
     expect(wrapper.emitted()).toHaveProperty('scroll-to-right');
@@ -117,6 +139,7 @@ describe('Scroll 方向和滚动测试', () => {
     content.scrollLeft = 0;
     
     await wrapper.find('.ale-scroll__content').trigger('scroll');
+    flushRaf();
     await flushPromises();
 
     expect(wrapper.emitted()).toHaveProperty('scroll-to-left');
@@ -140,6 +163,7 @@ describe('Scroll 方向和滚动测试', () => {
     Object.defineProperty(content, 'clientHeight', { value: 100, configurable: true });
 
     await wrapper.find('.ale-scroll').trigger('mouseenter');
+    flushRaf();
     await flushPromises();
 
     // 在水平模式下垂直滚动条不应该渲染 (v-if)
@@ -169,6 +193,7 @@ describe('Scroll 方向和滚动测试', () => {
     Object.defineProperty(content, 'clientHeight', { value: 100, configurable: true });
 
     await wrapper.find('.ale-scroll').trigger('mouseenter');
+    flushRaf();
     await flushPromises();
 
     // 在垂直模式下水平滚动条不应该渲染 (v-if)
