@@ -54,8 +54,9 @@ export function useFixedColumns(
     });
 
     // 标记最后一个左侧固定列
-    if (columns.length > 0) {
-      columns[columns.length - 1].isLastLeft = true;
+    const lastLeftColumn = columns[columns.length - 1];
+    if (lastLeftColumn) {
+      lastLeftColumn.isLastLeft = true;
     }
 
     return columns;
@@ -67,9 +68,9 @@ export function useFixedColumns(
     // 收集右侧固定列
     for (let i = props.columns.length - 1; i >= 0; i--) {
       const column = props.columns[i];
-      if (column.fixed === 'right') {
+      if (column?.fixed === 'right') {
         columns.unshift({
-          column,
+          column: column as TableColumn,
           index: i,
           position: 0, // 稍后计算
           isFirstRight: false
@@ -78,12 +79,14 @@ export function useFixedColumns(
     }
 
     // 标记第一个右侧固定列并计算位置
-    if (columns.length > 0) {
-      columns[0].isFirstRight = true;
+    const firstRightColumn = columns[0];
+    if (firstRightColumn) {
+      firstRightColumn.isFirstRight = true;
       let pos = 0;
       for (let i = columns.length - 1; i >= 0; i--) {
-        columns[i].position = pos;
-        pos += getColumnWidth(columns[i].column);
+        const col = columns[i]!;
+        col.position = pos;
+        pos += getColumnWidth(col.column);
       }
     }
 

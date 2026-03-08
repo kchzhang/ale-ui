@@ -1,11 +1,43 @@
 {
   "name": "ale-ui",
-  "private": true,
   "version": "0.0.0",
   "type": "module",
+  "description": "A modern Vue 3 component library",
+  "author": "kchzhang",
+  "license": "MIT",
+  "keywords": [
+    "vue",
+    "vue3",
+    "components",
+    "ui",
+    "component-library"
+  ],
+  "homepage": "https://github.com/kchzhang/ale-ui#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kchzhang/ale-ui.git"
+  },
+  "main": "./dist-lib/ale-ui.js",
+  "module": "./dist-lib/ale-ui.mjs",
+  "types": "./dist-lib/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist-lib/ale-ui.mjs",
+      "require": "./dist-lib/ale-ui.js",
+      "types": "./dist-lib/index.d.ts"
+    },
+    "./style.css": "./dist-lib/style.css"
+  },
+  "files": [
+    "dist-lib"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
+    "build:lib": "vite build --config vite.lib.config.ts",
     "preview": "vite preview",
     "test": "vitest run packages/**/__tests__/*.test.ts",
     "test:ui": "vitest --ui",
@@ -13,10 +45,8 @@
     "check:size": "node scripts/check-component-size.js",
     "check:size:detail": "node scripts/check-component-size.js --detail"
   },
-  "dependencies": {
-    "prismjs": "^1.30.0",
-    "vue": "^3.5.24",
-    "vue-router": "^5.0.2"
+  "peerDependencies": {
+    "vue": "^3.5.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.58.2",
@@ -27,9 +57,13 @@
     "@vue/test-utils": "^2.4.6",
     "@vue/tsconfig": "^0.8.1",
     "jsdom": "^28.0.0",
+    "prismjs": "^1.30.0",
     "typescript": "~5.9.3",
     "vite": "npm:rolldown-vite@7.2.5",
+    "vite-plugin-dts": "^4.5.4",
     "vitest": "^4.0.18",
+    "vue": "^3.5.24",
+    "vue-router": "^5.0.2",
     "vue-tsc": "^3.1.4"
   },
   "pnpm": {

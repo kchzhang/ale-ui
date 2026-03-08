@@ -1,0 +1,129 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: 'pages'
+  cancel-in-progress: false
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Type check
+        run: pnpm run type-check
+
+      - name: Run tests
+        run: pnpm run test
+
+      - name: Build library
+        run: pnpm run build:lib
+
+      - name: Build docs
+        run: pnpm run build
+
+      - name: Upload pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist'
+
+      - name: Upload lib artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: lib-dist
+          path: ./dist-lib
+
+  deploy-pages:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  publish-npm:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Download lib artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: lib-dist
+          path: ./dist-lib
+
+      - name: Create package.json for dist
+        run: |
+          cat > dist-lib/package.json << 'EOF'
+          {
+            "name": "ale-ui",
+            "version": "${GITHUB_REF_NAME#v}",
+            "type": "module",
+            "description": "A modern Vue 3 component library",
+            "license": "MIT",
+            "main": "./ale-ui.js",
+            "module": "./ale-ui.mjs",
+            "types": "./index.d.ts",
+            "exports": {
+              ".": {
+                "import": "./ale-ui.mjs",
+                "require": "./ale-ui.js",
+                "types": "./index.d.ts"
+              },
+              "./style.css": "./style.css"
+            },
+            "files": [
+              "**/*"
+            ],
+            "sideEffects": [
+              "**/*.css"
+            ],
+            "peerDependencies": {
+              "vue": "^3.5.0"
+            },
+            "keywords": ["vue", "vue3", "components", "ui", "component-library"],
+            "repository": {
+              "type": "git",
+              "url": "git+https://github.com/${{ github.repository }}.git"
+            },
+            "homepage": "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/"
+          }
+          EOF
+
+      - name: Publish to npm
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish ./dist-lib --access public

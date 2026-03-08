@@ -1,0 +1,36 @@
+{
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.lib.tsbuildinfo",
+    "declaration": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": false,
+    "declarationDir": "./dist-lib",
+    "outDir": "./dist-lib",
+    "types": ["vite/client", "node"],
+    "baseUrl": ".",
+    "paths": {
+      "ale-ui": ["./packages"],
+      "@ale-ui/button": ["./packages/button"],
+      "@/*": ["./src/*"]
+    },
+    "moduleResolution": "bundler",
+
+    /* Linting - Relaxed for build */
+    "strict": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "erasableSyntaxOnly": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true
+  },
+  "include": [
+    "packages/**/*.ts",
+    "packages/**/*.tsx",
+    "packages/**/*.vue"
+  ],
+  "exclude": [
+    "packages/**/__tests__/**",
+    "node_modules"
+  ]
+}
