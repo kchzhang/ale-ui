@@ -758,9 +758,11 @@ watch(visible, (val) => {
   if (val) {
     document.addEventListener('click', handleClickOutside);
     window.addEventListener('resize', updateDropdownPosition);
+    window.addEventListener('scroll', updateDropdownPosition, true);
   } else {
     document.removeEventListener('click', handleClickOutside);
     window.removeEventListener('resize', updateDropdownPosition);
+    window.removeEventListener('scroll', updateDropdownPosition, true);
     currentView.value = 'date';
   }
 });
@@ -773,6 +775,7 @@ onMounted(() => {
 onBeforeUnmount(() => {
   document.removeEventListener('click', handleClickOutside);
   window.removeEventListener('resize', updateDropdownPosition);
+  window.removeEventListener('scroll', updateDropdownPosition, true);
 });
 
 // 暴露方法
