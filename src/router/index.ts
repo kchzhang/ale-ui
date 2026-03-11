@@ -142,6 +142,11 @@ const routes: RouteRecordRaw[] = [
         component: () => import('../views/components/TimePickerView.vue')
       },
       {
+        path: '/components/date-picker',
+        name: 'DatePicker',
+        component: () => import('../views/components/DatePickerView.vue')
+      },
+      {
         path: '/components/split',
         name: 'Split',
         component: () => import('../views/components/SplitView.vue')

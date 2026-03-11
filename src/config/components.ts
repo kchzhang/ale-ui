@@ -274,6 +274,14 @@ export const basicComponents: ComponentConfig[] = [
     category: 'basic'
   },
   {
+    id: 'date-picker',
+    name: 'DatePicker 日期选择器',
+    path: '/components/date-picker',
+    description: '用于选择或输入日期，支持日期格式化、快捷选择、禁用日期等功能',
+    icon: '📅',
+    category: 'basic'
+  },
+  {
     id: 'split',
     name: 'Split 分割面板',
     path: '/components/split',
