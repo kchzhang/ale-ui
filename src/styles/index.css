@@ -297,9 +297,6 @@ img {
   
   /* 触摸设备优化 */
   -webkit-overflow-scrolling: touch;
-  
-  /* 预留滚动条空间 */
-  scrollbar-gutter: stable;
 }
 
 /* WebKit 浏览器滚动条样式 */

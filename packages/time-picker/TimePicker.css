@@ -276,7 +276,7 @@
 /* ==================== 时间选择区域 ==================== */
 .ale-time-picker__body {
   position: relative;
-  padding: var(--spacing-3) 0;
+  padding: var(--spacing-3) var(--spacing-2);
   overflow: hidden;
 }
 
