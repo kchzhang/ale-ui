@@ -33,6 +33,7 @@ import { computed, provide, ref, watch } from 'vue';
 import Radio from './Radio.vue';
 import type { RadioGroupProps, RadioGroupEmits, RadioValue } from './types';
 import { radioGroupContextKey } from './index';
+import './RadioGroup.css';
 
 /**
  * 单选框组组件

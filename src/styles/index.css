@@ -4,7 +4,7 @@
  */
 
 /* CSS 变量（从组件库导入） */
-/* @import './variables.css'; */
+@import '../../packages/variables.css';
 
 /* ==================== 全局重置 ==================== */
 

@@ -78,6 +78,7 @@ import type {
   NotificationType,
   NotificationPosition
 } from './types';
+import './Notification.css';
 
 /**
  * 通知组件

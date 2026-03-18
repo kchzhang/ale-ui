@@ -108,6 +108,7 @@ import {
   onUpdated
 } from 'vue';
 import type { TabsProps, TabsEmits, TabsExpose } from './types';
+import './Tabs.css';
 
 const props = withDefaults(defineProps<TabsProps>(), {
   type: '',

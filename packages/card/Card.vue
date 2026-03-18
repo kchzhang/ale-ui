@@ -20,6 +20,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { CardProps, CardEmits } from './types';
+import './Card.css';
 
 const props = withDefaults(defineProps<CardProps>(), {
   title: '',

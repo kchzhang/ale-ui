@@ -68,6 +68,7 @@
 <script setup lang="ts">
 import { ref, computed, watch, inject } from 'vue';
 import type { InputProps, InputEmits } from './types';
+import './Input.css';
 import { useAutoResize } from './composables/useAutoResize';
 import type { FormContext } from '../form/types';
 import { FORM_CONTEXT_KEY } from '../form/constants';

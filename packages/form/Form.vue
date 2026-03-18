@@ -19,6 +19,7 @@ import type {
   FormField
 } from './types';
 import { FORM_CONTEXT_KEY } from './constants';
+import './Form.css';
 
 const props = withDefaults(defineProps<FormProps>(), {
   layout: 'vertical',

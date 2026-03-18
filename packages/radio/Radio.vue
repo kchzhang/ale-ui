@@ -31,6 +31,7 @@
 import { computed, useSlots, ref, inject } from 'vue';
 import type { RadioProps, RadioEmits, RadioSize, RadioTheme } from './types';
 import { radioGroupContextKey } from './index';
+import './Radio.css';
 
 /**
  * 单选框组件

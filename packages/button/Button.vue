@@ -29,6 +29,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { ButtonProps, ButtonEmits } from './types';
+import './Button.css';
 
 const props = withDefaults(defineProps<ButtonProps>(), {
   type: 'default',

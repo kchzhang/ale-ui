@@ -28,6 +28,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import type { SwitchProps, SwitchEmits, SwitchSize, SwitchTheme } from './types';
+import './Switch.css';
 
 /**
  * 开关组件

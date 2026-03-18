@@ -67,6 +67,7 @@ import type {
   MessageType,
   MessagePosition
 } from './types';
+import './Message.css';
 
 /**
  * 消息组件

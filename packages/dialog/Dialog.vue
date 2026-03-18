@@ -77,6 +77,7 @@ import type {
   DialogSize,
   DialogPosition
 } from './types';
+import './Dialog.css';
 
 /**
  * 对话框组件

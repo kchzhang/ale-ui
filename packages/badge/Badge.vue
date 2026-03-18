@@ -17,6 +17,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { BadgeProps } from './types';
+import './Badge.css';
 
 const props = withDefaults(defineProps<BadgeProps>(), {
   value: 0,

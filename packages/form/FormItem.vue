@@ -59,6 +59,7 @@ import type {
   FormRule
 } from './types';
 import { FORM_CONTEXT_KEY } from './constants';
+import './Form.css';
 
 const props = withDefaults(defineProps<FormItemProps>(), {
   required: false,

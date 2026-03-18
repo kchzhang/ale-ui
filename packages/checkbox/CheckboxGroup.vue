@@ -37,6 +37,7 @@ import type {
   CheckboxSize,
   CheckboxTheme
 } from './types';
+import './CheckboxGroup.css';
 
 /**
  * CheckboxGroup 注入的上下文接口

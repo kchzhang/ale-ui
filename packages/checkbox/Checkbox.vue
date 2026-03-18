@@ -53,6 +53,7 @@
 <script setup lang="ts">
 import { computed, useSlots, ref, inject } from 'vue';
 import type { CheckboxProps, CheckboxEmits, CheckboxSize, CheckboxTheme, CheckboxValue } from './types';
+import './Checkbox.css';
 
 /**
  * CheckboxGroup 注入的上下文接口
