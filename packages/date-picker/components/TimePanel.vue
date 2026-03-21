@@ -2,7 +2,6 @@
   <div :class="timePanelClass">
     <!-- 小时选择 -->
     <div class="ale-time-picker__column">
-      <div class="ale-time-picker__header">时</div>
       <div ref="hourRef" class="ale-time-picker__list">
         <div
           v-for="h in 24"
@@ -15,9 +14,11 @@
       </div>
     </div>
 
+    <!-- 冒号分隔符 -->
+    <div class="ale-time-picker__separator">:</div>
+
     <!-- 分钟选择 -->
     <div class="ale-time-picker__column">
-      <div class="ale-time-picker__header">分</div>
       <div ref="minuteRef" class="ale-time-picker__list">
         <div
           v-for="m in 60"
@@ -30,9 +31,11 @@
       </div>
     </div>
 
+    <!-- 冒号分隔符 -->
+    <div class="ale-time-picker__separator">:</div>
+
     <!-- 秒选择 -->
     <div class="ale-time-picker__column">
-      <div class="ale-time-picker__header">秒</div>
       <div ref="secondRef" class="ale-time-picker__list">
         <div
           v-for="s in 60"

@@ -79,32 +79,65 @@
           <!-- 范围选择面板 -->
           <DateRangePanel
             v-if="isRangeMode"
-            :start-date="startDate"
-            :end-date="endDate"
+            :start-date="tempStartDate"
+            :end-date="tempEndDate"
             :min-date="minDateObj"
             :max-date="maxDateObj"
             :disabled-date="disabledDate"
             :show-time="showTimePicker"
-            :start-hour="startHour"
-            :start-minute="startMinute"
-            :start-second="startSecond"
-            :end-hour="endHour"
-            :end-minute="endMinute"
-            :end-second="endSecond"
+            :start-hour="tempStartHour"
+            :start-minute="tempStartMinute"
+            :start-second="tempStartSecond"
+            :end-hour="tempEndHour"
+            :end-minute="tempEndMinute"
+            :end-second="tempEndSecond"
             @update:start-date="handleStartDateUpdate"
             @update:end-date="handleEndDateUpdate"
-            @update:start-hour="(v) => startHour = v"
-            @update:start-minute="(v) => startMinute = v"
-            @update:start-second="(v) => startSecond = v"
-            @update:end-hour="(v) => endHour = v"
-            @update:end-minute="(v) => endMinute = v"
-            @update:end-second="(v) => endSecond = v"
+            @update:startHour="(v) => tempStartHour = v"
+            @update:startMinute="(v) => tempStartMinute = v"
+            @update:startSecond="(v) => tempStartSecond = v"
+            @update:endHour="(v) => tempEndHour = v"
+            @update:endMinute="(v) => tempEndMinute = v"
+            @update:endSecond="(v) => tempEndSecond = v"
             @confirm="handleRangeConfirm"
             @cancel="handleRangeCancel"
           />
 
           <!-- 单日期选择面板 -->
           <template v-else>
+            <!-- 顶部时间选择器区域（datetime 模式） -->
+            <div v-if="showTimePicker && currentView === 'date'" class="ale-date-picker__time-header">
+              <div class="ale-date-picker__time-input-wrapper">
+                <input
+                  type="text"
+                  class="ale-date-picker__time-display-input"
+                  :value="timeDisplayValue"
+                  readonly
+                  @click.stop="toggleTimePicker"
+                />
+                <span class="ale-date-picker__time-input-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10" />
+                    <polyline points="12 6 12 12 16 14" />
+                  </svg>
+                </span>
+              </div>
+
+              <!-- 时间选择器下拉 -->
+              <Transition name="ale-date-picker-time-fade">
+                <div v-if="timePickerVisible" class="ale-date-picker__time-dropdown">
+                  <TimePanel
+                    :model-hour="tempSelectedHour"
+                    :model-minute="tempSelectedMinute"
+                    :model-second="tempSelectedSecond"
+                    @update:modelHour="handleHourUpdate"
+                    @update:modelMinute="handleMinuteUpdate"
+                    @update:modelSecond="handleSecondUpdate"
+                  />
+                </div>
+              </Transition>
+            </div>
+
             <!-- 快捷选项 -->
             <div v-if="shortcuts && shortcuts.length > 0" class="ale-date-picker__shortcuts">
               <button
@@ -178,7 +211,7 @@
                 v-if="currentView === 'date'"
                 :current-year="currentYear"
                 :current-month="currentMonth"
-                :selected-date="selectedDate"
+                :selected-date="tempSelectedDate"
                 :min-date="minDateObj"
                 :max-date="maxDateObj"
                 :disabled-date="disabledDate"
@@ -199,18 +232,6 @@
                 :min-date="minDateObj"
                 :max-date="maxDateObj"
                 @select="handleYearSelect"
-              />
-            </div>
-
-            <!-- 时间选择（datetime 模式） -->
-            <div v-if="showTimePicker && currentView === 'date'" class="ale-date-picker__time-panel">
-              <TimePanel
-                :model-hour="selectedHour"
-                :model-minute="selectedMinute"
-                :model-second="selectedSecond"
-                @update:model-hour="(v) => selectedHour = v"
-                @update:model-minute="(v) => selectedMinute = v"
-                @update:model-second="(v) => selectedSecond = v"
               />
             </div>
 
@@ -258,7 +279,7 @@ const props = withDefaults(defineProps<DatePickerProps>(), {
   size: 'medium',
   theme: 'primary',
   format: 'YYYY-MM-DD',
-  valueFormat: 'YYYY-MM-DD',
+  valueFormat: undefined, // 不设置默认值，让realValueFormat自动适配
   minDate: undefined,
   maxDate: undefined,
   disabledDate: undefined,
@@ -281,6 +302,7 @@ const dropdownRef = ref<HTMLDivElement>();
 
 // 状态
 const visible = ref(false);
+const timePickerVisible = ref(false);
 const isFocused = ref(false);
 const isStartFocused = ref(false);
 const isEndFocused = ref(false);
@@ -304,6 +326,20 @@ const selectedHour = ref(0);
 const selectedMinute = ref(0);
 const selectedSecond = ref(0);
 
+// 临时选中值（弹窗内操作使用，确定后才同步到正式值）
+const tempSelectedDate = ref<Date | null>(null);
+const tempSelectedHour = ref(0);
+const tempSelectedMinute = ref(0);
+const tempSelectedSecond = ref(0);
+const tempStartDate = ref<Date | null>(null);
+const tempEndDate = ref<Date | null>(null);
+const tempStartHour = ref(0);
+const tempStartMinute = ref(0);
+const tempStartSecond = ref(0);
+const tempEndHour = ref(0);
+const tempEndMinute = ref(0);
+const tempEndSecond = ref(0);
+
 // 下拉位置
 const dropdownPosition = ref({ top: 0, left: 0 });
 
@@ -312,9 +348,15 @@ const isRangeMode = computed(() =>
   ['daterange', 'datetimerange'].includes(props.type)
 );
 
-const showTimePicker = computed(() => 
+const showTimePicker = computed(() =>
   ['datetime', 'datetimerange'].includes(props.type)
 );
+
+// 实际使用的值格式，自动适配类型
+const realValueFormat = computed(() => {
+  if (props.valueFormat) return props.valueFormat;
+  return showTimePicker.value ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD';
+});
 
 const datePickerClass = computed(() => [
   'ale-date-picker',
@@ -346,7 +388,7 @@ const dropdownStyle = computed(() => ({
 // 单日期显示值
 const displayValue = computed(() => {
   if (!selectedDate.value) return '';
-  
+
   if (showTimePicker.value) {
     return dayjs(selectedDate.value)
       .hour(selectedHour.value)
@@ -354,14 +396,14 @@ const displayValue = computed(() => {
       .second(selectedSecond.value)
       .format(props.format);
   }
-  
+
   return dayjs(selectedDate.value).format(props.format);
 });
 
 // 范围开始日期显示值
 const startDisplayValue = computed(() => {
   if (!startDate.value) return '';
-  
+
   if (showTimePicker.value) {
     return dayjs(startDate.value)
       .hour(startHour.value)
@@ -369,14 +411,14 @@ const startDisplayValue = computed(() => {
       .second(startSecond.value)
       .format(props.format);
   }
-  
+
   return dayjs(startDate.value).format(props.format);
 });
 
 // 范围结束日期显示值
 const endDisplayValue = computed(() => {
   if (!endDate.value) return '';
-  
+
   if (showTimePicker.value) {
     return dayjs(endDate.value)
       .hour(endHour.value)
@@ -384,13 +426,20 @@ const endDisplayValue = computed(() => {
       .second(endSecond.value)
       .format(props.format);
   }
-  
+
   return dayjs(endDate.value).format(props.format);
 });
 
 const yearRange = computed(() => {
   const start = Math.floor(currentYear.value / 10) * 10;
   return `${start}年 - ${start + 9}年`;
+});
+
+// 时间显示值（弹窗内使用临时值）
+const timeDisplayValue = computed(() => {
+  const parts = [String(tempSelectedHour.value).padStart(2, '0'), String(tempSelectedMinute.value).padStart(2, '0')];
+  parts.push(String(tempSelectedSecond.value).padStart(2, '0'));
+  return parts.join(':');
 });
 
 const minDateObj = computed(() => {
@@ -444,7 +493,22 @@ const updateDropdownPosition = () => {
 // 初始化选中日期
 const initializeDate = () => {
   const modelVal = props.modelValue;
-  
+  const now = new Date();
+
+  // 解析默认时间
+  let defaultHour = now.getHours();
+  let defaultMinute = now.getMinutes();
+  let defaultSecond = now.getSeconds();
+
+  if (props.defaultTime) {
+    const timeParts = props.defaultTime.split(':').map(Number);
+    if (timeParts.length >= 2) {
+      defaultHour = timeParts[0] || 0;
+      defaultMinute = timeParts[1] || 0;
+      defaultSecond = timeParts.length >= 3 ? (timeParts[2] || 0) : 0;
+    }
+  }
+
   if (isRangeMode.value) {
     // 范围模式初始化
     const rangeValue = modelVal as DateRangeValue;
@@ -458,6 +522,11 @@ const initializeDate = () => {
           startMinute.value = startDt.getMinutes();
           startSecond.value = startDt.getSeconds();
         }
+      } else {
+        // 没有开始时间，使用默认时间
+        startHour.value = defaultHour;
+        startMinute.value = defaultMinute;
+        startSecond.value = defaultSecond;
       }
       if (end) {
         const endDt = typeof end === 'string' ? new Date(end) : end;
@@ -467,7 +536,20 @@ const initializeDate = () => {
           endMinute.value = endDt.getMinutes();
           endSecond.value = endDt.getSeconds();
         }
+      } else {
+        // 没有结束时间，使用默认时间
+        endHour.value = defaultHour;
+        endMinute.value = defaultMinute;
+        endSecond.value = defaultSecond;
       }
+    } else {
+      // 没有值时，使用默认时间
+      startHour.value = defaultHour;
+      startMinute.value = defaultMinute;
+      startSecond.value = defaultSecond;
+      endHour.value = defaultHour;
+      endMinute.value = defaultMinute;
+      endSecond.value = defaultSecond;
     }
   } else {
     // 单日期模式初始化
@@ -481,6 +563,11 @@ const initializeDate = () => {
         selectedMinute.value = date.getMinutes();
         selectedSecond.value = date.getSeconds();
       }
+    } else {
+      // 没有值时，使用默认时间
+      selectedHour.value = defaultHour;
+      selectedMinute.value = defaultMinute;
+      selectedSecond.value = defaultSecond;
     }
   }
 };
@@ -493,20 +580,62 @@ const handleInputClick = () => {
     visible.value = false;
   } else {
     visible.value = true;
-    initializeDate();
+    // 初始化临时值为当前正式值，不再重置
+    if (isRangeMode.value) {
+      tempStartDate.value = startDate.value ? new Date(startDate.value) : null;
+      tempEndDate.value = endDate.value ? new Date(endDate.value) : null;
+      tempStartHour.value = startHour.value;
+      tempStartMinute.value = startMinute.value;
+      tempStartSecond.value = startSecond.value;
+      tempEndHour.value = endHour.value;
+      tempEndMinute.value = endMinute.value;
+      tempEndSecond.value = endSecond.value;
+    } else {
+      tempSelectedDate.value = selectedDate.value ? new Date(selectedDate.value) : null;
+      tempSelectedHour.value = selectedHour.value;
+      tempSelectedMinute.value = selectedMinute.value;
+      tempSelectedSecond.value = selectedSecond.value;
+      if (tempSelectedDate.value) {
+        currentYear.value = tempSelectedDate.value.getFullYear();
+        currentMonth.value = tempSelectedDate.value.getMonth();
+      }
+    }
     nextTick(() => {
       updateDropdownPosition();
     });
   }
 };
 
+// 切换时间选择器显示
+const toggleTimePicker = () => {
+  timePickerVisible.value = !timePickerVisible.value;
+};
+
+// 时间更新处理
+const handleHourUpdate = (hour: number) => {
+  tempSelectedHour.value = hour;
+  timePickerVisible.value = false;
+};
+
+const handleMinuteUpdate = (minute: number) => {
+  tempSelectedMinute.value = minute;
+  timePickerVisible.value = false;
+};
+
+const handleSecondUpdate = (second: number) => {
+  tempSelectedSecond.value = second;
+  timePickerVisible.value = false;
+};
+
 const handleDateSelect = (date: Date) => {
-  selectedDate.value = date;
+  tempSelectedDate.value = date;
   currentYear.value = date.getFullYear();
   currentMonth.value = date.getMonth();
-  
-  // datetime 模式不立即关闭
+  timePickerVisible.value = false;
+
+  // 非datetime模式直接确定
   if (!showTimePicker.value) {
+    selectedDate.value = tempSelectedDate.value;
     emitValue(date);
     visible.value = false;
   }
@@ -562,16 +691,17 @@ const handleNextMonth = () => {
 
 const handleToday = () => {
   const today = new Date();
-  selectedDate.value = today;
+  tempSelectedDate.value = today;
   currentYear.value = today.getFullYear();
   currentMonth.value = today.getMonth();
-  selectedHour.value = today.getHours();
-  selectedMinute.value = today.getMinutes();
-  selectedSecond.value = today.getSeconds();
-  
+  tempSelectedHour.value = today.getHours();
+  tempSelectedMinute.value = today.getMinutes();
+  tempSelectedSecond.value = today.getSeconds();
+
   if (showTimePicker.value) {
     // datetime 模式不关闭，让用户确认
   } else {
+    selectedDate.value = tempSelectedDate.value;
     emitValue(today);
     visible.value = false;
   }
@@ -589,16 +719,26 @@ const handleShortcutClick = (shortcut: { text: string; value: Date | (() => Date
 
 // 范围选择事件
 const handleStartDateUpdate = (date: Date | null) => {
-  startDate.value = date;
+  tempStartDate.value = date;
 };
 
 const handleEndDateUpdate = (date: Date | null) => {
-  endDate.value = date;
+  tempEndDate.value = date;
 };
 
 const handleRangeConfirm = () => {
-  if (!startDate.value || !endDate.value) return;
-  
+  if (!tempStartDate.value || !tempEndDate.value) return;
+
+  // 同步临时值到正式值
+  startDate.value = tempStartDate.value ? new Date(tempStartDate.value) : null;
+  endDate.value = tempEndDate.value ? new Date(tempEndDate.value) : null;
+  startHour.value = tempStartHour.value;
+  startMinute.value = tempStartMinute.value;
+  startSecond.value = tempStartSecond.value;
+  endHour.value = tempEndHour.value;
+  endMinute.value = tempEndMinute.value;
+  endSecond.value = tempEndSecond.value;
+
   emitRangeValue();
   visible.value = false;
 };
@@ -609,10 +749,16 @@ const handleRangeCancel = () => {
 
 // datetime 确认
 const handleDateTimeConfirm = () => {
-  if (!selectedDate.value) {
-    selectedDate.value = new Date();
+  if (!tempSelectedDate.value) {
+    tempSelectedDate.value = new Date();
   }
-  
+
+  // 同步临时值到正式值
+  selectedDate.value = new Date(tempSelectedDate.value);
+  selectedHour.value = tempSelectedHour.value;
+  selectedMinute.value = tempSelectedMinute.value;
+  selectedSecond.value = tempSelectedSecond.value;
+
   const date = new Date(
     selectedDate.value.getFullYear(),
     selectedDate.value.getMonth(),
@@ -621,7 +767,7 @@ const handleDateTimeConfirm = () => {
     selectedMinute.value,
     selectedSecond.value
   );
-  
+
   emitValue(date);
   visible.value = false;
 };
@@ -676,7 +822,7 @@ const handleEndBlur = (event: FocusEvent) => {
 
 const emitValue = (date: Date) => {
   let finalDate = date;
-  
+
   if (showTimePicker.value) {
     finalDate = new Date(
       date.getFullYear(),
@@ -687,15 +833,15 @@ const emitValue = (date: Date) => {
       selectedSecond.value
     );
   }
-  
-  const value = dayjs(finalDate).format(props.valueFormat);
+
+  const value = dayjs(finalDate).format(realValueFormat.value);
   emit('update:modelValue', value);
   emit('change', finalDate);
 };
 
 const emitRangeValue = () => {
   if (!startDate.value || !endDate.value) return;
-  
+
   const finalStartDate = new Date(
     startDate.value.getFullYear(),
     startDate.value.getMonth(),
@@ -704,7 +850,7 @@ const emitRangeValue = () => {
     startMinute.value,
     startSecond.value
   );
-  
+
   const finalEndDate = new Date(
     endDate.value.getFullYear(),
     endDate.value.getMonth(),
@@ -713,17 +859,17 @@ const emitRangeValue = () => {
     endMinute.value,
     endSecond.value
   );
-  
-  const startStr = dayjs(finalStartDate).format(props.valueFormat);
-  const endStr = dayjs(finalEndDate).format(props.valueFormat);
-  
+
+  const startStr = dayjs(finalStartDate).format(realValueFormat.value);
+  const endStr = dayjs(finalEndDate).format(realValueFormat.value);
+
   emit('update:modelValue', [startStr, endStr]);
   emit('change', [finalStartDate, finalEndDate]);
 };
 
 const handleClickOutside = (event: MouseEvent) => {
   const target = event.target as HTMLElement;
-  
+
   if (isRangeMode.value) {
     const startInputEl = startInputRef.value?.$el || startInputRef.value;
     const endInputEl = endInputRef.value?.$el || endInputRef.value;
@@ -735,6 +881,7 @@ const handleClickOutside = (event: MouseEvent) => {
       dropdownEl && !dropdownEl.contains(target)
     ) {
       visible.value = false;
+      timePickerVisible.value = false;
     }
   } else {
     const inputEl = inputRef.value?.$el || inputRef.value;
@@ -745,6 +892,14 @@ const handleClickOutside = (event: MouseEvent) => {
       dropdownEl && !dropdownEl.contains(target)
     ) {
       visible.value = false;
+      timePickerVisible.value = false;
+    } else if (dropdownEl?.contains(target)) {
+      // 如果点击在面板内但不是时间输入框，关闭时间选择器
+      const timeInput = dropdownEl?.querySelector('.ale-date-picker__time-display-input');
+      const timeDropdown = dropdownEl?.querySelector('.ale-date-picker__time-dropdown');
+      if (timeInput && !timeInput.contains(target) && timeDropdown && !timeDropdown.contains(target)) {
+        timePickerVisible.value = false;
+      }
     }
   }
 };
@@ -803,6 +958,26 @@ const clear = () => {
 const open = () => {
   if (props.disabled || props.readonly) return;
   visible.value = true;
+  // 初始化临时值为当前正式值
+  if (isRangeMode.value) {
+    tempStartDate.value = startDate.value ? new Date(startDate.value) : null;
+    tempEndDate.value = endDate.value ? new Date(endDate.value) : null;
+    tempStartHour.value = startHour.value;
+    tempStartMinute.value = startMinute.value;
+    tempStartSecond.value = startSecond.value;
+    tempEndHour.value = endHour.value;
+    tempEndMinute.value = endMinute.value;
+    tempEndSecond.value = endSecond.value;
+  } else {
+    tempSelectedDate.value = selectedDate.value ? new Date(selectedDate.value) : null;
+    tempSelectedHour.value = selectedHour.value;
+    tempSelectedMinute.value = selectedMinute.value;
+    tempSelectedSecond.value = selectedSecond.value;
+    if (tempSelectedDate.value) {
+      currentYear.value = tempSelectedDate.value.getFullYear();
+      currentMonth.value = tempSelectedDate.value.getMonth();
+    }
+  }
   nextTick(() => {
     updateDropdownPosition();
   });

@@ -266,6 +266,15 @@ export type {
   DatePickerExpose
 } from './date-picker';
 
+export { DateTimePicker as AleDateTimePicker } from './datetime-picker';
+export type {
+  DateTimePickerProps,
+  DateTimePickerEmits,
+  DateTimePickerSize,
+  DateTimePickerTheme,
+  DateTimePickerExpose
+} from './datetime-picker';
+
 export { AleSplit, AleSplitPanel } from './split';
 export type {
   SplitProps,
