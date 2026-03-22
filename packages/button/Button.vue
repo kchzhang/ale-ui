@@ -21,13 +21,14 @@
       </svg>
     </span>
     <span class="ale-button__content">
-      <slot></slot>
+      <slot>{{ defaultText }}</slot>
     </span>
   </button>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useLocale } from '../locale';
 import type { ButtonProps, ButtonEmits } from './types';
 import './Button.css';
 
@@ -40,10 +41,12 @@ const props = withDefaults(defineProps<ButtonProps>(), {
   plain: false,
   round: false,
   circle: false,
-  nativeType: 'button'
+  nativeType: 'button',
+  textType: undefined
 });
 
 const emit = defineEmits<ButtonEmits>();
+const { t } = useLocale();
 
 const buttonClass = computed(() => {
   return [
@@ -59,6 +62,14 @@ const buttonClass = computed(() => {
       'is-circle': props.circle
     }
   ];
+});
+
+// 默认文本，当没有slot时使用
+const defaultText = computed(() => {
+  if (!props.textType) {
+    return '';
+  }
+  return t(`ale.button.${props.textType}`);
 });
 
 const handleClick = (event: MouseEvent) => {

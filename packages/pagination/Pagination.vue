@@ -6,7 +6,7 @@
         {{ totalRender(total, [startItem, endItem]) }}
       </template>
       <template v-else>
-        共 {{ total }} 条
+        {{ totalText }}
       </template>
     </span>
 
@@ -22,7 +22,7 @@
       <AleOption
         v-for="opt in pageSizeOptions"
         :key="opt"
-        :label="`${opt} 条/页`"
+        :label="perPageText(opt)"
         :value="opt"
       />
     </AleSelect>
@@ -36,7 +36,7 @@
     >
       <slot name="prev">
         <span class="ale-pagination__btn-icon">‹</span>
-        <span v-if="prevText" class="ale-pagination__btn-text">{{ prevText }}</span>
+        <span v-if="defaultPrevText" class="ale-pagination__btn-text">{{ defaultPrevText }}</span>
       </slot>
     </button>
 
@@ -116,14 +116,14 @@
       @click="handleNext"
     >
       <slot name="next">
-        <span v-if="nextText" class="ale-pagination__btn-text">{{ nextText }}</span>
+        <span v-if="defaultNextText" class="ale-pagination__btn-text">{{ defaultNextText }}</span>
         <span class="ale-pagination__btn-icon">›</span>
       </slot>
     </button>
 
     <!-- 快速跳转 -->
     <div v-if="showJumper && !simple" class="ale-pagination__jumper">
-      <span class="ale-pagination__jumper-text">跳至</span>
+      <span class="ale-pagination__jumper-text">{{ gotoText }}</span>
       <input
         v-model.number="jumpPage"
         type="number"
@@ -133,7 +133,7 @@
         class="ale-pagination__jumper-input"
         @keyup.enter="handleJump"
       >
-      <span class="ale-pagination__jumper-text">页</span>
+      <span class="ale-pagination__jumper-text">{{ pageText }}</span>
     </div>
   </div>
 </template>
@@ -142,6 +142,7 @@
 import './Pagination.css';
 import { ref, computed, watch } from 'vue';
 import { AleSelect, AleOption } from '../select';
+import { useLocale } from '../locale';
 import type { PaginationProps, PaginationEmits, PaginationExpose } from './types';
 
 const props = withDefaults(defineProps<PaginationProps>(), {
@@ -155,11 +156,20 @@ const props = withDefaults(defineProps<PaginationProps>(), {
   simple: false,
   disabled: false,
   layout: 'total, prev, pager, next',
-  prevText: '',
-  nextText: ''
+  prevText: undefined,
+  nextText: undefined
 });
 
 const emit = defineEmits<PaginationEmits>();
+const { t } = useLocale();
+
+// 国际化文本
+const totalText = computed(() => t('pagination.total', { total: props.total }));
+const perPageText = (size: number) => t('pagination.perPage', { size });
+const gotoText = computed(() => t('pagination.goto'));
+const pageText = computed(() => t('pagination.page'));
+const defaultPrevText = computed(() => props.prevText || t('ale.button.prev') || '上一页');
+const defaultNextText = computed(() => props.nextText || t('ale.button.next') || '下一页');
 
 // ==================== State ====================
 const currentPage = ref(props.current);

@@ -40,11 +40,12 @@
     "build:lib": "vite build --config vite.lib.config.ts",
     "preview": "vite preview",
     "test": "vitest run packages/**/__tests__/*.test.ts",
+    "test:i18n": "vitest run packages/locale/__tests__/locale-completeness.test.ts",
     "test:ui": "vitest --ui",
     "type-check": "vue-tsc --noEmit -p tsconfig.json",
     "check:size": "node scripts/check-component-size.js",
     "check:size:detail": "node scripts/check-component-size.js --detail",
-    "build:all": "npm run build:lib && npm run build && npm run test"
+    "build:all": "npm run build:lib && npm run build && npm run test:i18n && npm run test"
   },
   "peerDependencies": {
     "vue": "^3.5.0"

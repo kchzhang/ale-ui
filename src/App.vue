@@ -1,5 +1,63 @@
 <script setup lang="ts">
+import { ref, watch } from 'vue';
 import ThemeToggle from './components/ThemeToggle.vue';
+import { AleSelect, AleOption, provideLocale, zhCN, zhTW, zhHK, enUS } from '../packages';
+import type { AleUILocale } from '../packages';
+import { providePageLocale, pageLocales, type PageLocaleCode } from './locales/usePageLocale';
+
+// 语言配置
+const languageOptions = [
+  { label: '简体中文', value: 'zh-CN', aleLocale: zhCN },
+  { label: '繁体中文(台湾)', value: 'zh-TW', aleLocale: zhTW },
+  { label: '繁体中文(香港)', value: 'zh-HK', aleLocale: zhHK },
+  { label: 'English', value: 'en-US', aleLocale: enUS }
+];
+
+// 从localStorage读取保存的语言，默认中文
+const savedLocaleCode = localStorage.getItem('ale-ui-locale') || 'zh-CN';
+const currentLocaleCode = ref<PageLocaleCode>(savedLocaleCode as PageLocaleCode);
+
+// 组件库语言
+const aleLocale = ref<AleUILocale>(
+  languageOptions.find(opt => opt.value === savedLocaleCode)?.aleLocale || zhCN
+);
+provideLocale(aleLocale);
+
+// 页面语言
+const pageLocale = ref(pageLocales[savedLocaleCode as PageLocaleCode] || pageLocales['zh-CN']);
+providePageLocale(pageLocale);
+
+// 简单翻译函数给当前组件使用（不需要usePageLocale，因为当前组件是provider）
+const t = (key: string, params?: Record<string, any>): string => {
+  const keys = key.split('.');
+  let value: any = pageLocale.value.messages;
+
+  for (const k of keys) {
+    value = value?.[k];
+    if (value === undefined) return key;
+  }
+
+  if (typeof value === 'string' && params) {
+    return value.replace(/\{(\w+)\}/g, (_, param) => {
+      return params[param] !== undefined ? String(params[param]) : `{${param}}`;
+    });
+  }
+
+  return String(value);
+};
+
+// 监听语言变化
+watch(currentLocaleCode, (newCode) => {
+  const selected = languageOptions.find(opt => opt.value === newCode);
+  if (selected) {
+    // 更新组件库语言
+    aleLocale.value = selected.aleLocale;
+    // 更新页面语言
+    pageLocale.value = pageLocales[newCode];
+    // 持久化保存到localStorage
+    localStorage.setItem('ale-ui-locale', newCode);
+  }
+});
 </script>
 
 <template>
@@ -10,14 +68,27 @@ import ThemeToggle from './components/ThemeToggle.vue';
       </div>
       <div class="app-nav__menu">
         <router-link to="/" class="app-nav__link" active-class="app-nav__link--active">
-          首页
+          {{ t('nav.home') }}
         </router-link>
         <router-link to="/components" class="app-nav__link" active-class="app-nav__link--active">
-          浏览组件
+          {{ t('nav.components') }}
         </router-link>
         <router-link to="/variables-demo" class="app-nav__link" active-class="app-nav__link--active">
-          变量演示
+          {{ t('nav.variablesDemo') }}
         </router-link>
+        <AleSelect
+          v-model="currentLocaleCode"
+          placeholder="选择语言"
+          size="small"
+          style="width: 160px"
+        >
+          <AleOption
+            v-for="opt in languageOptions"
+            :key="opt.value"
+            :label="opt.label"
+            :value="opt.value"
+          />
+        </AleSelect>
         <ThemeToggle />
       </div>
     </nav>

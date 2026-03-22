@@ -11,7 +11,7 @@
       :is-focused="isFocused"
       :disabled="disabled"
       :filterable="filterable"
-      :placeholder="placeholder"
+      :placeholder="defaultPlaceholder"
       :selected-label="selectedLabel"
       :show-clear="showClear"
       @click="handleTriggerClick"
@@ -29,8 +29,8 @@
       ref="dropdownRef"
       :visible="isOpen"
       :loading="loading"
-      :loading-text="loadingText"
-      :no-data-text="noDataText"
+      :loading-text="defaultLoadingText"
+      :no-data-text="defaultNoDataText"
       :filterable="filterable"
       :search-query="searchQuery"
       :filtered-options="filteredOptions"
@@ -63,6 +63,7 @@ import {
 import type { CascaderProps, CascaderEmits, CascaderOption } from './types';
 import CascaderTrigger from './components/CascaderTrigger.vue';
 import CascaderDropdown from './components/CascaderDropdown.vue';
+import { useLocale } from '../locale';
 import './Cascader.css';
 
 // Props 定义
@@ -73,16 +74,24 @@ const props = withDefaults(defineProps<CascaderProps>(), {
   disabled: false,
   clearable: false,
   filterable: false,
-  placeholder: '请选择',
+  placeholder: undefined,
   showAllLevels: true,
   separator: ' / ',
   readonly: false,
   expandTrigger: 'click',
   closeOnSelect: true,
-  checkStrictly: false
+  checkStrictly: false,
+  noDataText: undefined,
+  loadingText: undefined
 });
 
 const emit = defineEmits<CascaderEmits>();
+const { t } = useLocale();
+
+// 国际化文本
+const defaultPlaceholder = computed(() => props.placeholder || t('select.placeholder'));
+const defaultNoDataText = computed(() => props.noDataText || t('select.emptyText'));
+const defaultLoadingText = computed(() => props.loadingText || t('ale.status.loading'));
 
 // 组件引用
 const triggerRef = ref<InstanceType<typeof CascaderTrigger>>();

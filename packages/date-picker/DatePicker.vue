@@ -6,7 +6,7 @@
         <DateInput
           ref="startInputRef"
           :model-value="startDisplayValue"
-          :placeholder="startPlaceholder"
+          :placeholder="defaultStartPlaceholder"
           :disabled="disabled"
           :readonly="readonly"
           :clearable="false"
@@ -18,11 +18,11 @@
           @focus="handleStartFocus"
           @blur="handleStartBlur"
         />
-        <span class="ale-date-picker__separator">{{ rangeSeparator }}</span>
+        <span class="ale-date-picker__separator">{{ defaultRangeSeparator }}</span>
         <DateInput
           ref="endInputRef"
           :model-value="endDisplayValue"
-          :placeholder="endPlaceholder"
+          :placeholder="defaultEndPlaceholder"
           :disabled="disabled"
           :readonly="readonly"
           :clearable="false"
@@ -53,7 +53,7 @@
       <DateInput
         ref="inputRef"
         :model-value="displayValue"
-        :placeholder="placeholder"
+        :placeholder="defaultPlaceholder"
         :disabled="disabled"
         :readonly="readonly"
         :clearable="clearable"
@@ -123,7 +123,7 @@
                 v-if="currentView === 'date'"
                 class="ale-date-picker__header-btn"
                 @click="handlePrevYear"
-                aria-label="上一年"
+                :aria-label="ariaPrevYear"
               >
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <polyline points="11 17 6 12 11 7" />
@@ -134,7 +134,7 @@
                 v-if="currentView === 'date'"
                 class="ale-date-picker__header-btn"
                 @click="handlePrevMonth"
-                aria-label="上个月"
+                :aria-label="ariaPrevMonth"
               >
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <polyline points="15 18 9 12 15 6" />
@@ -145,15 +145,15 @@
                   {{ yearRange }}
                 </span>
                 <template v-else>
-                  <span @click="handleYearClick">{{ currentYear }}年</span>
-                  <span v-if="currentView === 'date'" @click="handleMonthClick">{{ currentMonth + 1 }}月</span>
+                  <span @click="handleYearClick">{{ currentYear }}{{ yearText }}</span>
+                  <span v-if="currentView === 'date'" @click="handleMonthClick">{{ currentMonth + 1 }}{{ monthText }}</span>
                 </template>
               </div>
               <button
                 v-if="currentView === 'date'"
                 class="ale-date-picker__header-btn"
                 @click="handleNextMonth"
-                aria-label="下个月"
+                :aria-label="ariaNextMonth"
               >
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <polyline points="9 18 15 12 9 6" />
@@ -163,7 +163,7 @@
                 v-if="currentView === 'date'"
                 class="ale-date-picker__header-btn"
                 @click="handleNextYear"
-                aria-label="下一年"
+                :aria-label="ariaNextYear"
               >
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <polyline points="13 17 18 12 13 7" />
@@ -220,14 +220,14 @@
                 class="ale-date-picker__btn ale-date-picker__btn--text"
                 @click="handleToday"
               >
-                今天
+                {{ todayText }}
               </button>
               <button
                 v-if="showTimePicker"
                 class="ale-date-picker__btn ale-date-picker__btn--primary"
                 @click="handleDateTimeConfirm"
               >
-                确定
+                {{ confirmText }}
               </button>
             </div>
           </template>
@@ -240,6 +240,7 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onBeforeUnmount, nextTick } from 'vue';
 import dayjs from 'dayjs';
+import { useLocale } from '../locale';
 import type { DatePickerProps, DatePickerEmits, DatePickerExpose, DatePickerView, DateRangeValue } from './types';
 import DateInput from './components/DateInput.vue';
 import DatePanel from './components/DatePanel.vue';
@@ -251,7 +252,7 @@ import './DatePicker.css';
 
 const props = withDefaults(defineProps<DatePickerProps>(), {
   modelValue: '',
-  placeholder: '请选择日期',
+  placeholder: undefined,
   disabled: false,
   readonly: false,
   clearable: false,
@@ -265,13 +266,14 @@ const props = withDefaults(defineProps<DatePickerProps>(), {
   shortcuts: undefined,
   customClass: '',
   type: 'date',
-  rangeSeparator: '至',
-  startPlaceholder: '开始日期',
-  endPlaceholder: '结束日期',
+  rangeSeparator: undefined,
+  startPlaceholder: undefined,
+  endPlaceholder: undefined,
   defaultTime: null
 });
 
 const emit = defineEmits<DatePickerEmits>();
+const { t } = useLocale();
 
 // DOM 引用
 const inputRef = ref();
@@ -288,6 +290,20 @@ const currentView = ref<DatePickerView>('date');
 const currentYear = ref(new Date().getFullYear());
 const currentMonth = ref(new Date().getMonth());
 const selectedDate = ref<Date | null>(null);
+
+// 国际化文本
+const defaultPlaceholder = computed(() => props.placeholder || t('datePicker.placeholder'));
+const defaultStartPlaceholder = computed(() => props.startPlaceholder || t('datePicker.rangePlaceholder.0'));
+const defaultEndPlaceholder = computed(() => props.endPlaceholder || t('datePicker.rangePlaceholder.1'));
+const defaultRangeSeparator = computed(() => props.rangeSeparator || t('datePicker.separator') || '-');
+const todayText = computed(() => t('datePicker.today'));
+const confirmText = computed(() => t('ale.button.confirm'));
+const yearText = computed(() => t('datePicker.year'));
+const monthText = computed(() => t('datePicker.month'));
+const ariaPrevYear = computed(() => t('datePicker.prevYear') || '上一年');
+const ariaNextYear = computed(() => t('datePicker.nextYear') || '下一年');
+const ariaPrevMonth = computed(() => t('datePicker.prevMonth') || '上个月');
+const ariaNextMonth = computed(() => t('datePicker.nextMonth') || '下个月');
 
 // 范围选择状态
 const startDate = ref<Date | null>(null);
@@ -390,7 +406,7 @@ const endDisplayValue = computed(() => {
 
 const yearRange = computed(() => {
   const start = Math.floor(currentYear.value / 10) * 10;
-  return `${start}年 - ${start + 9}年`;
+  return `${start}${yearText} - ${start + 9}${yearText}`;
 });
 
 const minDateObj = computed(() => {

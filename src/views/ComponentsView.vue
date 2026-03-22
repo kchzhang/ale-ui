@@ -3,8 +3,8 @@
     <!-- 左侧菜单栏 -->
     <aside class="components-view__sidebar">
       <div class="components-view__sidebar-header">
-        <h2 class="components-view__sidebar-title">组件列表</h2>
-        <p class="components-view__sidebar-subtitle">共 {{ totalCount }} 个组件</p>
+        <h2 class="components-view__sidebar-title">{{ t('components.componentList') }}</h2>
+        <p class="components-view__sidebar-subtitle">{{ t('components.totalCount', { count: totalCount }) }}</p>
       </div>
 
       <!-- 组件菜单 -->
@@ -32,10 +32,12 @@
 <script setup lang="ts">
 import { computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import { AleScroll } from 'ale-ui';
+import { AleScroll } from '../../packages';
 import { basicComponents, compositeComponents } from '@/config/components';
 import ComponentMenu from './components/ComponentMenu.vue';
+import { usePageLocale } from '@/locales/usePageLocale';
 
+const { t } = usePageLocale();
 const route = useRoute();
 
 // 组件总数

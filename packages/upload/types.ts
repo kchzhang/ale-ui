@@ -35,6 +35,10 @@ export interface UploadProps {
   name?: string;
   /** 是否启用拖拽上传 */
   drag?: boolean;
+  /** 拖拽提示文本 */
+  dragTip?: string;
+  /** 上传按钮文本 */
+  buttonText?: string;
   /** 接受上传的文件类型 */
   accept?: string;
   /** 最大允许上传个数 */

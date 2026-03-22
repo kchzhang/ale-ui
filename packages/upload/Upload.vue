@@ -26,7 +26,7 @@
         <line x1="12" y1="3" x2="12" y2="15" />
       </svg>
       <div class="ale-upload-dragger__text">
-        将文件拖到此处，或<em>点击上传</em>
+        {{ defaultDragTip }}<em>{{ defaultClickUploadText }}</em>
       </div>
       <div v-if="tip" class="ale-upload-dragger__hint">{{ tip }}</div>
     </div>
@@ -156,6 +156,7 @@
 import { ref, computed, watch } from 'vue';
 import type { UploadProps, UploadEmits, UploadFile, UploadExpose } from './types';
 import { AleButton } from '../button';
+import { useLocale } from '../locale';
 import './Upload.css';
 
 const props = withDefaults(defineProps<UploadProps>(), {
@@ -170,11 +171,22 @@ const props = withDefaults(defineProps<UploadProps>(), {
   size: 'medium',
   listType: 'text',
   showFileList: true,
-  autoUpload: true
+  autoUpload: true,
+  buttonText: undefined,
+  dragTip: undefined
 });
 
 const emit = defineEmits<UploadEmits>();
+const { t } = useLocale();
 
+// 国际化文本
+const defaultDragTip = computed(() => props.dragTip || t('upload.dragTip'));
+const defaultClickUploadText = computed(() => t('upload.clickUpload'));
+const defaultUploadText = computed(() => props.buttonText || t('upload.upload'));
+const defaultUploadMultipleText = computed(() => props.buttonText || t('upload.clickUpload'));
+const limitTipText = computed(() => t('upload.exceedLimit', { limit: props.limit }));
+const uploadFailText = (status: number) => t('upload.uploadError') + `: ${status}`;
+const networkErrorText = computed(() => t('upload.uploadError'));
 const inputRef = ref<HTMLInputElement>();
 const isDragover = ref(false);
 const reqs = ref<Map<string | number, XMLHttpRequest>>(new Map());
@@ -185,14 +197,14 @@ const fileList = ref<UploadFile[]>([...props.modelValue]);
 // 提示文本
 const tip = computed(() => {
   if (props.limit > 0) {
-    return `最多上传 ${props.limit} 个文件`;
+    return limitTipText.value;
   }
   return '';
 });
 
 // 按钮文本
 const buttonText = computed(() => {
-  return props.multiple ? '点击上传' : '上传文件';
+  return props.multiple ? defaultUploadMultipleText.value : defaultUploadText.value;
 });
 
 // 组件样式类
@@ -426,8 +438,8 @@ const defaultUpload = (uploadFile: UploadFile) => {
       emit('update:modelValue', fileList.value);
     } else {
       uploadFile.status = 'error';
-      uploadFile.error = `上传失败: ${xhr.status}`;
-      emit('error', new Error(uploadFile.error), uploadFile, fileList.value);
+      uploadFile.error = uploadFailText(xhr.status);
+      emit('error', new Error(String(uploadFile.error)), uploadFile, fileList.value);
       emit('change', uploadFile, fileList.value);
     }
     reqs.value.delete(uploadFile.uid);
@@ -435,8 +447,8 @@ const defaultUpload = (uploadFile: UploadFile) => {
 
   xhr.onerror = () => {
     uploadFile.status = 'error';
-    uploadFile.error = '网络错误';
-    emit('error', new Error(uploadFile.error), uploadFile, fileList.value);
+    uploadFile.error = networkErrorText.value;
+    emit('error', new Error(String(uploadFile.error)), uploadFile, fileList.value);
     emit('change', uploadFile, fileList.value);
     reqs.value.delete(uploadFile.uid);
   };

@@ -1,6 +1,6 @@
 import Button from './Button.vue';
-import type { ButtonEmits, ButtonProps, ButtonSize, ButtonType } from './types';
+import type { ButtonEmits, ButtonProps, ButtonSize, ButtonType, ButtonTextType } from './types';
 
 export const AleButton = Button;
-export type { ButtonProps, ButtonEmits, ButtonSize, ButtonType };
+export type { ButtonProps, ButtonEmits, ButtonSize, ButtonType, ButtonTextType };
 export default Button;

@@ -17,13 +17,13 @@
           <!-- 头部区域 -->
           <div v-if="showHeader" class="ale-dialog__header">
             <slot name="title">
-              <h3 class="ale-dialog__title">{{ title }}</h3>
+              <h3 class="ale-dialog__title">{{ defaultTitle }}</h3>
             </slot>
             <button
               v-if="showClose"
               type="button"
               class="ale-dialog__close"
-              aria-label="关闭"
+              :aria-label="closeAriaLabel"
               @click="handleClose"
             >
               <span class="ale-dialog__close-icon">×</span>
@@ -43,7 +43,7 @@
                 :disabled="cancelDisabled"
                 @click="handleCancel"
               >
-                {{ cancelText }}
+                {{ defaultCancelText }}
               </AleButton>
               <AleButton
                 v-if="showConfirm"
@@ -52,7 +52,7 @@
                 :disabled="confirmDisabled"
                 @click="handleConfirm"
               >
-                {{ confirmText }}
+                {{ defaultConfirmText }}
               </AleButton>
             </slot>
           </div>
@@ -71,6 +71,7 @@ import {
   onUnmounted,
 } from 'vue';
 import { AleButton } from '../button';
+import { useLocale } from '../locale';
 import type {
   DialogProps,
   DialogEmits,
@@ -85,7 +86,7 @@ import './Dialog.css';
  */
 const props = withDefaults(defineProps<DialogProps>(), {
   modelValue: false,
-  title: '提示',
+  title: undefined,
   width: '',
   size: 'medium' as DialogSize,
   position: 'center' as DialogPosition,
@@ -93,8 +94,8 @@ const props = withDefaults(defineProps<DialogProps>(), {
   maskClosable: true,
   showClose: true,
   showFooter: true,
-  confirmText: '确定',
-  cancelText: '取消',
+  confirmText: undefined,
+  cancelText: undefined,
   showConfirm: true,
   showCancel: true,
   confirmLoading: false,
@@ -108,11 +109,18 @@ const props = withDefaults(defineProps<DialogProps>(), {
 });
 
 const emit = defineEmits<DialogEmits>();
+const { t } = useLocale();
 
 // 内部显示状态
 const isVisible = ref(props.modelValue);
 // 是否已挂载
 const isMounted = ref(false);
+
+// 国际化文本
+const defaultTitle = computed(() => props.title || t('dialog.title'));
+const defaultConfirmText = computed(() => props.confirmText || t('dialog.confirm'));
+const defaultCancelText = computed(() => props.cancelText || t('dialog.cancel'));
+const closeAriaLabel = computed(() => t('ale.button.cancel'));
 
 /**
  * 是否显示头部

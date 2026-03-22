@@ -4,7 +4,7 @@
     <div class="component-menu__search">
       <AleInput
         v-model="searchQuery"
-        placeholder="搜索组件..."
+        :placeholder="t('components.searchPlaceholder')"
         clearable
         @input="handleSearch"
       />
@@ -22,7 +22,7 @@
           <div class="component-menu__group-header">
             <h3 class="component-menu__group-title">
               <span class="component-menu__group-icon">🧩</span>
-              {{ categoryInfo.basic.title }}
+              {{ t('components.basicComponents') }}
             </h3>
             <span class="component-menu__group-count">{{ filteredBasicComponents.length }}</span>
           </div>
@@ -36,7 +36,7 @@
             >
               <span class="component-menu__item-icon">{{ component.icon }}</span>
               <div class="component-menu__item-content">
-                <span class="component-menu__item-name">{{ component.name }}</span>
+                <span class="component-menu__item-name">{{ t(`components.${component.id}`) }}</span>
                 <span v-if="component.description" class="component-menu__item-desc">
                   {{ component.description }}
                 </span>
@@ -50,7 +50,7 @@
           <div class="component-menu__group-header">
             <h3 class="component-menu__group-title">
               <span class="component-menu__group-icon">📦</span>
-              {{ categoryInfo.composite.title }}
+              {{ t('components.compositeComponents') }}
             </h3>
             <span class="component-menu__group-count">{{ filteredCompositeComponents.length }}</span>
           </div>
@@ -64,7 +64,7 @@
             >
               <span class="component-menu__item-icon">{{ component.icon }}</span>
               <div class="component-menu__item-content">
-                <span class="component-menu__item-name">{{ component.name }}</span>
+                <span class="component-menu__item-name">{{ t(`components.${component.id}`) }}</span>
                 <span v-if="component.description" class="component-menu__item-desc">
                   {{ component.description }}
                 </span>
@@ -76,7 +76,7 @@
         <!-- 无搜索结果 -->
         <div v-if="searchQuery && filteredBasicComponents.length === 0 && filteredCompositeComponents.length === 0" class="component-menu__empty">
           <span class="component-menu__empty-icon">🔍</span>
-          <span class="component-menu__empty-text">未找到匹配的组件</span>
+          <span class="component-menu__empty-text">{{ t('components.noResult') }}</span>
         </div>
       </div>
     </AleScroll>
@@ -86,13 +86,14 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { AleScroll, AleInput } from 'ale-ui';
+import { AleScroll, AleInput } from '../../../packages';
 import {
   basicComponents,
-  compositeComponents,
-  categoryInfo
+  compositeComponents
 } from '@/config/components';
+import { usePageLocale } from '@/locales/usePageLocale';
 
+const { t } = usePageLocale();
 const route = useRoute();
 
 // 搜索查询

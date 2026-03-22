@@ -1,7 +1,7 @@
 <template>
   <div ref="tableRef" :class="tableClass" :style="tableStyle">
     <!-- 加载遮罩 -->
-    <Loading v-if="loading" :visible="loading" overlay text="加载中..." size="medium" theme="primary" type="circular" />
+    <Loading v-if="loading" :visible="loading" overlay :text="loadingText" size="medium" theme="primary" type="circular" />
 
     <!-- 表格容器 -->
     <div
@@ -107,7 +107,7 @@
                 <slot name="empty">
                   <div class="ale-table__empty-content">
                     <span class="ale-table__empty-icon">📋</span>
-                    <span class="ale-table__empty-text">{{ emptyText || '暂无数据' }}</span>
+                    <span class="ale-table__empty-text">{{ defaultEmptyText }}</span>
                   </div>
                 </slot>
               </td>
@@ -205,7 +205,7 @@
                 <slot name="empty">
                   <div class="ale-table__empty-content">
                     <span class="ale-table__empty-icon">📋</span>
-                    <span class="ale-table__empty-text">{{ emptyText || '暂无数据' }}</span>
+                    <span class="ale-table__empty-text">{{ defaultEmptyText }}</span>
                   </div>
                 </slot>
               </td>
@@ -296,6 +296,7 @@ import { ref, computed, onMounted } from 'vue';
 import Loading from '../loading/Loading.vue';
 import Checkbox from '../checkbox/Checkbox.vue';
 import AleScroll from '../scroll/Scroll.vue';
+import { useLocale } from '../locale';
 import type { TableProps, TableEmits } from './types';
 import {
   useTableState,
@@ -317,7 +318,7 @@ const props = withDefaults(defineProps<TableProps>(), {
   stripe: false,
   loading: false,
   showEmpty: true,
-  emptyText: '暂无数据',
+  emptyText: undefined,
   showHeader: true,
   layout: 'fixed',
   highlightCurrentRow: false,
@@ -332,6 +333,11 @@ const props = withDefaults(defineProps<TableProps>(), {
 });
 
 const emit = defineEmits<TableEmits>();
+const { t } = useLocale();
+
+// 国际化文本
+const loadingText = computed(() => t('ale.status.loading'));
+const defaultEmptyText = computed(() => props.emptyText || t('table.emptyText'));
 
 // ==================== Refs ====================
 const tableRef = ref<HTMLElement>();

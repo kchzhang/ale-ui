@@ -1,20 +1,25 @@
 // Ale UI 统一入口文件
 // 采用 Element UI 风格的导入方式
 
-export { AleButton } from './button';
-export type { ButtonProps, ButtonEmits, ButtonSize, ButtonType } from './button';
+import { AleButton } from './button';
+export { AleButton };
+export type { ButtonProps, ButtonEmits, ButtonSize, ButtonType, ButtonTextType } from './button';
 
-export { AleBadge } from './badge';
+import { AleBadge } from './badge';
+export { AleBadge };
 export type { BadgeProps, BadgeSize, BadgeType } from './badge';
 
-export { AleCard } from './card';
+import { AleCard } from './card';
+export { AleCard };
 export type { CardProps, CardEmits, CardShadow, CardSize } from './card';
 
 // 未来可以添加更多组件的导出
-export { AleInput } from './input';
+import { AleInput } from './input';
+export { AleInput };
 export type { InputProps, InputEmits, InputSize, InputType } from './input';
 
-export { AleSelect, AleOption } from './select';
+import { AleSelect, AleOption } from './select';
+export { AleSelect, AleOption };
 export type {
   SelectProps,
   SelectEmits,
@@ -26,7 +31,8 @@ export type {
   OptionEmits
 } from './select';
 
-export { AleCheckbox, AleCheckboxGroup } from './checkbox';
+import { AleCheckbox, AleCheckboxGroup } from './checkbox';
+export { AleCheckbox, AleCheckboxGroup };
 export type {
   CheckboxProps,
   CheckboxEmits,
@@ -38,7 +44,8 @@ export type {
   CheckboxGroupEmits
 } from './checkbox';
 
-export { Radio as AleRadio, RadioGroup as AleRadioGroup } from './radio';
+import { Radio as AleRadio, RadioGroup as AleRadioGroup } from './radio';
+export { AleRadio, AleRadioGroup };
 export type {
   RadioProps,
   RadioEmits,
@@ -50,7 +57,8 @@ export type {
   RadioGroupEmits
 } from './radio';
 
-export { Switch as AleSwitch } from './switch';
+import { Switch as AleSwitch } from './switch';
+export { AleSwitch };
 export type {
   SwitchProps,
   SwitchEmits,
@@ -58,7 +66,8 @@ export type {
   SwitchTheme
 } from './switch';
 
-export { Dialog as AleDialog } from './dialog';
+import { Dialog as AleDialog } from './dialog';
+export { AleDialog };
 export type {
   DialogProps,
   DialogEmits,
@@ -66,7 +75,8 @@ export type {
   DialogPosition
 } from './dialog';
 
-export { Message as AleMessage, MessageComponent } from './message';
+import { Message as AleMessage, MessageComponent } from './message';
+export { AleMessage, MessageComponent };
 export type {
   MessageOptions,
   MessageInstance,
@@ -76,7 +86,8 @@ export type {
   MessageProps
 } from './message';
 
-export { Notification, Notification as AleNotification, NotificationComponent } from './notification';
+import { Notification, Notification as AleNotification, NotificationComponent } from './notification';
+export { Notification, AleNotification, NotificationComponent };
 export type {
   NotificationOptions,
   NotificationInstance,
@@ -86,7 +97,8 @@ export type {
   NotificationProps
 } from './notification';
 
-export { AleLoading } from './loading';
+import { AleLoading } from './loading';
+export { AleLoading };
 export type {
   LoadingProps,
   LoadingEmits,
@@ -98,7 +110,8 @@ export type {
   LoadingGlobalMethod
 } from './loading';
 
-export { AleTabs, AleTabPane } from './tabs';
+import { AleTabs, AleTabPane } from './tabs';
+export { AleTabs, AleTabPane };
 export type {
   TabsProps,
   TabsEmits,
@@ -111,7 +124,8 @@ export type {
   TabPaneState
 } from './tabs';
 
-export { Form as AleForm, FormItem as AleFormItem } from './form';
+import { Form as AleForm, FormItem as AleFormItem } from './form';
+export { AleForm, AleFormItem };
 export type {
   FormProps,
   FormEmits,
@@ -128,10 +142,12 @@ export type {
   FormContext
 } from './form';
 
-export { AleTag } from './tag';
+import { AleTag } from './tag';
+export { AleTag };
 export type { TagProps, TagEmits, TagSize, TagType } from './tag';
 
-export { AleList } from './list';
+import { AleList } from './list';
+export { AleList };
 export type {
   ListProps,
   ListEmits,
@@ -144,7 +160,8 @@ export type {
   ListExpose
 } from './list';
 
-export { AleTable } from './table';
+import { AleTable } from './table';
+export { AleTable };
 export type {
   TableProps,
   TableEmits,
@@ -164,7 +181,8 @@ export type {
   TableContext
 } from './table';
 
-export { AlePagination } from './pagination';
+import { AlePagination } from './pagination';
+export { AlePagination };
 export type {
   PaginationProps,
   PaginationEmits,
@@ -173,7 +191,8 @@ export type {
   PaginationExpose
 } from './pagination';
 
-export { AleInfiniteScroll } from './infinite-scroll';
+import { AleInfiniteScroll } from './infinite-scroll';
+export { AleInfiniteScroll };
 export type {
   InfiniteScrollProps,
   InfiniteScrollStatus,
@@ -183,7 +202,8 @@ export type {
   InfiniteScrollState
 } from './infinite-scroll';
 
-export { AleTree, AleTreeNode } from './tree';
+import { AleTree, AleTreeNode } from './tree';
+export { AleTree, AleTreeNode };
 export type {
   TreeProps,
   TreeEmits,
@@ -200,7 +220,8 @@ export type {
   DropType,
 } from './tree';
 
-export { AleScroll } from './scroll';
+import { AleScroll } from './scroll';
+export { AleScroll };
 export type {
   ScrollProps,
   ScrollEmits,
@@ -214,7 +235,8 @@ export type {
   ScrollState
 } from './scroll';
 
-export { Cascader as AleCascader } from './cascader';
+import { Cascader as AleCascader } from './cascader';
+export { AleCascader };
 export type {
   CascaderOption,
   CascaderSize,
@@ -225,7 +247,8 @@ export type {
   CascaderNodeContext
 } from './cascader';
 
-export { AleUpload } from './upload';
+import { AleUpload } from './upload';
+export { AleUpload };
 export type {
   UploadFile,
   UploadProps,
@@ -237,7 +260,8 @@ export type {
   UploadExpose
 } from './upload';
 
-export { AleProgress } from './progress';
+import { AleProgress } from './progress';
+export { AleProgress };
 export type {
   ProgressProps,
   ProgressExpose,
@@ -246,7 +270,8 @@ export type {
   ProgressColorFunction
 } from './progress';
 
-export { AleTimePicker } from './time-picker';
+import { AleTimePicker } from './time-picker';
+export { AleTimePicker };
 export type {
   TimePickerProps,
   TimePickerEmits,
@@ -255,7 +280,8 @@ export type {
   TimePickerExpose
 } from './time-picker';
 
-export { AleDatePicker } from './date-picker';
+import { AleDatePicker } from './date-picker';
+export { AleDatePicker };
 export type {
   DatePickerProps,
   DatePickerEmits,
@@ -266,7 +292,8 @@ export type {
   DatePickerExpose
 } from './date-picker';
 
-export { AleSplit, AleSplitPanel } from './split';
+import { AleSplit, AleSplitPanel } from './split';
+export { AleSplit, AleSplitPanel };
 export type {
   SplitProps,
   SplitEmits,
@@ -276,3 +303,79 @@ export type {
   SplitPanelState,
   SplitContext
 } from './split';
+
+// 国际化导出
+export {
+  zhCN,
+  zhTW,
+  zhHK,
+  enUS,
+  locales,
+  useLocale,
+  provideLocale
+} from './locale';
+export type { AleUILocale, LocaleCode } from './locale';
+
+import type { App } from 'vue';
+import { ref } from 'vue';
+import { provideLocale, zhCN } from './locale';
+import type { AleUILocale } from './locale';
+
+// 所有组件列表
+const components = [
+  AleButton,
+  AleBadge,
+  AleCard,
+  AleInput,
+  AleSelect,
+  AleOption,
+  AleCheckbox,
+  AleCheckboxGroup,
+  AleRadio,
+  AleRadioGroup,
+  AleSwitch,
+  AleDialog,
+  AleMessage,
+  AleNotification,
+  AleLoading,
+  AleTabs,
+  AleTabPane,
+  AleForm,
+  AleFormItem,
+  AleTag,
+  AleList,
+  AleTable,
+  AlePagination,
+  AleInfiniteScroll,
+  AleTree,
+  AleTreeNode,
+  AleScroll,
+  AleCascader,
+  AleUpload,
+  AleProgress,
+  AleTimePicker,
+  AleDatePicker,
+  AleSplit,
+  AleSplitPanel
+];
+
+// 组件库安装函数
+export default {
+  install(app: App, options?: { locale?: AleUILocale }) {
+    // 提供语言配置
+    const locale = ref(options?.locale || zhCN);
+    provideLocale(locale);
+
+    // 注册所有组件
+    components.forEach(component => {
+      if (component.name) {
+        app.component(component.name, component);
+      }
+    });
+
+    // 全局挂载方法
+    app.config.globalProperties.$message = AleMessage;
+    app.config.globalProperties.$notify = AleNotification;
+    app.config.globalProperties.$loading = AleLoading;
+  }
+};
