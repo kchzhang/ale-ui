@@ -48,6 +48,7 @@ import type { TreeProps, TreeEmits, TreeExpose, TreeData, TreeNode } from './tre
 import type { Node as NodeType } from './model/node';
 import { TreeStore } from './model/tree-store';
 import TreeNodeComponent from './TreeNode.vue';
+import { useLocale } from '../locale';
 import './Tree.css';
 
 // 组件名
@@ -81,6 +82,9 @@ const props = withDefaults(defineProps<TreeProps>(), {
 const isCheckable = computed(() => props.checkable || props.showCheckbox);
 
 const emit = defineEmits<TreeEmits>();
+
+// 国际化
+const { t } = useLocale();
 
 // 组件实例
 const instance = getCurrentInstance();
@@ -121,7 +125,7 @@ const isEmpty = computed(() => {
   return !props.data || props.data.length === 0;
 });
 
-const emptyText = computed(() => '暂无数据');
+const emptyText = computed(() => t('tree.emptyText'));
 
 const treeClass = computed(() => ({
   'ale-tree': true,

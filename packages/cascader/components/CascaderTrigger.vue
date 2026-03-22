@@ -63,6 +63,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import { useLocale } from '../../locale';
 
 export interface CascaderTriggerProps {
   isOpen: boolean;
@@ -87,6 +88,9 @@ const emit = defineEmits<{
   (e: 'mouseleave'): void;
 }>();
 
+// 国际化
+const { t } = useLocale();
+
 const triggerRef = ref<HTMLDivElement>();
 const inputRef = ref<HTMLInputElement>();
 const searchQuery = ref('');
@@ -95,7 +99,7 @@ const inputPlaceholder = computed(() => {
   if (props.selectedLabel && !props.isOpen) {
     return props.selectedLabel;
   }
-  return props.placeholder || '请选择';
+  return props.placeholder || t('select.placeholder');
 });
 
 const handleClick = () => {

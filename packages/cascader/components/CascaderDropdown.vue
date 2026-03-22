@@ -11,7 +11,7 @@
         <!-- 加载中状态 -->
         <div v-if="loading" class="ale-cascader__loading">
           <span class="ale-cascader__loading-spinner"></span>
-          <span class="ale-cascader__loading-text">{{ loadingText || '加载中...' }}</span>
+          <span class="ale-cascader__loading-text">{{ loadingText || t('ale.status.loading') }}</span>
         </div>
 
         <!-- 搜索结果列表 -->
@@ -25,12 +25,12 @@
 
         <!-- 空数据状态（搜索无结果） -->
         <div v-else-if="showSearchEmpty" class="ale-cascader__empty">
-          {{ noDataText || '暂无匹配数据' }}
+          {{ noDataText || t('select.emptyText') }}
         </div>
 
         <!-- 空数据状态 -->
         <div v-else-if="showEmpty" class="ale-cascader__empty">
-          {{ noDataText || '暂无数据' }}
+          {{ noDataText || t('select.emptyText') }}
         </div>
 
         <!-- 级联面板 -->
@@ -58,11 +58,15 @@ import { computed, ref } from 'vue';
 import type { CascaderOption, CascaderCheckStrictly } from '../types';
 import CascaderPanel from './CascaderPanel.vue';
 import CascaderSearchList from './CascaderSearchList.vue';
+import { useLocale } from '../../locale';
 
 interface SearchItem {
   path: CascaderOption[];
   matchIndex: number;
 }
+
+// 国际化
+const { t } = useLocale();
 
 export interface CascaderDropdownProps {
   visible: boolean;

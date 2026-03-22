@@ -108,12 +108,12 @@
           <!-- 加载中状态 -->
           <div v-else-if="loading || isSearching" class="ale-select__loading">
             <span class="ale-select__loading-spinner"></span>
-            <span class="ale-select__loading-text">{{ loadingText || '加载中...' }}</span>
+            <span class="ale-select__loading-text">{{ loadingText || t('ale.status.loading') }}</span>
           </div>
 
           <!-- 空数据状态（仅当使用 options prop 时显示） -->
           <div v-else-if="!$slots.default && displayOptions.length === 0" class="ale-select__empty">
-            {{ noDataText || '暂无数据' }}
+            {{ noDataText || t('select.emptyText') }}
           </div>
 
           <!-- 虚拟滚动列表 -->
@@ -231,6 +231,7 @@ import {
 } from 'vue';
 import type { SelectProps, SelectEmits, SelectOption, SelectContext } from './types';
 import { SELECT_CONTEXT_KEY } from './constants';
+import { useLocale } from '../locale';
 import './Select.css';
 
 // Props 定义
@@ -253,6 +254,9 @@ const props = withDefaults(defineProps<SelectProps>(), {
 const emit = defineEmits<SelectEmits & {
   (e: 'search-error', error: Error): void;
 }>();
+
+// 国际化
+const { t } = useLocale();
 
 // 内部状态
 const isOpen = ref(false);
